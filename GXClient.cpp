@@ -1,17 +1,35 @@
 //
 // --------------------------------------------------------------------------
 //  Gurux Ltd
+// 
 //
 //
+// Filename:        $HeadURL$
 //
-// Filename:        $HeadURL:  $
-//
-// Version:         $Revision:  $,
-//                  $Date:  $
-//                  $Author: $
+// Version:         $Revision$,
+//                  $Date$
+//                  $Author$
 //
 // Copyright (c) Gurux Ltd
 //
+//---------------------------------------------------------------------------
+//
+//  DESCRIPTION
+//
+// This file is a part of Gurux Device Framework.
+//
+// Gurux Device Framework is Open Source software; you can redistribute it
+// and/or modify it under the terms of the GNU General Public License 
+// as published by the Free Software Foundation; version 2 of the License.
+// Gurux Device Framework is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// See the GNU General Public License for more details.
+//
+// More information of Gurux products: http://www.gurux.org
+//
+// This code is licensed under the GNU General Public License v2. 
+// Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 
 #include "stdafx.h"
@@ -494,6 +512,11 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
 	{
 		TRACE1("\r\n");
 	}
+	//Check errors
+	if ((ret = m_Parser->CheckReplyErrors(&data[0], data.size(), m_Receivebuff, ReplySize)) != 0)
+	{
+		return ret;
+	}
 	return 0;
 }
 
@@ -574,7 +597,7 @@ int GXClient::GetObjects(CGXObjectCollection& objects)
 	vector<unsigned char> reply;	
 	if ((ret = m_Parser->GetObjectsRequest(data)) != 0 ||
 		(ret = ReadDataBlock(data, reply)) != 0 ||
-		(ret = m_Parser->ParseObjects(reply, objects)) != 0)
+		(ret = m_Parser->ParseObjects(reply, objects, true)) != 0)
 	{
 		TRACE("GetObjects failed %d.\r\n", ret);
 		return ret;

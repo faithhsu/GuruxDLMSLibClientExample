@@ -1,17 +1,35 @@
 //
 // --------------------------------------------------------------------------
 //  Gurux Ltd
+// 
 //
 //
+// Filename:        $HeadURL$
 //
-// Filename:        $HeadURL:  $
-//
-// Version:         $Revision:  $,
-//                  $Date:  $
-//                  $Author: $
+// Version:         $Revision$,
+//                  $Date$
+//                  $Author$
 //
 // Copyright (c) Gurux Ltd
 //
+//---------------------------------------------------------------------------
+//
+//  DESCRIPTION
+//
+// This file is a part of Gurux Device Framework.
+//
+// Gurux Device Framework is Open Source software; you can redistribute it
+// and/or modify it under the terms of the GNU General Public License 
+// as published by the Free Software Foundation; version 2 of the License.
+// Gurux Device Framework is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// See the GNU General Public License for more details.
+//
+// More information of Gurux products: http://www.gurux.org
+//
+// This code is licensed under the GNU General Public License v2. 
+// Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 
 #pragma once
@@ -63,7 +81,6 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// buff: buffer containing the data from the meter.
 	// buffSize: size of the buffer.
-	// dataSize: size of data to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int ParseUAResponse(unsigned char* buff, int buffSize);
@@ -71,16 +88,14 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Parses UAResponse byte vector.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: vector containing the data from the meter.
+	// data: vector containing the data from the meter.
 	// Returns: 0 if succeed. Otherwise error number.
 	int ParseUAResponse(vector<unsigned char>& data);
 
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns AARQRequest query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: allocated buffer.
-	// buffSize: size of buffer.
-	// dataSize: size of data to send.
+	// Packets: Packets to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int AARQRequest(vector< std::vector<unsigned char> >& Packets);
@@ -88,9 +103,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns KeepAlive request as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: allocated buffer.
-	// buffSize: size of buffer.
-	// dataSize: size of data to send.
+	// Packets: Packets to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int GetKeepAlive(vector< vector<unsigned char> >& Packets);
@@ -100,7 +113,6 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// buff: buffer containing the data from the meter.
 	// buffSize: size of the buffer.
-	// dataSize: size of data to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int ParseAAREResponse(unsigned char* buff, int buffSize);
@@ -108,9 +120,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Parses AAREResponse byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: buffer containing the data from the meter.
-	// buffSize: size of the buffer.
-	// dataSize: size of data to send.
+	// data: buffer containing the data from the meter.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////	
 	int ParseAAREResponse(vector<unsigned char>& data);
@@ -118,9 +128,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns DisconnectedMode query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: allocated buffer.
-	// buffSize: size of buffer.
-	// dataSize: size of data to send.
+	// Packets: Packets to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int DisconnectedModeRequest(vector< vector<unsigned char> >& Packets);
@@ -128,9 +136,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Disconnect request as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: allocated buffer.
-	// buffSize: size of buffer.
-	// dataSize: size of data to send.
+	// Packets: Packets to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int DisconnectRequest(vector< vector<unsigned char> >& Packets);
@@ -139,13 +145,14 @@ public:
 	// Returns GetObjects query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
 	// Packets: Packets to send.
+	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int GetObjectsRequest(vector< vector<unsigned char> >& Packets);
 
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Read query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// name: Short name of Logical name of the requested object.
+	// name: Short Name or Logical Name of the requested object.
 	// InterfaceClass: Type of the DLMS object.
 	// AttributeOrdinal: The ordinal number of the requested attribute.
 	// Packets: packets to send.
@@ -156,14 +163,11 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Write query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
-	// SN: Short name of the requested object.
+	// name: Short or Logical Name of the object to write.
 	// InterfaceClass: Type of the DLMS object.
 	// AttributeOrdinal: The ordinal number of the requested attribute.
-	// pData: Written data.
-	// DataLength: Length of the data written to.
-	// buff: allocated buffer.
-	// buffSize: size of buffer.
-	// dataSize: size of data to send.
+	// Data: Data to write.
+	// Packets: Allocated packets.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int Write(CGXDLMSVariant& name, OBJECT_TYPE InterfaceClass, int AttributeOrdinal, CGXDLMSVariant Data, vector< vector<unsigned char> >& Packets);
@@ -179,19 +183,17 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Parses a byte array containing DLMS objects.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: buffer containing the data from the meter.
-	// buffSize: size of the buffer.
-	// dataSize: size of data to send.
+	// data: buffer containing the data from the meter.
 	// objects: list of the parsed objects
+	// findDescriptions : Is description solved from OBIS code.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
-	int ParseObjects(vector<unsigned char>& data, CGXObjectCollection& objects);
+	int ParseObjects(vector<unsigned char>& data, CGXObjectCollection& objects, bool findDescriptions);
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// Parses a byte array containing Profile Generic DLMS objects.
 	/////////////////////////////////////////////////////////////////////////////
-	// buff: buffer containing the data from the meter.
-	// data: size of the buffer.
+	// data: buffer containing the data from the meter.
 	// pg: the profile generic DLMS object.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////

@@ -1,17 +1,35 @@
 //
 // --------------------------------------------------------------------------
 //  Gurux Ltd
+// 
 //
 //
+// Filename:        $HeadURL$
 //
-// Filename:        $HeadURL:  $
-//
-// Version:         $Revision:  $,
-//                  $Date:  $
-//                  $Author: $
+// Version:         $Revision$,
+//                  $Date$
+//                  $Author$
 //
 // Copyright (c) Gurux Ltd
 //
+//---------------------------------------------------------------------------
+//
+//  DESCRIPTION
+//
+// This file is a part of Gurux Device Framework.
+//
+// Gurux Device Framework is Open Source software; you can redistribute it
+// and/or modify it under the terms of the GNU General Public License 
+// as published by the Free Software Foundation; version 2 of the License.
+// Gurux Device Framework is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// See the GNU General Public License for more details.
+//
+// More information of Gurux products: http://www.gurux.org
+//
+// This code is licensed under the GNU General Public License v2. 
+// Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 
 // GuruxDLMSLibClientExample.cpp : Defines the entry point for the console application.
@@ -52,10 +70,11 @@ int main( int argc, char* argv[] )
 	CGXDLMSClient cl(true, (unsigned short) 1, (unsigned short)1, GXDLMS_AUTHENTICATION_NONE, NULL, GXDLMS_INTERFACETYPE_NET);
 */
 	bool UseLogicalNameReferencing = true;
-	bool trace = false;
-	CGXDLMSClient cl(UseLogicalNameReferencing);
+	bool trace = true;
+//	CGXDLMSClient cl(UseLogicalNameReferencing);
+	CGXDLMSClient cl(true, (unsigned char) 0x81, (unsigned short) 0x000223, GXDLMS_AUTHENTICATION_LOW, "ABCDEFGH");	
 	GXClient comm(&cl, trace);		
-	if ((ret = comm.Connect("localhost", 4061)) != 0)
+	if ((ret = comm.Connect("localhost", 1000)) != 0)
 	{
 		TRACE("Connect failed %d.\r\n", ret);
 		return 1;
@@ -74,8 +93,13 @@ int main( int argc, char* argv[] )
 	for(vector<CGXObject*>::iterator it = Objects.begin(); it != Objects.end(); ++it)
 	{		
 		CGXDLMSVariant ln, value;
-		if (comm.Read(*it, 1, ln) != ERROR_CODES_OK)
+		if ((ret = comm.Read(*it, 1, ln)) != ERROR_CODES_OK)
 		{
+			//It is OK if meter returns read/Write error.
+			if (ret == ERROR_CODES_WRITE_DENIED)
+			{
+				continue;
+			}
 			//Show error.
 			return ret;
 		}
@@ -108,9 +132,18 @@ int main( int argc, char* argv[] )
 				//Show error.
 				return ret;
 			}
-			CGXDLMSVariant scaler = scalerUnit.Arr[0];
-			CGXDLMSVariant unit = scalerUnit.Arr[1];
-			printf("Register Object: '%s' '%s' '%s': '%s'\r\n", ln.ToString().c_str(), scaler.ToString().c_str(), unit.ToString().c_str(), value.ToString().c_str());
+			if (scalerUnit.vt == DLMS_DATA_TYPE_ARRAY)
+			{
+				CGXDLMSVariant scaler = scalerUnit.Arr[0];
+				CGXDLMSVariant unit = scalerUnit.Arr[1];
+				printf("Register Object: '%s' '%s' '%s': '%s'\r\n", ln.ToString().c_str(), scaler.ToString().c_str(), unit.ToString().c_str(), value.ToString().c_str());
+			}
+			else
+			{
+				//Some meters can return strance values.
+				printf("Error! Object %s scaler and unit are invalid.", ln.ToString().c_str());
+			}
+
 		}
 		//////////////////////////////////////////////////////////////////////////////
 		//Clock object.

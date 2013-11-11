@@ -1,17 +1,35 @@
 //
 // --------------------------------------------------------------------------
 //  Gurux Ltd
+// 
 //
 //
+// Filename:        $HeadURL$
 //
-// Filename:        $HeadURL:  $
-//
-// Version:         $Revision:  $,
-//                  $Date:  $
-//                  $Author: $
+// Version:         $Revision$,
+//                  $Date$
+//                  $Author$
 //
 // Copyright (c) Gurux Ltd
 //
+//---------------------------------------------------------------------------
+//
+//  DESCRIPTION
+//
+// This file is a part of Gurux Device Framework.
+//
+// Gurux Device Framework is Open Source software; you can redistribute it
+// and/or modify it under the terms of the GNU General Public License 
+// as published by the Free Software Foundation; version 2 of the License.
+// Gurux Device Framework is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// See the GNU General Public License for more details.
+//
+// More information of Gurux products: http://www.gurux.org
+//
+// This code is licensed under the GNU General Public License v2. 
+// Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 
 #pragma once
@@ -59,7 +77,8 @@ static std::vector< basic_string<char> > Split(basic_string<char>& s, char separ
 		items.push_back(str);
 		last = pos + 1;
 	}
-	if (last == 0 || last != (int) (s.length() - 1))
+	int len = s.length();
+	if (last == 0 || last != len)
 	{
 		basic_string<char> str;
 		str.append(s, last, pos);
@@ -83,12 +102,13 @@ static std::vector< basic_string<char> > Split(basic_string<char>& s, basic_stri
 		}
 		last = pos + 1;
 	}
-	if (last != (int) (s.length() - 1))
+	int len = s.length();
+	//if (last != len)
 	{
-		if (!ignoreEmpty || pos - last != 0)
+		if (!ignoreEmpty || len - last != 0)
 		{
 			basic_string<char> str;
-			str.append(s, last, pos - last);
+			str.append(s, last, len - last);
 			items.push_back(str);
 		}
 	}	
