@@ -372,13 +372,20 @@ int GXClient::InitializeConnection()
 		return ret;
 	}	
 	reply.clear();
-	//Initialize send and receive buffers to same as meter's buffers.
-	GXDLMSLimits limits = m_Parser->GetLimits();
-	CGXDLMSVariant rx = limits.GetMaxInfoRX();
-	rx.ChangeType(DLMS_DATA_TYPE_INT32);	
-	CGXDLMSVariant tx = limits.GetMaxInfoTX();
-	tx.ChangeType(DLMS_DATA_TYPE_INT32);
-	InitializeBuffers(rx.lVal, tx.lVal);	
+	if (m_Parser->GetIntefaceType() == GXDLMS_INTERFACETYPE_NET)
+	{
+		InitializeBuffers(0xFFFF, 0xFFFF);	
+	}
+	else
+	{
+		//Initialize send and receive buffers to same as meter's buffers.
+		GXDLMSLimits limits = m_Parser->GetLimits();
+		CGXDLMSVariant rx = limits.GetMaxInfoRX();
+		rx.ChangeType(DLMS_DATA_TYPE_INT32);	
+		CGXDLMSVariant tx = limits.GetMaxInfoTX();
+		tx.ChangeType(DLMS_DATA_TYPE_INT32);
+		InitializeBuffers(rx.lVal, tx.lVal);	
+	}
 	if ((ret = m_Parser->AARQRequest(data)) != 0 ||
 		(ret = ReadDataBlock(data, reply)) != 0 ||
 		(ret = m_Parser->ParseAAREResponse(reply)) != 0)
@@ -677,6 +684,41 @@ int GXClient::Read(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value
 	}
 	return ERROR_CODES_OK;
 }
+
+//Write selected object.
+int GXClient::Write(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value)
+{	
+	int ret;
+	vector< vector<unsigned char> > data;
+	vector<unsigned char> reply;
+	//Get meter's send and receive buffers size.
+	CGXDLMSVariant name = pObject->GetName();
+	if ((ret = m_Parser->Write(name, pObject->GetObjectType(), attributeIndex, value, data)) != 0 ||
+		(ret = ReadDataBlock(data, reply)) != 0)
+	{
+		TRACE("Write failed %d.\r\n", ret);
+		return ret;
+	}
+	return ERROR_CODES_OK;
+}
+
+//Write selected object.
+int GXClient::Method(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value)
+{	
+	int ret;
+	vector< vector<unsigned char> > data;
+	vector<unsigned char> reply;
+	//Get meter's send and receive buffers size.
+	CGXDLMSVariant name = pObject->GetName();
+	if ((ret = m_Parser->Method(name, pObject->GetObjectType(), attributeIndex, value, data)) != 0 ||
+		(ret = ReadDataBlock(data, reply)) != 0)
+	{
+		TRACE("Method failed %d.\r\n", ret);
+		return ret;
+	}
+	return ERROR_CODES_OK;
+}
+
 
 //Get profile Generics columns.
 int GXClient::GetColumns(CGXObject* pObject, CGXObjectCollection* pColumns)
