@@ -44,7 +44,7 @@ class CGXDLMSClient
 {
 	CGXDLMS m_base;
 public:
-	static void UpdateOBISCodes(CGXObjectCollection& objects);
+	static void UpdateOBISCodes(CGXDLMSObjectCollection& objects);
 public:
 	/////////////////////////////////////////////////////////////////////////////
 	//Constructor
@@ -57,6 +57,9 @@ public:
 				//Password if authentication is used.
 				const char* pPassword = NULL,
 				GXDLMS_INTERFACETYPE IntefaceType = GXDLMS_INTERFACETYPE_GENERAL);
+
+	//Destructor.
+	~CGXDLMSClient();
 
 	bool UseLogicalNameReferencing()
 	{
@@ -168,7 +171,7 @@ public:
 	/////////////////////////////////////////////////////////////////////////////
 	// Generate Method (Action) request.
 	/////////////////////////////////////////////////////////////////////////////
-	int Method(CGXObject* item, int AttributeOrdinal, CGXDLMSVariant Data, vector< vector<unsigned char> >& Packets);
+	int Method(CGXDLMSObject* item, int AttributeOrdinal, CGXDLMSVariant Data, vector< vector<unsigned char> >& Packets);
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Method request query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
@@ -209,22 +212,8 @@ public:
 	// findDescriptions : Is description solved from OBIS code.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
-	int ParseObjects(vector<unsigned char>& data, CGXObjectCollection& objects, bool findDescriptions);
+	int ParseObjects(vector<unsigned char>& data, CGXDLMSObjectCollection& objects, bool findDescriptions);
 	
-	/////////////////////////////////////////////////////////////////////////////
-	// Parses a byte array containing Profile Generic DLMS objects.
-	/////////////////////////////////////////////////////////////////////////////
-	// data: buffer containing the data from the meter.
-	// pg: the profile generic DLMS object.
-	// Returns: 0 if succeed. Otherwise error number.
-	/////////////////////////////////////////////////////////////////////////////
-	int ParseColumns(vector<unsigned char>& data, CGXObjectCollection* pg);
-
-	/////////////////////////////////////////////////////////////////////////////
-	// Parses a byte array containing Profile Generic sort object.
-	/////////////////////////////////////////////////////////////////////////////
-	int ParseSortObject(vector<unsigned char>& data, CGXObject*& pObj);
-
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Read query as byte array.
 	/////////////////////////////////////////////////////////////////////////////
@@ -238,7 +227,7 @@ public:
 	// Packets: Packets to send.
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////	
-	int ReadRowsByRange(CGXDLMSVariant& Name, CGXObject* pSortObject, struct tm* start, struct tm* end, vector< vector<unsigned char> >& Packets);
+	int ReadRowsByRange(CGXDLMSVariant& Name, CGXDLMSObject* pSortObject, struct tm* start, struct tm* end, vector< vector<unsigned char> >& Packets);
 
 	/////////////////////////////////////////////////////////////////////////////
 	// Returns Read query as byte array.
@@ -315,7 +304,7 @@ public:
 	int GetDataFromPacket(unsigned char* Packet, int PacketSize, std::vector<unsigned char>& reply, GXDLMS_DATA_REQUEST_TYPES& moreData);
 
 	/////////////////////////////////////////////////////////////////////////////
-	// Returns the value of a DLMS object
+	// Returns the value of a DLMS object.
 	/////////////////////////////////////////////////////////////////////////////
 	// pBuff: buffer received from the meter.
 	// Size: size of the buffer.
@@ -332,4 +321,62 @@ public:
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int GetValue(vector<unsigned char>& data, CGXDLMSVariant& value);
+
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Returns the value of a DLMS object.
+	/////////////////////////////////////////////////////////////////////////////
+	// pBuff: buffer received from the meter.
+	// Size: size of the buffer.
+	// Value: Received value.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int GetValue(unsigned char* pBuff, int Size, CGXDLMSObject* pObject, int index, CGXDLMSVariant& value);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Returns the value of a DLMS object
+	/////////////////////////////////////////////////////////////////////////////
+	// data: Data received from the meter.
+	// Value: Received value.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int GetValue(vector<unsigned char>& data, CGXDLMSObject* pObject, int index, CGXDLMSVariant& value);
+	
+	/////////////////////////////////////////////////////////////////////////////
+	// Update read value to the DLMS object.
+	/////////////////////////////////////////////////////////////////////////////
+	// pBuff: buffer received from the meter.
+	// Size: size of the buffer.
+	// Value: Received value.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int UpdateValue(unsigned char* pBuff, int Size, CGXDLMSObject* pObject, int index, CGXDLMSVariant& value);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Update read value to the DLMS object.
+	/////////////////////////////////////////////////////////////////////////////
+	// data: Data received from the meter.
+	// Value: Received value.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int UpdateValue(vector<unsigned char>& data, CGXDLMSObject* pObject, int index, CGXDLMSVariant& value);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Returns the data type of a DLMS object.
+	/////////////////////////////////////////////////////////////////////////////
+	// data: data received from the meter.
+	// Type: Data type.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int GetDataType(vector<unsigned char>& data, DLMS_DATA_TYPE& Type);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Returns the data type of a DLMS object.
+	/////////////////////////////////////////////////////////////////////////////
+	// pBuff: buffer received from the meter.
+	// Size: size of the buffer.
+	// Type: Data type.
+	// Returns: 0 if succeed. Otherwise error number.
+	/////////////////////////////////////////////////////////////////////////////
+	int GetDataType(unsigned char* pBuff, int Size, DLMS_DATA_TYPE& Type);
 };

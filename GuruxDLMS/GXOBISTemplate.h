@@ -60,4 +60,7 @@ public:
 	static void GetOctetString(unsigned char* pBuff, unsigned char* value, int len);
 	static int GetDateTime(unsigned char* pBuff, int buffLen, char* value);
 	static const char* GetUnitAsString(int unit);
+	static void GetLogicalName(vector<unsigned char> data, string& ln);
+	static void GetLogicalName(unsigned char* buff, string& ln);
+	static bool IsLogicalNameEmpty(unsigned char* pLN);
 };

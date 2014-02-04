@@ -35,7 +35,7 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
 /** 
@@ -72,7 +72,7 @@ enum LOCAL_PORT_RESPONSE_TIME
     LOCAL_PORT_RESPONSE_TIME_200_MS = 1
 };
 
-class CGXDLMSIECOpticalPortSetup : public CGXObject
+class CGXDLMSIECOpticalPortSetup : public CGXDLMSObject
 {
 	basic_string<char> m_Password2;
     basic_string<char> m_Password5;
@@ -92,19 +92,19 @@ class CGXDLMSIECOpticalPortSetup : public CGXObject
 
 public:	
 	//Constructor.
-	CGXDLMSIECOpticalPortSetup() : CGXObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, "0.0.20.0.0.255")
+	CGXDLMSIECOpticalPortSetup() : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, "0.0.20.0.0.255")
 	{
 		Init();
 	}
 
 	//SN Constructor.
-	CGXDLMSIECOpticalPortSetup(unsigned short sn) : CGXObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, sn)
+	CGXDLMSIECOpticalPortSetup(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, sn)
 	{
 		Init();
 	}
 
 	//LN Constructor.
-	CGXDLMSIECOpticalPortSetup(basic_string<char> ln) : CGXObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, ln)
+	CGXDLMSIECOpticalPortSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, ln)
 	{
 		Init();
 	}
@@ -193,60 +193,146 @@ public:
 		return 0;
 	}
 
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//DefaultMode
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //DefaultBaudrate
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //ProposedBaudrate
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+        //ResponseTime
+        if (!IsRead(5))
+        {
+            attributes.push_back(5);
+        }
+        //DeviceAddress
+        if (!IsRead(6))
+        {
+            attributes.push_back(6);
+        }
+        //Password1
+        if (!IsRead(7))
+        {
+            attributes.push_back(7);
+        }
+        //Password2
+        if (!IsRead(8))
+        {
+            attributes.push_back(8);
+        }
+        //Password5
+        if (!IsRead(9))
+        {
+            attributes.push_back(9);
+        }	
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+    {
+		if (index == 1)
+		{
+			type = DLMS_DATA_TYPE_OCTET_STRING;			
+		}
+		else if (index == 2)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+        }
+        else if (index == 3)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+        }
+        else if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+        }
+        else if (index == 5)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+        }
+        else if (index == 6)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+        }
+        else if (index == 7)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+        }
+        else if (index == 8)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+        }
+        else if (index == 9)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+        }   
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
+	}
+
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
     {
 		if (index == 1)
 		{
 			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
         if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
+        {            
             value = GetDefaultMode();
 			return ERROR_CODES_OK;
         }
         if (index == 3)
         {
-            type = DLMS_DATA_TYPE_ENUM;
             value = GetDefaultBaudrate();
 			return ERROR_CODES_OK;
         }
         if (index == 4)
         {
-            type = DLMS_DATA_TYPE_ENUM;
             value = GetProposedBaudrate();
 			return ERROR_CODES_OK;
         }
         if (index == 5)
         {
-            type = DLMS_DATA_TYPE_ENUM;
             value = GetResponseTime();
 			return ERROR_CODES_OK;
         }
         if (index == 6)
         {
-            type = DLMS_DATA_TYPE_OCTET_STRING;            
 			value.Add(&m_DeviceAddress[0], m_DeviceAddress.size());
 			return ERROR_CODES_OK;
         }
         if (index == 7)
         {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
 			value.Add(&m_Password1[0], m_Password1.size());
 			return ERROR_CODES_OK;
         }
         if (index == 8)
         {
-            type = DLMS_DATA_TYPE_OCTET_STRING;			
 			value.Add(&m_Password2[0], m_Password2.size());
 			return ERROR_CODES_OK;
         }
         if (index == 9)
         {
-            type = DLMS_DATA_TYPE_OCTET_STRING;			
 			value.Add(&m_Password5[0], m_Password5.size());
 			return ERROR_CODES_OK;
         }

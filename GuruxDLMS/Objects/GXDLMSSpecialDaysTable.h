@@ -37,51 +37,40 @@
 #include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
 #include "../GXHelpers.h"
+#include "GXDLMSSpecialDay.h"
 
-class CGXDLMSMacAddressSetup : public CGXDLMSObject
+class CGXDLMSSpecialDaysTable : public CGXDLMSObject
 {
-	basic_string<char> m_MacAddress;
-public:
-    /**  
-     Constructor.
-    */
-	CGXDLMSMacAddressSetup() : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, "0.0.25.2.0.255")
-    {        
-    }
+	vector<CGXDLMSSpecialDay> m_Entries;
+public:	
+	//Constructor.
+	CGXDLMSSpecialDaysTable() : CGXDLMSObject(OBJECT_TYPE_SPECIAL_DAYS_TABLE)
+	{
+	}
 
-    /**  
-     Constructor.
+	//SN Constructor.
+	CGXDLMSSpecialDaysTable(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_SPECIAL_DAYS_TABLE, sn)
+	{
 
-     @param ln Logican Name of the object.
-    */
-    CGXDLMSMacAddressSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, ln)
+	}
+
+	//LN Constructor.
+	CGXDLMSSpecialDaysTable(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SPECIAL_DAYS_TABLE, ln)
+	{
+
+	}
+
+    vector<CGXDLMSSpecialDay>& GetEntries()
     {
+        return m_Entries;
     }
 
-    /**  
-     Constructor.
-
-     @param ln Logican Name of the object.
-     @param sn Short Name of the object.
-    */
-	CGXDLMSMacAddressSetup(int sn) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, sn)
+    void SetValue(vector<CGXDLMSSpecialDay>& value)
     {
-        
+        m_Entries = value;
     }
 
-    /** 
-     Value of COSEM Data object.
-    */
-    basic_string<char> GetMacAddress()
-    {
-        return m_MacAddress;
-    }
-    void SetMacAddress(basic_string<char> value)
-    {
-        m_MacAddress = value;
-    }
-
-	// Returns amount of attributes.
+    // Returns amount of attributes.
 	int GetAttributeCount()
 	{
 		return 2;
@@ -99,9 +88,9 @@ public:
 		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
         {
             attributes.push_back(1);
-		}
-		//MacAddress
-        if (!IsRead(2))
+        }
+		//Entries
+        if (CanRead(2))
         {
             attributes.push_back(2);
         }
@@ -111,19 +100,17 @@ public:
     {
 		if (index == 1)
 		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
+			type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
 		}
-        else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;			
-        }
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
+		//Entries
+        if (index == 2)
+		{		
+			type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
 		}
-		return ERROR_CODES_OK;
+		return ERROR_CODES_INVALID_PARAMETER;
 	}
-
 
 	// Returns value of given attribute.
 	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
@@ -134,17 +121,24 @@ public:
 			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
-		if (index == 2)
-        {
-			basic_string<char> add = GetMacAddress();
-			GXHelpers::Replace(add, ":", ".");			
+        if (index == 2)
+		{
 			vector<unsigned char> data;
-			int ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, add);
-			value = data;
-			return ret;
-        }
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
+            //Add count            
+			CGXOBISTemplate::SetObjectCount(m_Entries.size(), data);
+			for (vector<CGXDLMSSpecialDay>::iterator it = m_Entries.begin(); it != m_Entries.end(); ++it)
+            {
+                data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+                data.push_back(3); //Count
+				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).GetIndex());
+				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_DATETIME, (*it).GetDate());
+				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, (*it).GetDayId());
+            }
+			return ERROR_CODES_OK;
+		}
 		return ERROR_CODES_INVALID_PARAMETER;
-	}
+    }
 
 	// Set value of given attribute.
 	int SetValue(int index, CGXDLMSVariant& value)
@@ -155,22 +149,29 @@ public:
 			{
 				return ERROR_CODES_INVALID_PARAMETER;
 			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
+			memcpy(m_LN, &value.byteArr[0], 6);		
 		}
-		else if (index == 2)
-        {
-			CGXDLMSVariant newValue;
-			int ret = CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, newValue);
-			if (ret != ERROR_CODES_OK)
-			{
-				return ret;
-			}
-			basic_string<char> add = newValue.ToString();
-			GXHelpers::Replace(add, ".", ":");
-            SetMacAddress(add);
-			return ERROR_CODES_OK;
-        }
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
+        else if (index == 2)
+		{
+			m_Entries.clear();
+            if (value.vt == DLMS_DATA_TYPE_ARRAY)
+            {
+				CGXDLMSVariant tmp;
+				for (vector<CGXDLMSVariant>::iterator item = value.Arr.begin(); item != value.Arr.end(); ++item)
+                {
+                    CGXDLMSSpecialDay it;                    
+                    it.SetIndex((*item).Arr[0].ToInteger());
+					CGXDLMSClient::ChangeType((*item).Arr[1].byteArr, DLMS_DATA_TYPE_DATE, tmp);
+					it.SetDate(tmp.dateTime);
+                    it.SetDayId((*item).Arr[2].ToInteger());
+                    m_Entries.push_back(it);
+                }
+            }		
+		}	
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
+    }
 };

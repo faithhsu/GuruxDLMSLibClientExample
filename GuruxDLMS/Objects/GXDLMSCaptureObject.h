@@ -31,25 +31,53 @@
 // This code is licensed under the GNU General Public License v2. 
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
+
 #pragma once
 
-struct IGXDLMSBase
-{
+class CGXDLMSCaptureObject
+{   
+private:
+    int m_AttributeIndex;
+    int m_DataIndex;
+
 public:
-    // Returns amount of attributes.
-    virtual int GetAttributeCount() = 0;
+	/*
+     * Constructor.
+     */
+    CGXDLMSCaptureObject()
+    {
+        
+    }
+    /*
+     * Constructor.
+     */
+    CGXDLMSCaptureObject(int attributeIndex, int dataIndex)
+    {
+        m_AttributeIndex = attributeIndex;
+        m_DataIndex = dataIndex;
+    }
 
-    // Returns amount of methods.
-    virtual int GetMethodCount() = 0;
+	/** 
+     Index of DLMS object in the profile generic table
+    */
+    int GetAttributeIndex()
+    {
+        return m_AttributeIndex;
+    }
+    void SetAttributeIndex(int value)
+    {
+        m_AttributeIndex = value;
+    }
 
-    // Returns value of given attribute.
-    virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value) = 0;
-    
-    // Set value of given attribute.
-    virtual int SetValue(int index, CGXDLMSVariant& value) = 0;
-
-    // Invokes method.
-    virtual int Invoke(int index, CGXDLMSVariant& parameters) = 0;
-
-//	virtual DLMS_DATA_TYPE GetUIDataType(int index) = 0;
+    /** 
+     Data index of DLMS object in the profile generic table. 
+    */
+    int GetDataIndex()
+    {
+        return m_DataIndex;
+    }
+    void SetDataIndex(int value)
+    {
+        m_DataIndex = value;
+    }
 };

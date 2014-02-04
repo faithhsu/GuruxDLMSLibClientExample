@@ -35,7 +35,7 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
 enum AUTO_CONNECT_MODE 
@@ -78,7 +78,7 @@ enum AUTO_ANSWER_STATUS
     AUTO_ANSWER_STATUS_LOCKED = 2
 };
 
-class CGXDLMSAutoAnswer : public CGXObject
+class CGXDLMSAutoAnswer : public CGXDLMSObject
 {
 	int m_NumberOfRingsInListeningWindow, m_NumberOfRingsOutListeningWindow;
 	AUTO_CONNECT_MODE m_Mode;
@@ -100,7 +100,7 @@ public:
     /**  
      Constructor.
     */
-	CGXDLMSAutoAnswer() : CGXObject(OBJECT_TYPE_AUTO_ANSWER, "0.0.2.2.0.255")
+	CGXDLMSAutoAnswer() : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, "0.0.2.2.0.255")
     {
 		Init();		
     }
@@ -110,7 +110,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSAutoAnswer(basic_string<char> ln) : CGXObject(OBJECT_TYPE_AUTO_ANSWER, ln)
+    CGXDLMSAutoAnswer(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, ln)
     {
 		Init();
     }
@@ -121,7 +121,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXDLMSAutoAnswer(int sn) : CGXObject(OBJECT_TYPE_AUTO_ANSWER, sn)
+    CGXDLMSAutoAnswer(int sn) : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, sn)
     {        
 		Init();
     }
@@ -194,24 +194,92 @@ public:
 		return 0;
 	}
 
-	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
-    {    
-        if (index == 1)
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
         {
-            GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+            attributes.push_back(1);
+        }
+		//Mode is static and read only once.
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //ListeningWindow is static and read only once.
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //Status is not static.
+        if (CanRead(4))
+        {
+            attributes.push_back(4);
+        }
+        
+        //NumberOfCalls is static and read only once.
+        if (!IsRead(5))
+        {
+            attributes.push_back(5);
+        }
+        //NumberOfRingsInListeningWindow is static and read only once.
+        if (!IsRead(6))
+        {
+            attributes.push_back(6);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+    {
+		if (index == 1)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
         }
         if (index == 2)
         {
             type = DLMS_DATA_TYPE_ENUM;
-            value = GetMode();
 			return ERROR_CODES_OK;
         }    
         if (index == 3)
         {
             type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }
+        if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+			return ERROR_CODES_OK;
+        }
+        if (index == 5)
+        {
+            type = DLMS_DATA_TYPE_UINT8;
+			return ERROR_CODES_OK;
+        }
+        if (index == 6)
+        {
+			type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;  
+        }
+        return ERROR_CODES_INVALID_PARAMETER;
+	}
+
+	// Returns value of given attribute.
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+    {    
+        if (index == 1)
+        {
+            GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }
+        if (index == 2)
+        {
+            value = GetMode();
+			return ERROR_CODES_OK;
+        }    
+        if (index == 3)
+        {
             int cnt = m_ListeningWindow.size();
 			vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
@@ -230,19 +298,16 @@ public:
         }
         if (index == 4)
         {
-            type = DLMS_DATA_TYPE_ENUM;
             value = GetStatus();
 			return ERROR_CODES_OK;
         }
         if (index == 5)
         {
-            type = DLMS_DATA_TYPE_UINT8;
             value = GetNumberOfCalls();
 			return ERROR_CODES_OK;
         }
         if (index == 6)
         {
-			type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
 			data.push_back(DLMS_DATA_TYPE_STRUCTURE);
             CGXOBISTemplate::SetObjectCount(2, data);

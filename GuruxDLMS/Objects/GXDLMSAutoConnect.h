@@ -35,7 +35,7 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 #include "../GXDateTime.h"
 #include "../GXOBISTemplate.h"
@@ -74,7 +74,7 @@ enum AUTOCONNECTMODE
     AUTOCONNECTMODE_EMAIL_SENDING = 6
 };
 
-class CGXDLMSAutoConnect : public CGXObject
+class CGXDLMSAutoConnect : public CGXDLMSObject
 {
 	AUTOCONNECTMODE Mode;
 	std::vector<std::pair< CGXDateTime, CGXDateTime> > m_CallingWindow;	
@@ -90,18 +90,18 @@ class CGXDLMSAutoConnect : public CGXObject
 
 public:	
 	//Constructor.
-	CGXDLMSAutoConnect() : CGXObject(OBJECT_TYPE_AUTO_CONNECT, "0.0.2.1.0.255")
+	CGXDLMSAutoConnect() : CGXDLMSObject(OBJECT_TYPE_AUTO_CONNECT, "0.0.2.1.0.255")
 	{
 	}
 
 	//SN Constructor.
-	CGXDLMSAutoConnect(unsigned short sn) : CGXObject(OBJECT_TYPE_AUTO_CONNECT, sn)
+	CGXDLMSAutoConnect(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_AUTO_CONNECT, sn)
 	{
 
 	}
 
 	//LN Constructor.
-	CGXDLMSAutoConnect(basic_string<char> ln) : CGXObject(OBJECT_TYPE_AUTO_CONNECT, ln)
+	CGXDLMSAutoConnect(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_AUTO_CONNECT, ln)
 	{
 
 	}
@@ -163,37 +163,101 @@ public:
 	{
 		return 0;
 	}
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+		}
+		//Mode
+        if (CanRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //Repetitions
+        if (CanRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //RepetitionDelay
+        if (CanRead(4))
+        {
+            attributes.push_back(4);
+        }
+        //CallingWindow
+        if (CanRead(5))
+        {
+            attributes.push_back(5);
+        }
+        //Destinations
+        if (CanRead(6))
+        {
+            attributes.push_back(6);
+        }
+	}
 
-	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
     {
 		if (index == 1)
 		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			type = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
         if (index == 2)
         {
             type = DLMS_DATA_TYPE_ENUM;
-            value = (unsigned char) GetMode();
 			return ERROR_CODES_OK;
         }
         if (index == 3)
         {
             type = DLMS_DATA_TYPE_UINT8;
-            value = GetRepetitions();
 			return ERROR_CODES_OK;
         }
         if (index == 4)
         {
             type = DLMS_DATA_TYPE_UINT16;
-            value = GetRepetitionDelay();
 			return ERROR_CODES_OK;
         }
         if (index == 5)
         {
             type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }
+        if (index == 6)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;             
+			return ERROR_CODES_OK;
+        }
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+
+	// Returns value of given attribute.
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+    {
+		if (index == 1)
+		{
+			GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+		}
+        if (index == 2)
+        {
+            value = (unsigned char) GetMode();
+			return ERROR_CODES_OK;
+        }
+        if (index == 3)
+        {
+            value = GetRepetitions();
+			return ERROR_CODES_OK;
+        }
+        if (index == 4)
+        {
+            value = GetRepetitionDelay();
+			return ERROR_CODES_OK;
+        }
+        if (index == 5)
+        {
             int cnt = m_CallingWindow.size();
 			vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
@@ -214,7 +278,6 @@ public:
         }
         if (index == 6)
         {
-            type = DLMS_DATA_TYPE_ARRAY;             
             vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_Destinations.size();

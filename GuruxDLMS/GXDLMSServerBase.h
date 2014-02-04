@@ -36,8 +36,8 @@
 
 #include <map>
 #include "GXAuthentication.h"
-#include "Objects/GXObject.h"
-#include "Objects/GXObjectCollection.h"
+#include "Objects/GXDLMSObject.h"
+#include "Objects/GXDLMSObjectCollection.h"
 #include "GXDLMS.h"
 
 struct CGXDLMSServerBase
@@ -49,8 +49,8 @@ struct CGXDLMSServerBase
 	vector<unsigned char> m_ReceivedData;
 	vector< vector<unsigned char> > m_SendData;
 	vector<GXAuthentication*> m_Authentications;
-	map<unsigned short, CGXObject*> m_SortedItems;
-	CGXObjectCollection m_Items;
+	map<unsigned short, CGXDLMSObject*> m_SortedItems;
+	CGXDLMSObjectCollection m_Items;
 public:
 	//Constructor.
 	CGXDLMSServerBase(bool UseLogicalNameReferencing = true,
@@ -89,7 +89,7 @@ public:
 	// Reset after connection is closed.    
     void Reset();
 
-	CGXObjectCollection& GetItems()
+	CGXDLMSObjectCollection& GetItems()
 	{
 		return m_Items;
 	}
@@ -105,9 +105,9 @@ public:
 	int HandleRequest(vector<unsigned char>& data, unsigned char*& pReply, int& ReplySize);
 	int HandleRequest(unsigned char* pData, int size, unsigned char*& pReply, int& ReplySize);
 
-	virtual int OnRead(CGXObject* pItem, int index, CGXDLMSVariant& value, DLMS_DATA_TYPE& type) = 0;
-	virtual int OnWrite(CGXObject* pItem, int index, CGXDLMSVariant& value) = 0;
-	virtual int OnAction(CGXObject* pItem, int index, CGXDLMSVariant& data) = 0;
+	virtual int OnRead(CGXDLMSObject* pItem, int index, CGXDLMSVariant& value, DLMS_DATA_TYPE& type) = 0;
+	virtual int OnWrite(CGXDLMSObject* pItem, int index, CGXDLMSVariant& value) = 0;
+	virtual int OnAction(CGXDLMSObject* pItem, int index, CGXDLMSVariant& data) = 0;
 	virtual int OnInvalidConnection() = 0;
 
 private:
@@ -119,6 +119,6 @@ private:
 	int GenerateDisconnectRequest(vector< vector<unsigned char> >& Packets);
 	int ServerReportError(unsigned char serviceErrorCode, unsigned char type, unsigned char code, vector< vector<unsigned char> >& Packets);
 	int GetCommand(unsigned char* pData, int DataSize, OBJECT_TYPE& type, CGXDLMSVariant& name, int& attributeIndex, unsigned char*& pParameters, int& ParameterSize);	
-	int GetValue(CGXObject* pItem, int index, unsigned char* pParameters, int count, vector< vector<unsigned char> >& Packets);
+	int GetValue(CGXDLMSObject* pItem, int index, unsigned char* pParameters, int count, vector< vector<unsigned char> >& Packets);
 	int ReadReply(CGXDLMSVariant name, OBJECT_TYPE objectType, int attributeOrdinal, CGXDLMSVariant& value, DLMS_DATA_TYPE type, vector< vector<unsigned char> >& Packets);
 };

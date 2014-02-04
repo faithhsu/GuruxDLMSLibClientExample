@@ -60,28 +60,41 @@ public:
 #if _MSC_VER > 1000
 	int Open(const char* pPortName, bool IEC);
 #endif
+
+	static inline void Now(string& str)
+	{		
+		time_t tm1 = time(NULL);
+		struct tm dt;
+		char tmp[10];
+#if _MSC_VER > 1000
+		localtime_s(&dt, &tm1);		
+		sprintf_s(tmp, 10, "%.2d:%.2d:%.2d", dt.tm_hour, dt.tm_min, dt.tm_sec);
+#else
+		dt = *localtime(&tm1);			
+		sprintf(tmp, "%.2d:%.2d:%.2d", dt.tm_hour, dt.tm_min, dt.tm_sec);
+	#endif		
+		str = tmp;
+	}
+
+
 	int ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize);
 	int ReadDLMSPacket(vector<unsigned char>& data, std::vector<unsigned char>& reply);
 	int ReadDataBlock(vector< vector<unsigned char> >& data, std::vector<unsigned char>& reply);
 	
-	///Get object that is used in sorting profile generic columns.
-	int GetSortObject(CGXObject* pObject, CGXObject*& pSortObject);
-
 	int InitializeConnection();
-	int GetObjects(CGXObjectCollection& objects);
+	int GetObjects(CGXDLMSObjectCollection& objects);
 	//Update objects access.
-	int UpdateAccess(CGXObject* pObject, CGXObjectCollection& objects);
+	int UpdateAccess(CGXDLMSObject* pObject, CGXDLMSObjectCollection& objects);
 
 	//Read selected object.
-	int Read(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value);
+	int Read(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value);
 	
 	//Write selected object.
-	int Write(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value);
+	int Write(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value);
 
 	//Call action of selected object.
-	int Method(CGXObject* pObject, int ActionIndex, CGXDLMSVariant& value);
+	int Method(CGXDLMSObject* pObject, int ActionIndex, CGXDLMSVariant& value);
 
-	int GetColumns(CGXObject* pObject, CGXObjectCollection* pColumns);
-	int ReadRowsByRange(CGXDLMSVariant& Name, CGXObject* pSortObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows);
+	int ReadRowsByRange(CGXDLMSVariant& Name, CGXDLMSObject* pSortObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows);
 	int ReadRowsByEntry(CGXDLMSVariant& Name, unsigned int Index, unsigned int Count, CGXDLMSVariant& rows);
 };

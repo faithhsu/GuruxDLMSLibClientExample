@@ -35,18 +35,18 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 #include "../GXDateTime.h"
 
-class CGXDLMSSapAssignment : public CGXObject
+class CGXDLMSSapAssignment : public CGXDLMSObject
 {
 	std::map<int, basic_string<char> > m_SapAssignmentList;
 public:
     /**  
      Constructor.
     */
-	CGXDLMSSapAssignment() : CGXObject(OBJECT_TYPE_SAP_ASSIGNMENT, "0.0.41.0.0.255")
+	CGXDLMSSapAssignment() : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, "0.0.41.0.0.255")
     {
     }
 
@@ -55,7 +55,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSSapAssignment(basic_string<char> ln) : CGXObject(OBJECT_TYPE_SAP_ASSIGNMENT, ln)
+    CGXDLMSSapAssignment(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, ln)
     {
     }
 
@@ -63,7 +63,7 @@ public:
      Constructor.
      @param sn Short Name of the object.
     */
-    CGXDLMSSapAssignment(int sn) : CGXObject(OBJECT_TYPE_SAP_ASSIGNMENT, sn)
+    CGXDLMSSapAssignment(int sn) : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, sn)
     {
 
     }
@@ -89,18 +89,47 @@ public:
 		return 1;
 	}
 
-	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//SapAssignmentList
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
     {
         if (index == 1)
         {
-            GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK; 
         }
         if (index == 2)
         {
             type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK; 
+        }    
+        return ERROR_CODES_INVALID_PARAMETER;
+    }
+    
+
+	// Returns value of given attribute.
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+    {
+        if (index == 1)
+        {
+            GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }
+        if (index == 2)
+        {            
             int cnt = m_SapAssignmentList.size();
             vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);

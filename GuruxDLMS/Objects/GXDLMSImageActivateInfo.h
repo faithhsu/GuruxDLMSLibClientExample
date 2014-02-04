@@ -34,52 +34,68 @@
 
 #pragma once
 
-#include "GXDLMSObject.h"
+#include "../GXHelpers.h"
 
-class CGXDLMSMonitoredValue
+class CGXDLMSImageActivateInfo
 {
-	OBJECT_TYPE m_ObjectType;
-    basic_string<char> m_LogicalName;
-    int m_AttributeIndex;
-public:
-
-	CGXDLMSMonitoredValue()
-	{
-		m_ObjectType = OBJECT_TYPE_NONE;
-		m_AttributeIndex = 0;
-	}
-
-	void Update(CGXDLMSObject* pObj, int attributeIndex)
+	long m_Size;
+    string m_Identification;
+    string m_Signature;
+public:	
+	/**
+     * Constructor.
+     */
+    CGXDLMSImageActivateInfo()
     {
-        m_ObjectType = pObj->GetObjectType();
-        pObj->GetLogicalName(m_LogicalName);
-        m_AttributeIndex = attributeIndex;
+        
+    }
+    
+    /**
+     * Constructor.
+     */
+    CGXDLMSImageActivateInfo(long size, string identification, string signature)
+    {
+        m_Size = size;
+        m_Identification = identification;
+        m_Signature = signature;
     }
 
-    OBJECT_TYPE GetObjectType()
+	 /** 
+      *  Image_size is the size of the Image(s) to be activated. 
+      *  Expressed in octets;
+    */
+    long GetSize()
     {
-        return m_ObjectType;
+        return m_Size;
     }
-    void SetObjectType(OBJECT_TYPE value)
+    void SetSize(long value)
     {
-        m_ObjectType = value;
+        m_Size = value;
     }
-
-    basic_string<char> GetLogicalName()
+    
+     /** 
+      * Image identification is the identification of the Image(s)
+      * to be activated, and may contain information like
+      * manufacturer, device type, version information, etc.
+    */
+    string GetIdentification()
     {
-        return m_LogicalName;
+        return m_Identification;
     }
-    void SetLogicalName(basic_string<char> value)
+    void SetIdentification(string value)
     {
-        m_LogicalName = value;
+        m_Identification = value;
     }
-
-    int GetAttributeIndex()
+    
+     /** 
+      * Image signature is the signature of the Image(s) to be activated.
+    */
+    string GetSignature()
     {
-        return m_AttributeIndex;
+        return m_Signature;
     }
-    void SetAttributeIndex(int value)
+    void SetSignature(string value)
     {
-        m_AttributeIndex = value;
+        m_Signature = value;
     }
 };

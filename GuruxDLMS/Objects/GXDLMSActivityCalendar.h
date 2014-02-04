@@ -35,14 +35,14 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 #include "GXDLMSSeasonProfile.h"
 #include "GXDLMSWeekProfile.h"
 #include "GXDLMSDayProfile.h"
 #include "../GXDateTime.h"
 
-class CGXDLMSActivityCalendar : public CGXObject
+class CGXDLMSActivityCalendar : public CGXDLMSObject
 {
 	basic_string<char> m_CalendarNameActive;
     basic_string<char> m_CalendarNamePassive;
@@ -55,18 +55,18 @@ class CGXDLMSActivityCalendar : public CGXObject
     CGXDateTime m_Time;
 public:	
 	//Constructor.
-	CGXDLMSActivityCalendar() : CGXObject(OBJECT_TYPE_ACTIVITY_CALENDAR, "0.0.13.0.0.255")
+	CGXDLMSActivityCalendar() : CGXDLMSObject(OBJECT_TYPE_ACTIVITY_CALENDAR, "0.0.13.0.0.255")
 	{
 	}
 
 	//SN Constructor.
-	CGXDLMSActivityCalendar(unsigned short sn) : CGXObject(OBJECT_TYPE_ACTIVITY_CALENDAR, sn)
+	CGXDLMSActivityCalendar(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_ACTIVITY_CALENDAR, sn)
 	{
 
 	}
 	
 	//LN Constructor.
-	CGXDLMSActivityCalendar(basic_string<char> ln) : CGXObject(OBJECT_TYPE_ACTIVITY_CALENDAR, ln)
+	CGXDLMSActivityCalendar(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_ACTIVITY_CALENDAR, ln)
 	{
 
 	}
@@ -164,24 +164,133 @@ public:
 		return 1;
 	}
 
-	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+        //CalendarNameActive
+        if (CanRead(2))
+        {
+            attributes.push_back(2);
+        }            
+        //SeasonProfileActive
+        if (CanRead(3))
+        {
+            attributes.push_back(3);
+        } 
+        
+        //WeekProfileTableActive
+        if (CanRead(4))
+        {
+            attributes.push_back(4);
+        } 
+        //DayProfileTableActive
+        if (CanRead(5))
+        {
+            attributes.push_back(5);
+        } 
+        //CalendarNamePassive
+        if (CanRead(6))
+        {
+            attributes.push_back(6);
+        } 
+        //SeasonProfileActive
+        if (CanRead(7))
+        {
+            attributes.push_back(7);
+        }
+        //WeekProfileTableActive
+        if (CanRead(8))
+        {
+            attributes.push_back(8);
+        }
+        //DayProfileTableActive
+        if (CanRead(9))
+        {
+            attributes.push_back(9);
+        }
+        //Time.
+        if (CanRead(10))
+        {
+            attributes.push_back(10);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
     {
 		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+		{			
+			type = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
         if (index == 2)
         {
             type = DLMS_DATA_TYPE_OCTET_STRING;
-			value.Add(&m_CalendarNameActive[0], m_CalendarNameActive.size());
 			return ERROR_CODES_OK;
         }
         if (index == 3)
         {
             type = DLMS_DATA_TYPE_ARRAY;
+            return ERROR_CODES_OK;
+        }
+        if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+            return ERROR_CODES_OK;
+        }
+        if (index == 5)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;            
+            return ERROR_CODES_OK;
+        }
+        if (index == 6)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }        
+        if (index == 7)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;            
+            return ERROR_CODES_OK;
+
+        }
+        if (index == 8)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+            return ERROR_CODES_OK;
+        }
+        if (index == 9)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+            return ERROR_CODES_OK;
+        }
+        if (index == 10)
+        {
+            type = DLMS_DATA_TYPE_DATETIME;
+            return ERROR_CODES_OK;
+        }
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+
+	// Returns value of given attribute.
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+    {
+		if (index == 1)
+		{
+			GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+		}
+        if (index == 2)
+        {
+			value.Add(&m_CalendarNameActive[0], m_CalendarNameActive.size());
+			return ERROR_CODES_OK;
+        }
+        if (index == 3)
+        {
             vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_SeasonProfileActive.size();
@@ -189,7 +298,7 @@ public:
             CGXOBISTemplate::SetObjectCount(cnt, data);
 			for (vector<CGXDLMSSeasonProfile>::iterator it = m_SeasonProfileActive.begin(); it != m_SeasonProfileActive.end(); ++it)
             {
-                data.push_back((byte)DLMS_DATA_TYPE_STRUCTURE);
+                data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(3);
 				CGXDLMSVariant tmp;
 				tmp.Add((*it).GetName());
@@ -204,15 +313,14 @@ public:
         }
         if (index == 4)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
-            data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_WeekProfileTableActive.size();
             //Add count            
             CGXOBISTemplate::SetObjectCount(cnt, data);
 			for (vector<CGXDLMSWeekProfile>::iterator it = m_WeekProfileTableActive.begin(); it != m_WeekProfileTableActive.end(); ++it)
             {
-                data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+                data.push_back(DLMS_DATA_TYPE_ARRAY);
                 data.push_back(8);
 				CGXDLMSVariant tmp;
 				tmp.Add((*it).GetName());
@@ -230,18 +338,17 @@ public:
         }
         if (index == 5)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
-            data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_DayProfileTableActive.size();
             //Add count            
             CGXOBISTemplate::SetObjectCount(cnt, data);            
 			for (vector<CGXDLMSDayProfile>::iterator it = m_DayProfileTableActive.begin(); it != m_DayProfileTableActive.end(); ++it)
             {
-                data.push_back((byte)DLMS_DATA_TYPE_STRUCTURE);
+                data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(2);
                 CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, (*it).GetDayId());
-                data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+                data.push_back(DLMS_DATA_TYPE_ARRAY);
                 //Add count            
 				vector<CGXDLMSDayProfileAction>& schedules = (*it).GetDaySchedules();
                 CGXOBISTemplate::SetObjectCount(schedules.size(), data);                        
@@ -257,22 +364,20 @@ public:
         }
         if (index == 6)
         {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
 			value.Add(m_CalendarNamePassive);
 			return ERROR_CODES_OK;
         }
         //
         if (index == 7)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
-            data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_SeasonProfileActive.size();
             //Add count            
             CGXOBISTemplate::SetObjectCount(cnt, data);
 			for (vector<CGXDLMSSeasonProfile>::iterator it = m_SeasonProfileActive.begin(); it != m_SeasonProfileActive.end(); ++it)
             {
-                data.push_back((byte)DLMS_DATA_TYPE_STRUCTURE);
+                data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(3);
 				CGXDLMSVariant tmp;
 				tmp.Add((*it).GetName());
@@ -288,15 +393,14 @@ public:
         }
         if (index == 8)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
-            data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_WeekProfileTableActive.size();
             //Add count            
             CGXOBISTemplate::SetObjectCount(cnt, data);
 			for (vector<CGXDLMSWeekProfile>::iterator it = m_WeekProfileTableActive.begin(); it != m_WeekProfileTableActive.end(); ++it)
             {
-                data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+                data.push_back(DLMS_DATA_TYPE_ARRAY);
                 data.push_back(8);
 				CGXDLMSVariant tmp;
 				tmp.Add((*it).GetName());
@@ -314,18 +418,17 @@ public:
         }
         if (index == 9)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
-            data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+            data.push_back(DLMS_DATA_TYPE_ARRAY);
             int cnt = m_DayProfileTableActive.size();
             //Add count            
             CGXOBISTemplate::SetObjectCount(cnt, data);
 			for (vector<CGXDLMSDayProfile>::iterator it = m_DayProfileTableActive.begin(); it != m_DayProfileTableActive.end(); ++it)
 			{
-                data.push_back((byte)DLMS_DATA_TYPE_STRUCTURE);
+                data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(2);
                 CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, (*it).GetDayId());
-                data.push_back((byte)DLMS_DATA_TYPE_ARRAY);
+                data.push_back(DLMS_DATA_TYPE_ARRAY);
                 //Add count            
                 CGXOBISTemplate::SetObjectCount((*it).GetDaySchedules().size(), data);
 				for (vector<CGXDLMSDayProfileAction>::iterator action = (*it).GetDaySchedules().begin(); 
@@ -341,7 +444,6 @@ public:
         }
         if (index == 10)
         {
-            type = DLMS_DATA_TYPE_DATETIME;
             value = GetTime();
 			return ERROR_CODES_OK;
         }

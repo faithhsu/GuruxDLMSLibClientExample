@@ -36,7 +36,7 @@
 #include "GXDLMSMonitoredValue.h"
 #include "GXDLMSActionSet.h"
 
-class CGXDLMSRegisterMonitor : public CGXObject
+class CGXDLMSRegisterMonitor : public CGXDLMSObject
 {
 	vector<CGXDLMSActionSet> m_Actions;
     CGXDLMSMonitoredValue m_MonitoredValue;
@@ -46,7 +46,7 @@ public:
 	/**  
      Constructor.
     */
-	CGXDLMSRegisterMonitor() : CGXObject(OBJECT_TYPE_REGISTER_MONITOR)
+	CGXDLMSRegisterMonitor() : CGXDLMSObject(OBJECT_TYPE_REGISTER_MONITOR)
     {        
     }
 
@@ -55,7 +55,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSRegisterMonitor(basic_string<char> ln) : CGXObject(OBJECT_TYPE_REGISTER_MONITOR, ln)
+    CGXDLMSRegisterMonitor(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_REGISTER_MONITOR, ln)
     {        
     }
 
@@ -65,7 +65,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-	CGXDLMSRegisterMonitor(int sn) : CGXObject(OBJECT_TYPE_REGISTER_MONITOR, sn)
+	CGXDLMSRegisterMonitor(int sn) : CGXDLMSObject(OBJECT_TYPE_REGISTER_MONITOR, sn)
     {        
     }
 
@@ -108,21 +108,69 @@ public:
 	{
 		return 0;
 	}
-    
-    /*
-     * Returns value of given attribute.
-     */    
-    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
-	{    
-        if (index == 1)
+
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
         {
-            GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+            attributes.push_back(1);
+        }
+		//Thresholds
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //MonitoredValue
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //Actions
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+	}
+    
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+	{
+		if (index == 1)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
         }
         if (index == 2)
         {
 			type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }
+        if (index == 3)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+            return ERROR_CODES_OK;
+        }
+        if (index == 4)
+        {
+			type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }  
+        return ERROR_CODES_INVALID_PARAMETER;
+	}
+
+    /*
+     * Returns value of given attribute.
+     */    
+    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+	{    
+        if (index == 1)
+        {
+            GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }
+        if (index == 2)
+        {
 			vector<unsigned char> data;
 			data.push_back(DLMS_DATA_TYPE_ARRAY);
 			//Add count
@@ -137,7 +185,6 @@ public:
         }
         if (index == 3)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> stream;
 			stream.push_back(DLMS_DATA_TYPE_STRUCTURE);
             stream.push_back(3);
@@ -153,7 +200,6 @@ public:
         }
         if (index == 4)
         {
-			type = DLMS_DATA_TYPE_ARRAY;
 			vector<unsigned char> data;
 			data.push_back(DLMS_DATA_TYPE_ARRAY);
 			int ret;

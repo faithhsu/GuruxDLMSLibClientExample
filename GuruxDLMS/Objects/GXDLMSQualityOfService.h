@@ -33,23 +33,58 @@
 //---------------------------------------------------------------------------
 #pragma once
 
-struct IGXDLMSBase
+class CGXDLMSQualityOfService
 {
-public:
-    // Returns amount of attributes.
-    virtual int GetAttributeCount() = 0;
-
-    // Returns amount of methods.
-    virtual int GetMethodCount() = 0;
-
-    // Returns value of given attribute.
-    virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value) = 0;
+private:
+	int m_Precedence;
+    int m_Delay;
+    int m_Reliability;
+    int m_PeakThroughput;
+    int m_MeanThroughput;
     
-    // Set value of given attribute.
-    virtual int SetValue(int index, CGXDLMSVariant& value) = 0;
-
-    // Invokes method.
-    virtual int Invoke(int index, CGXDLMSVariant& parameters) = 0;
-
-//	virtual DLMS_DATA_TYPE GetUIDataType(int index) = 0;
+public:
+    int GetPrecedence()
+    {
+        return m_Precedence;
+    }
+    void SetPrecedence(int value)
+    {
+        m_Precedence = value;
+    }
+    
+    int GetDelay()
+    {
+        return m_Delay;
+    }
+    void SetDelay(int value)
+    {
+        m_Delay = value;
+    }
+    
+    int GetReliability()
+    {
+        return m_Reliability;
+    }
+    void SetReliability(int value)
+    {
+        m_Reliability = value;
+    }
+    
+    int GetPeakThroughput()
+    {
+        return m_PeakThroughput;
+    }
+    void SetPeakThroughput(int value)
+    {
+        m_PeakThroughput = value;
+    }
+    
+    int GetMeanThroughput()
+    {
+        return m_MeanThroughput;
+    }
+    void SetMeanThroughput(int value)
+    {
+        m_MeanThroughput = value;
+    }
 };

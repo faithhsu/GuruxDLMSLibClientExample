@@ -140,4 +140,5 @@ public:
 	basic_string<char> ToDateTime();
 	basic_string<char> ToDate();
 	basic_string<char> ToTime();
+	int ToInteger();
 };

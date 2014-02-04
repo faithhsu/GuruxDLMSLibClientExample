@@ -37,6 +37,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 #include "ErrorCodes.h"
@@ -167,6 +168,22 @@ static inline basic_string<char> bytesToHex(unsigned char* pBytes, int count)
         hexChars[pos * 3 + 2] = ' ';
     }
     return hexChars;
+}
+
+static void Write(char* fileName, char* pData, int len)
+{
+	ofstream trace;
+	trace.open(fileName, ios::out | ios::app); 	
+	trace.write(pData, len);	
+	trace.close();
+}
+
+static void Write(string fileName, string data)
+{
+	ofstream trace;
+	trace.open(fileName.c_str(), ios::out | ios::app); 	
+	trace.write(&data[0], data.size());
+	trace.close();
 }
 
 static inline bool GetBits(unsigned char& tmp, unsigned char BitMask)

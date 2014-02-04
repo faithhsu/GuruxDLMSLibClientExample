@@ -35,9 +35,7 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
-#include "../GXHelpers.h"
-#include "../GXDateTime.h"
+#include "GXDLMSObject.h"
 
 enum SINGLE_ACTION_SCHEDULE_TYPE
 {
@@ -67,7 +65,7 @@ enum SINGLE_ACTION_SCHEDULE_TYPE
     SINGLE_ACTION_SCHEDULE_TYPE5 = 4
 };
 
-class CGXDLMSActionSchedule : public CGXObject
+class CGXDLMSActionSchedule : public CGXDLMSObject
 {
 	basic_string<char> m_ExecutedScriptLogicalName;
     int m_ExecutedScriptSelector;
@@ -84,7 +82,7 @@ public:
     /**  
      Constructor.
     */
-	CGXDLMSActionSchedule() : CGXObject(OBJECT_TYPE_ACTION_SCHEDULE)
+	CGXDLMSActionSchedule() : CGXDLMSObject(OBJECT_TYPE_ACTION_SCHEDULE)
     {     
 		Init();
     }
@@ -94,7 +92,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSActionSchedule(basic_string<char> ln) : CGXObject(OBJECT_TYPE_ACTION_SCHEDULE, ln)
+    CGXDLMSActionSchedule(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_ACTION_SCHEDULE, ln)
     {
 		Init();
     }
@@ -105,7 +103,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXDLMSActionSchedule(int sn) : CGXObject(OBJECT_TYPE_ACTION_SCHEDULE, sn)
+    CGXDLMSActionSchedule(int sn) : CGXDLMSObject(OBJECT_TYPE_ACTION_SCHEDULE, sn)
     {        
 		Init();
     }
@@ -158,18 +156,67 @@ public:
 		return 0;
 	}
 
-	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//ExecutedScriptLogicalName is static and read only once.
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //Type is static and read only once.
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //ExecutionTime is static and read only once.
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
     {
         if (index == 1)
         {
-            GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+            type = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
         }
         if (index == 2)
         {
             type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }
+        if (index == 3)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+			return ERROR_CODES_OK;
+        }
+        if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
+        }  
+        return ERROR_CODES_INVALID_PARAMETER;
+
+	}
+
+	// Returns value of given attribute.
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+    {
+        if (index == 1)
+        {
+            GXHelpers::AddRange(value.byteArr, m_LN, 6);
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }
+        if (index == 2)
+        {
             vector<unsigned char> stream;
 			stream.push_back(DLMS_DATA_TYPE_STRUCTURE);
             stream.push_back(2);
@@ -182,13 +229,11 @@ public:
         }
         if (index == 3)
         {
-            type = DLMS_DATA_TYPE_ENUM;
             value = GetType();
 			return ERROR_CODES_OK;
         }
         if (index == 4)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> stream;
             stream.push_back(DLMS_DATA_TYPE_ARRAY);
             CGXOBISTemplate::SetObjectCount(GetExecutionTime().size(), stream);
@@ -219,9 +264,9 @@ public:
         }
         else if (index == 2)
         {                
-            CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.Arr[0].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-			SetExecutedScriptLogicalName(tmp.strVal);
+            //CGXDLMSVariant tmp;
+			//CGXDLMSClient::ChangeType(value.Arr[0].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
+			SetExecutedScriptLogicalName(value.Arr[0].ToString());
 			SetExecutedScriptSelector(value.Arr[1].lVal);
 			return ERROR_CODES_OK;
         }

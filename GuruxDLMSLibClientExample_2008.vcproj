@@ -296,27 +296,127 @@
 				Name="Objects"
 				>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXAssociationLogicalNameObject.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSActionItem.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXAssociationShortNameObject.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSActionSchedule.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXDataObject.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSActionSet.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXObject.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSActivityCalendar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXObjectCollection.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSAssociationLogicalName.h"
 					>
 				</File>
 				<File
-					RelativePath=".\GuruxDLMS\Objects\GXRegisterObject.h"
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSAssociationShortName.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSAutoAnswer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSAutoConnect.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSCaptureObject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSClock.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSData.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSDayProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSDayProfileAction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSDemandRegister.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSGPRSSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSIECOpticalPortSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMacAddressSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSModemConfiguration.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSModemInitialisation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMonitoredValue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSObject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSObjectCollection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSProfileGeneric.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSQualityOfService.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSRegister.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSRegisterMonitor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSapAssignment.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSeasonProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSTcpUdpSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSWeekProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\IGXDLMSBase.h"
 					>
 				</File>
 			</Filter>

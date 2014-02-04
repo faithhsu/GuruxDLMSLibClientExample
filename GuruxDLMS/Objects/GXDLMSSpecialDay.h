@@ -31,25 +31,46 @@
 // This code is licensed under the GNU General Public License v2. 
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
+
 #pragma once
 
-struct IGXDLMSBase
+#include "IGXDLMSBase.h"
+#include "GXDLMSObject.h"
+#include "../GXHelpers.h"
+
+class CGXDLMSSpecialDay
 {
-public:
-    // Returns amount of attributes.
-    virtual int GetAttributeCount() = 0;
+	int m_Index;
+    CGXDateTime m_Date;
+    int m_DayId;
 
-    // Returns amount of methods.
-    virtual int GetMethodCount() = 0;
+public:	
+    int GetIndex()
+    {
+        return m_Index;
+    }
+    void SetIndex(int value)
+    {
+        m_Index = value;
+    }
 
-    // Returns value of given attribute.
-    virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value) = 0;
-    
-    // Set value of given attribute.
-    virtual int SetValue(int index, CGXDLMSVariant& value) = 0;
+    CGXDateTime& GetDate()
+    {
+        return m_Date;
+    }
+    void SetDate(CGXDateTime value)
+    {
+        m_Date = value;
+    }
 
-    // Invokes method.
-    virtual int Invoke(int index, CGXDLMSVariant& parameters) = 0;
+    int GetDayId()
+    {
+        return m_DayId;
+    }
+    void SetDayId(int value)
+    {
+        m_DayId = value;
+    }
 
-//	virtual DLMS_DATA_TYPE GetUIDataType(int index) = 0;
+
 };

@@ -32,39 +32,40 @@
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
 //SN Constructor.
-CGXObject::CGXObject(OBJECT_TYPE type, unsigned short sn)
+CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type, unsigned short sn)
 {
 	Initialize(sn, type, 1, NULL);
 }
 
 //LN Constructor.
-CGXObject::CGXObject(OBJECT_TYPE type, basic_string<char> ln)
+CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type, basic_string<char> ln)
 {
 	Initialize(0, type, 1, NULL);
 	SetLogicalName(ln);
 }
 
-CGXObject::CGXObject()
+CGXDLMSObject::CGXDLMSObject()
 {
 	Initialize(0, OBJECT_TYPE_NONE, 1, NULL);
 }
 
-CGXObject::CGXObject(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>& ln)
+CGXDLMSObject::CGXDLMSObject(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>& ln)
 {	
 	Initialize(sn, class_id, version, &ln);
 }
 
-CGXObject::CGXObject(OBJECT_TYPE type)
+CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type)
 {
 	Initialize(0, type, 1, NULL);	
 }
 
-void CGXObject::Initialize(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>* pLogicalName)
+void CGXDLMSObject::Initialize(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>* pLogicalName)
 {
+	m_Parent = NULL;
 	m_AttributeIndex = 0;	
 	m_DataIndex = 0;
 	m_SN = sn;
@@ -93,13 +94,13 @@ void CGXObject::Initialize(short sn, unsigned short class_id, unsigned char vers
 	m_Attributes.push_back(CGXDLMSAttribute(1, DLMS_DATA_TYPE_OCTET_STRING, DLMS_DATA_TYPE_OCTET_STRING));
 }
 
-CGXObject::~CGXObject(void)
+CGXDLMSObject::~CGXDLMSObject(void)
 {
 	m_Attributes.clear();
 	m_MethodAttributes.clear();
 }
 
-CGXDLMSVariant CGXObject::GetName()
+CGXDLMSVariant CGXDLMSObject::GetName()
 {	
 	if (m_SN != 0)
 	{
@@ -109,7 +110,7 @@ CGXDLMSVariant CGXObject::GetName()
 	return ln;
 }
 
-int CGXObject::SetName(CGXDLMSVariant value)
+int CGXDLMSObject::SetName(CGXDLMSVariant value)
 {	
 	if (value.vt == DLMS_DATA_TYPE_UINT16)
 	{
@@ -124,29 +125,46 @@ int CGXObject::SetName(CGXDLMSVariant value)
 	return ERROR_CODES_INVALID_PARAMETER;
 }
 
-OBJECT_TYPE CGXObject::GetObjectType()
+OBJECT_TYPE CGXDLMSObject::GetObjectType()
 {
 	return m_ObjectType;
 }
 
-DLMS_DATA_TYPE CGXObject::GetDataType(int index)
+int CGXDLMSObject::GetDataType(int index, DLMS_DATA_TYPE& type)
 {
-	for(vector<CGXDLMSAttribute>::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
+	if (index < 1)
 	{
-		int tmp = (*it).GetIndex();
-		if (tmp < 1)
-		{
-			return DLMS_DATA_TYPE_NONE;
-		}
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+	for(vector<CGXDLMSAttribute>::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
+	{		
 		if ((*it).GetIndex() == index)
 		{
-			return (*it).GetType();
+			type = (*it).GetDataType();
+			return ERROR_CODES_OK;
 		}
 	}
-	return DLMS_DATA_TYPE_NONE;
+	type = DLMS_DATA_TYPE_NONE;
+	return ERROR_CODES_OK;
 }
 
-ACCESSMODE CGXObject::GetAccess(int index)
+int CGXDLMSObject::SetDataType(int index, DLMS_DATA_TYPE type)
+{
+	for(CGXAttributeCollection::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
+	{
+		if ((*it).GetIndex() == index)
+		{
+			(*it).SetDataType(type);
+			return ERROR_CODES_OK;
+		}
+	}
+	CGXDLMSAttribute att(index);
+	att.SetDataType(type);
+	m_Attributes.push_back(att);
+	return ERROR_CODES_OK;
+}
+
+ACCESSMODE CGXDLMSObject::GetAccess(int index)
 {
 	for(CGXAttributeCollection::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
 	{
@@ -159,7 +177,7 @@ ACCESSMODE CGXObject::GetAccess(int index)
 }
 
 // Set attribute access.
-void CGXObject::SetAccess(int index, ACCESSMODE access)
+void CGXDLMSObject::SetAccess(int index, ACCESSMODE access)
 {
 	for(CGXAttributeCollection::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
 	{
@@ -174,7 +192,7 @@ void CGXObject::SetAccess(int index, ACCESSMODE access)
 	m_Attributes.push_back(att);
 }
 
-METHOD_ACCESSMODE CGXObject::GetMethodAccess(int index)
+METHOD_ACCESSMODE CGXDLMSObject::GetMethodAccess(int index)
 {
 	for(CGXAttributeCollection::iterator it = m_MethodAttributes.begin(); it != m_MethodAttributes.end(); ++it)
 	{
@@ -186,7 +204,7 @@ METHOD_ACCESSMODE CGXObject::GetMethodAccess(int index)
 	return METHOD_ACCESSMODE_NONE;
 }
 
-void CGXObject::SetMethodAccess(int index, METHOD_ACCESSMODE access)
+void CGXDLMSObject::SetMethodAccess(int index, METHOD_ACCESSMODE access)
 {
 	for(CGXAttributeCollection::iterator it = m_MethodAttributes.begin(); it != m_MethodAttributes.end(); ++it)
 	{
@@ -201,19 +219,21 @@ void CGXObject::SetMethodAccess(int index, METHOD_ACCESSMODE access)
 	m_MethodAttributes.push_back(att);
 }
 
-DLMS_DATA_TYPE CGXObject::GetUIDataType(int index)
+int CGXDLMSObject::GetUIDataType(int index, DLMS_DATA_TYPE& type)
 {
 	for(CGXAttributeCollection::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
 	{
 		if ((*it).GetIndex() == index)
 		{
-			return (*it).GetUIDataType();
+			type = (*it).GetUIDataType();
+			return ERROR_CODES_OK;
 		}
 	}
-	return DLMS_DATA_TYPE_NONE;
+	type = DLMS_DATA_TYPE_NONE;
+	return ERROR_CODES_OK;
 }
 
-void CGXObject::SetUIDataType(int index, DLMS_DATA_TYPE type)
+void CGXDLMSObject::SetUIDataType(int index, DLMS_DATA_TYPE type)
 {
 	for(CGXAttributeCollection::iterator it = m_Attributes.begin(); it != m_Attributes.end(); ++it)
 	{
@@ -227,35 +247,23 @@ void CGXObject::SetUIDataType(int index, DLMS_DATA_TYPE type)
 	m_Attributes.push_back(att);
 }
 
-unsigned short CGXObject::GetShortName()
+unsigned short CGXDLMSObject::GetShortName()
 {
 	return m_SN;
 }
 
-void CGXObject::SetShortName(unsigned short value)
+void CGXDLMSObject::SetShortName(unsigned short value)
 {
 	m_SN = value;
 }
 
 
-basic_string<char> CGXObject::GetLogicalName()
-{
-	int dataSize;
-	char buff[25];
-#if _MSC_VER > 1000
-	dataSize = sprintf_s(buff, 25, "%d.%d.%d.%d.%d.%d", m_LN[0], m_LN[1], m_LN[2], m_LN[3], m_LN[4], m_LN[5]) + 1;
-#else
-	dataSize = sprintf(buff, "%d.%d.%d.%d.%d.%d", m_LN[0], m_LN[1], m_LN[2], m_LN[3], m_LN[4], m_LN[5]) + 1;
-#endif		
-	if (dataSize > 25)
-	{	
-		assert(0);			
-	}
-	basic_string<char> tmp(buff);
-	return tmp;
+void CGXDLMSObject::GetLogicalName(string& ln)
+{	
+	CGXOBISTemplate::GetLogicalName(m_LN, ln);
 }
 
-int CGXObject::SetLogicalName(basic_string<char> value)
+int CGXDLMSObject::SetLogicalName(basic_string<char> value)
 {
 	int count = 0;	
 	int size = value.size();
@@ -301,53 +309,73 @@ int CGXObject::SetLogicalName(basic_string<char> value)
 	return ERROR_CODES_OK;
 }
 		
-unsigned short CGXObject::GetVersion()
+void CGXDLMSObject::SetVersion(unsigned short value)
+{
+	m_Version = value;
+}
+
+unsigned short CGXDLMSObject::GetVersion()
 {
 	return m_Version;
 }
 
-CGXAttributeCollection& CGXObject::GetAttributes()
+CGXAttributeCollection& CGXDLMSObject::GetAttributes()
 {
 	return m_Attributes;
 }
 
-CGXAttributeCollection& CGXObject::GetMethodAttributes()
+CGXAttributeCollection& CGXDLMSObject::GetMethodAttributes()
 {
 	return m_MethodAttributes;
 }
-
+/*TODO:
 //Get Object's attribute index.
-char CGXObject::GetAttributeIndex()
+char CGXDLMSObject::GetAttributeIndex()
 {
 	return m_AttributeIndex;
 }
 
 //Set Object's attribute index.
-void CGXObject::SetAttributeIndex(char value)
+void CGXDLMSObject::SetAttributeIndex(char value)
 {
 	m_AttributeIndex = value;
 }
 
 //Get Object's data index.
-unsigned short CGXObject::GetDataIndex()
+unsigned short CGXDLMSObject::GetDataIndex()
 {
 	return m_DataIndex;
 }
 
 //Set Object's data index.
-void CGXObject::SetDataIndex(unsigned short value)
+void CGXDLMSObject::SetDataIndex(unsigned short value)
 {
 	m_DataIndex = value;
 }
+*/
 
 //Get Object's Logical Name.
-basic_string<char> CGXObject::GetDescription()
+basic_string<char> CGXDLMSObject::GetDescription()
 {
 	return m_Description;
 }
 
 //Set Object's Logical Name.
-void CGXObject::SetDescription(basic_string<char> value)
+void CGXDLMSObject::SetDescription(basic_string<char> value)
 {
 	m_Description = value;
+}
+
+bool CGXDLMSObject::IsRead(int index)
+{            
+    if (!CanRead(index))
+    {
+        return true;
+    }        
+    return m_ReadTimes.find(index) != m_ReadTimes.end();
+}        
+
+bool CGXDLMSObject::CanRead(int index)
+{
+	return GetAccess(index) != ACCESSMODE_NONE;
 }

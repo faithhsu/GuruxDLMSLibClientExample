@@ -35,11 +35,11 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 #include "GXDLMSModemInitialisation.h"
 
-class CGXDLMSModemConfiguration : public CGXObject
+class CGXDLMSModemConfiguration : public CGXDLMSObject
 {
     vector<CGXDLMSModemInitialisation> m_InitialisationStrings;
     vector< basic_string<char> > m_ModemProfile;
@@ -72,7 +72,7 @@ public:
     /**  
      Constructor.
     */
-    CGXDLMSModemConfiguration() : CGXObject(OBJECT_TYPE_MODEM_CONFIGURATION, "0.0.2.0.0.255")
+    CGXDLMSModemConfiguration() : CGXDLMSObject(OBJECT_TYPE_MODEM_CONFIGURATION, "0.0.2.0.0.255")
     {
         Init();
     }
@@ -81,7 +81,7 @@ public:
      Constructor.
      @param ln Logican Name of the object.
     */
-    CGXDLMSModemConfiguration(basic_string<char> ln) : CGXObject(OBJECT_TYPE_MODEM_CONFIGURATION, ln)
+    CGXDLMSModemConfiguration(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MODEM_CONFIGURATION, ln)
     {   
         Init();
     }
@@ -91,7 +91,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXDLMSModemConfiguration(int sn) : CGXObject(OBJECT_TYPE_MODEM_CONFIGURATION, sn)
+    CGXDLMSModemConfiguration(int sn) : CGXDLMSObject(OBJECT_TYPE_MODEM_CONFIGURATION, sn)
     {        
         Init();
     }   
@@ -135,25 +135,71 @@ public:
     {
         return 0;
     }    
+
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//CommunicationSpeed
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //InitialisationStrings
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //ModemProfile
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+    {
+		if (index == 1)
+		{
+			type = DLMS_DATA_TYPE_OCTET_STRING;
+		}
+		else if (index == 2)
+        {
+            type = DLMS_DATA_TYPE_ENUM;
+        }
+        else if (index == 3)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+        }
+        else if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_ARRAY;
+        }
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
+	}
     
     // Returns value of given attribute.
-    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
     {
         if (index == 1)
         {
             GXHelpers::AddRange(value.byteArr, m_LN, 6);
-            type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+            value.vt = DLMS_DATA_TYPE_OCTET_STRING;
             return ERROR_CODES_OK;
         }
         if (index == 2)
         {
-            type = DLMS_DATA_TYPE_ENUM;
-            value = m_CommunicationSpeed;
 			return ERROR_CODES_OK;
         }
         if (index == 3)
         {
-            type = DLMS_DATA_TYPE_ARRAY;
             vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
             //Add count
@@ -172,8 +218,7 @@ public:
 			return ERROR_CODES_OK;
         }
         if (index == 4)
-        {
-            type = DLMS_DATA_TYPE_ARRAY;
+        {            
             vector<unsigned char> data;
             data.push_back(DLMS_DATA_TYPE_ARRAY);
             //Add count

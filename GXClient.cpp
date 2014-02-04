@@ -69,6 +69,8 @@ GXClient::~GXClient(void)
 {
 	Close();
 	InitializeBuffers(0, 0);
+	CloseHandle(m_osReader.hEvent);
+	CloseHandle(m_osWrite.hEvent);
 }
 
 //Close connection to the meter.
@@ -411,12 +413,11 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
     }
 	if (m_Trace)
 	{
-	    TRACE1("\r\n<-");
-		for(vector<unsigned char>::iterator it = data.begin(); it != data.end(); ++it)
-		{
-    		TRACE("%.2X ", *it);
-		}
-		TRACE1("\r\n");
+		string tmp;
+		Now(tmp);
+		tmp = "<- " + tmp; 
+		tmp += "\t" + GXHelpers::bytesToHex(&data[0], data.size());
+		GXHelpers::Write("trace.txt", tmp + "\r\n");
 	}
 #if _MSC_VER > 1000
 	int len = data.size();
@@ -453,10 +454,7 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
 #endif
 
 	int ret;
-	if (m_Trace)
-	{
-		TRACE1("\r\n->");
-	}
+	bool bFirstByte = true;
 	//Loop until packet is compleate.
 	do
     {
@@ -507,17 +505,24 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
 		}
 		if (m_Trace)
 		{
-			for(int pos = 0; pos != ret; ++pos)
-			{
-	    		TRACE("%.2X ", m_Receivebuff[ReplySize + pos]);
+			if (bFirstByte)
+			{				
+				string tmp;
+				Now(tmp);
+				tmp = "-> " + tmp; 
+				tmp += "\t";
+				GXHelpers::Write("trace.txt", tmp);
+				bFirstByte = false;
 			}
+			string tmp = GXHelpers::bytesToHex(m_Receivebuff + ReplySize, ret);
+			GXHelpers::Write("trace.txt", tmp);
 		}
 		ReplySize += ret;
     } 
     while (!m_Parser->IsDLMSPacketComplete(m_Receivebuff, ReplySize));
 	if (m_Trace)
 	{
-		TRACE1("\r\n");
+		GXHelpers::Write("trace.txt", "\r\n");
 	}
 	//Check errors
 	if ((ret = m_Parser->CheckReplyErrors(&data[0], data.size(), m_Receivebuff, ReplySize)) != 0)
@@ -596,7 +601,7 @@ int GXClient::ReadDataBlock(vector< vector<unsigned char> >& data, vector<unsign
 }
 
 //Get Accosiation view.
-int GXClient::GetObjects(CGXObjectCollection& objects)
+int GXClient::GetObjects(CGXDLMSObjectCollection& objects)
 {	
 	TRACE1("GetAssociationView\r\n");
 	int ret;
@@ -613,7 +618,7 @@ int GXClient::GetObjects(CGXObjectCollection& objects)
 }
 
 //Update SN or LN access list.
-int GXClient::UpdateAccess(CGXObject* pObject, CGXObjectCollection& Objects)
+int GXClient::UpdateAccess(CGXDLMSObject* pObject, CGXDLMSObjectCollection& Objects)
 {	
 	CGXDLMSVariant data;
 	int ret = Read(pObject, 2, data);
@@ -638,7 +643,7 @@ int GXClient::UpdateAccess(CGXObject* pObject, CGXObjectCollection& Objects)
 		}
 		OBJECT_TYPE type = (OBJECT_TYPE) obj->Arr[0].uiVal;
 		// unsigned char version = obj->Arr[1].bVal;
-		CGXObject* pObj = Objects.FindByLN(type, obj->Arr[2].byteArr);
+		CGXDLMSObject* pObj = Objects.FindByLN(type, obj->Arr[2].byteArr);
 		if (pObj != NULL)
 		{
 			//Attribute access.
@@ -663,7 +668,7 @@ int GXClient::UpdateAccess(CGXObject* pObject, CGXObjectCollection& Objects)
 }
 
 //Read selected object.
-int GXClient::Read(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value)
+int GXClient::Read(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value)
 {	
 	int ret;
 	vector< vector<unsigned char> > data;
@@ -672,21 +677,32 @@ int GXClient::Read(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value
 	CGXDLMSVariant name = pObject->GetName();
 	if ((ret = m_Parser->Read(name, pObject->GetObjectType(), attributeIndex, data)) != 0 ||
 		(ret = ReadDataBlock(data, reply)) != 0 || 
-		(ret = m_Parser->GetValue(reply, value)) != 0)
+		(ret = m_Parser->UpdateValue(reply, pObject, attributeIndex, value)) != 0)
+	{
+		printf("Error! %d: read failed: %d\r\n", attributeIndex, ret);
+		return ret;
+	}
+	//Update data type.
+	DLMS_DATA_TYPE type;
+	if ((ret = pObject->GetDataType(attributeIndex, type)) != 0)
 	{
 		TRACE("Read failed %d.\r\n", ret);
 		return ret;
-	}
-	//Check is value date time.
-	if (value.vt == DLMS_DATA_TYPE_OCTET_STRING && pObject->GetUIDataType(attributeIndex) == DLMS_DATA_TYPE_DATETIME)
-	{		
-		value = value.ToDateTime();
+	}	
+	if (type == DLMS_DATA_TYPE_NONE)
+	{
+		
+		if ((ret = m_Parser->GetDataType(reply, type)) != 0 ||
+			(ret = pObject->SetDataType(attributeIndex, type)) != 0)
+		{
+			return ret;
+		}
 	}
 	return ERROR_CODES_OK;
 }
 
 //Write selected object.
-int GXClient::Write(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value)
+int GXClient::Write(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value)
 {	
 	int ret;
 	vector< vector<unsigned char> > data;
@@ -703,7 +719,7 @@ int GXClient::Write(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& valu
 }
 
 //Write selected object.
-int GXClient::Method(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& value)
+int GXClient::Method(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value)
 {	
 	int ret;
 	vector< vector<unsigned char> > data;
@@ -719,44 +735,7 @@ int GXClient::Method(CGXObject* pObject, int attributeIndex, CGXDLMSVariant& val
 	return ERROR_CODES_OK;
 }
 
-
-//Get profile Generics columns.
-int GXClient::GetColumns(CGXObject* pObject, CGXObjectCollection* pColumns)
-{	
-	int ret;
-	vector< vector<unsigned char> > data;
-	vector<unsigned char> reply;
-	//Get meter's send and receive buffers size.
-	CGXDLMSVariant name = pObject->GetName();
-	if ((ret = m_Parser->Read(name, pObject->GetObjectType(), 3, data)) != 0 ||
-		(ret = ReadDataBlock(data, reply)) != 0 || 
-		(ret = m_Parser->ParseColumns(reply, pColumns)) != 0)
-	{
-		TRACE("Read failed %d.\r\n", ret);
-		return ret;
-	}
-	return ERROR_CODES_OK;
-}
-
-///Get object that is used in sorting profile generic columns.
-int GXClient::GetSortObject(CGXObject* pObject, CGXObject*& pSortObject)
-{	
-	int ret;
-	vector< vector<unsigned char> > data;
-	vector<unsigned char> reply;
-	//Get meter's send and receive buffers size.
-	CGXDLMSVariant name = pObject->GetName();
-	if ((ret = m_Parser->Read(name, pObject->GetObjectType(), 6, data)) != 0 ||
-		(ret = ReadDataBlock(data, reply)) != 0 || 
-		(ret = m_Parser->ParseSortObject(reply, pSortObject)) != 0)
-	{
-		TRACE("Read failed %d.\r\n", ret);
-		return ret;
-	}
-	return ERROR_CODES_OK;
-}
-
-int GXClient::ReadRowsByRange(CGXDLMSVariant& Name, CGXObject* pSortObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows)
+int GXClient::ReadRowsByRange(CGXDLMSVariant& Name, CGXDLMSObject* pSortObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows)
 {
 	rows.Clear();
 	int ret;

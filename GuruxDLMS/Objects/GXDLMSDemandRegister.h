@@ -34,11 +34,12 @@
 
 #pragma once
 
+#include <cmath>
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
-class CGXDLMSDemandRegister : public CGXObject
+class CGXDLMSDemandRegister : public CGXDLMSObject
 {
 	CGXDLMSVariant m_CurrentAvarageValue;    
     CGXDLMSVariant m_LastAvarageValue;    
@@ -50,11 +51,20 @@ class CGXDLMSDemandRegister : public CGXObject
     int m_NumberOfPeriods;
     unsigned long m_Period;
 
+protected:
+	bool IsRead(int index)
+    {
+        if (index == 3)
+        {
+            return m_Unit != 0;
+        }
+		return CGXDLMSObject::IsRead(index);
+    }
 public:
     /**  
      Constructor.
     */
-	CGXDLMSDemandRegister() : CGXObject(OBJECT_TYPE_DEMAND_REGISTER)
+	CGXDLMSDemandRegister() : CGXDLMSObject(OBJECT_TYPE_DEMAND_REGISTER)
     {
 		m_Period = m_NumberOfPeriods = m_Unit = m_Scaler = 0;
     }
@@ -64,7 +74,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSDemandRegister(basic_string<char> ln) : CGXObject(OBJECT_TYPE_DEMAND_REGISTER, ln)
+    CGXDLMSDemandRegister(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_DEMAND_REGISTER, ln)
     {
 		m_Period = m_NumberOfPeriods = m_Unit = m_Scaler = 0;
     }
@@ -75,7 +85,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXDLMSDemandRegister(int sn) : CGXObject(OBJECT_TYPE_DEMAND_REGISTER, sn)
+    CGXDLMSDemandRegister(int sn) : CGXDLMSObject(OBJECT_TYPE_DEMAND_REGISTER, sn)
     {
 		m_Period = m_NumberOfPeriods = m_Unit = m_Scaler = 0;
     }
@@ -200,6 +210,54 @@ public:
 
     }    
     
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//ScalerUnit
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+        //CurrentAvarageValue
+        if (CanRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //LastAvarageValue            
+        if (CanRead(3))
+        {
+            attributes.push_back(3);
+        }        
+        //Status
+        if (CanRead(5))
+        {
+            attributes.push_back(5);
+        }
+        //CaptureTime
+        if (CanRead(6))
+        {
+            attributes.push_back(6);
+        }
+        //StartTimeCurrent
+        if (CanRead(7))
+        {
+            attributes.push_back(7);
+        }
+        //Period
+        if (CanRead(8))
+        {
+            attributes.push_back(8);
+        }
+        //NumberOfPeriods
+        if (CanRead(9))
+        {
+            attributes.push_back(9);
+        }
+	}
     
 	// Returns amount of attributes.
 	int GetAttributeCount()
@@ -223,12 +281,62 @@ public:
 		return ERROR_CODES_INVALID_PARAMETER;
 	}
 
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+    {
+		if (index == 1)
+        {
+            type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+        }
+        if (index == 2)
+        {
+            type = DLMS_DATA_TYPE_NONE;
+			return ERROR_CODES_OK;
+        }
+        if (index == 3)
+        {
+            type = DLMS_DATA_TYPE_NONE;
+			return ERROR_CODES_OK;
+        }      
+        if (index == 4)
+        {
+            type = DLMS_DATA_TYPE_STRUCTURE;
+			return ERROR_CODES_OK;
+        }
+        if (index == 5)
+        {
+            type = DLMS_DATA_TYPE_NONE;
+			return ERROR_CODES_OK;
+        }
+        if (index == 6)
+        {
+            type = DLMS_DATA_TYPE_DATETIME;
+            return ERROR_CODES_OK;
+        }
+        if (index == 7)
+        {
+            type = DLMS_DATA_TYPE_DATETIME;
+            return ERROR_CODES_OK;
+        }
+        if (index == 8)
+        {
+            type = DLMS_DATA_TYPE_UINT32;
+            return ERROR_CODES_OK;
+        } 
+        if (index == 9)
+        {
+            type = DLMS_DATA_TYPE_UINT16;
+            return ERROR_CODES_OK;
+        }         
+        return ERROR_CODES_INVALID_PARAMETER;
+	}
+
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
 	{    
         if (index == 1)
         {
             GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
         }
         if (index == 2)
@@ -256,25 +364,21 @@ public:
         }
         if (index == 6)
         {
-            type = DLMS_DATA_TYPE_DATETIME;
             value = GetCaptureTime();
 			return ERROR_CODES_OK;
         }
         if (index == 7)
         {
-            type = DLMS_DATA_TYPE_DATETIME;
             value = GetStartTimeCurrent();
 			return ERROR_CODES_OK;
         }
         if (index == 8)
         {
-            type = DLMS_DATA_TYPE_UINT32;
             value = GetPeriod();
 			return ERROR_CODES_OK;
         } 
         if (index == 9)
         {
-            type = DLMS_DATA_TYPE_UINT16;
             value = GetNumberOfPeriods();
 			return ERROR_CODES_OK;
         }         
@@ -292,50 +396,47 @@ public:
 			memcpy(m_LN, &value.byteArr[0], 6);
 			return ERROR_CODES_OK;
 		}
-        if (index == 2)
+        else if (index == 2)
         {
             SetCurrentAvarageValue(value.lVal);
-			return ERROR_CODES_OK;
         }
-        if (index == 3)
+        else if (index == 3)
         {
             SetLastAvarageValue(value);
-			return ERROR_CODES_OK;
         }
-        if (index == 4)
+        else if (index == 4)
         {
 			m_Scaler = value.Arr[0].bVal;
 			m_Unit = value.Arr[1].bVal;
         }
-        if (index == 5)
+        else if (index == 5)
         {
 			SetStatus(value.lVal);    
-			return ERROR_CODES_OK;
         }
-        if (index == 6)
+        else if (index == 6)
         {
 			CGXDLMSVariant tmp;
 			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_DATETIME, tmp);            
 			SetCaptureTime(tmp.dateTime);
-			return ERROR_CODES_OK;
         }
-        if (index == 7)
+        else if (index == 7)
         {
             CGXDLMSVariant tmp;
 			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_DATETIME, tmp);
             SetStartTimeCurrent(tmp.dateTime);
-			return ERROR_CODES_OK;
         }
-        if (index == 8)
+        else if (index == 8)
         {
 			SetPeriod(value.ulVal);
-			return ERROR_CODES_OK;
         }   
-        if (index == 9)
+        else if (index == 9)
         {
-            SetNumberOfPeriods(value.lVal);
-			return ERROR_CODES_OK;
+            SetNumberOfPeriods(value.lVal);			
         }   
-        return ERROR_CODES_INVALID_PARAMETER;
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
     }
 };

@@ -35,8 +35,8 @@
 #include "GXDLMSSNSettings.h"
 #include "GXDLMSLNSettings.h"
 #include "GXDLMSLimits.h"
-#include "Objects/GXObject.h"
-#include "Objects/GXObjectCollection.h"
+#include "Objects/GXDLMSObject.h"
+#include "Objects/GXDLMSObjectCollection.h"
 
 #pragma once
 
@@ -94,6 +94,7 @@ public:
 
 	// This generates a checksum table.
 	void GenerateFCS16Table();
+	CGXDLMSObject CreateObject(OBJECT_TYPE type);
 
 	unsigned short CountCRC(unsigned char* pBuff, int Index, int Count);
 	unsigned short CountCRC(std::vector<unsigned char>& Buff, int Index, int Count);
@@ -143,8 +144,8 @@ public:
 	int AddFrame(int Type, bool MoreFrames, vector<unsigned char>& Data, int Index, int Count, vector< vector<unsigned char> >& Packets);
 
 	int CheckLLCBytes(unsigned char* pBuff, int& pos, int length);
-	int ParseSNObjects(unsigned char* pBuff, int len, CGXObjectCollection& objects);
-	int ParseLNObjects(unsigned char* pBuff, int len, CGXObjectCollection& objects);	
+	int ParseSNObjects(unsigned char* pBuff, int len, CGXDLMSObjectCollection& objects);
+	int ParseLNObjects(unsigned char* pBuff, int len, CGXDLMSObjectCollection& objects);	
 	int SplitToFrames(vector<unsigned char>& Data, unsigned int blockIndex, unsigned int& index, unsigned int count, DLMS_COMMAND Cmd, vector< vector<unsigned char> >& Packets);
 	int SplitToBlocks(vector<unsigned char>& Data, DLMS_COMMAND Cmd, vector< vector<unsigned char> >& Packets);
 

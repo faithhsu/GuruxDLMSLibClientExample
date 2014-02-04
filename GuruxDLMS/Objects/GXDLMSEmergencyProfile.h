@@ -31,25 +31,42 @@
 // This code is licensed under the GNU General Public License v2. 
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
+
 #pragma once
 
-struct IGXDLMSBase
+#include "IGXDLMSBase.h"
+#include "GXDLMSObject.h"
+#include "../GXHelpers.h"
+
+class CGXDLMSEmergencyProfile
 {
-public:
-    // Returns amount of attributes.
-    virtual int GetAttributeCount() = 0;
+	int m_ID;
+    CGXDateTime m_ActivationTime;
+    int m_Duration;
+public:	
 
-    // Returns amount of methods.
-    virtual int GetMethodCount() = 0;
-
-    // Returns value of given attribute.
-    virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value) = 0;
-    
-    // Set value of given attribute.
-    virtual int SetValue(int index, CGXDLMSVariant& value) = 0;
-
-    // Invokes method.
-    virtual int Invoke(int index, CGXDLMSVariant& parameters) = 0;
-
-//	virtual DLMS_DATA_TYPE GetUIDataType(int index) = 0;
+    int GetID()
+    {
+        return m_ID;
+    }
+    void SetID(int value)
+    {
+        m_ID = value;
+    }
+    CGXDateTime& GetActivationTime()
+    {
+        return m_ActivationTime;
+    }
+    void SetActivationTime(CGXDateTime value)
+    {
+        m_ActivationTime = value;
+    }
+    int GetDuration()
+    {
+        return m_Duration;
+    }
+    void SetDuration(int value)
+    {
+        m_Duration = value;
+    }
 };

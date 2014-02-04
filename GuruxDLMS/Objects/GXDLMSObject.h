@@ -33,39 +33,61 @@
 //---------------------------------------------------------------------------
 
 #pragma once
+#include <map>
 #include <string.h>
 #include <assert.h>
 #include "../ManufacturerSettings/GXAttributeCollection.h"
 #include "../GXDLMSVariant.h"
 #include "IGXDLMSBase.h"
+#include "../GXOBISTemplate.h"
+#include "../GXHelpers.h"
+#include "../GXDateTime.h"
 
 using namespace std;
 
-class CGXObject : public IGXDLMSBase
+class CGXDLMSObjectCollection;
+
+class CGXDLMSObject : public IGXDLMSBase
 {
+	friend class CGXDLMS;
+	friend class CGXDLMSObjectCollection;
+	friend class CGXDLMSAssociationLogicalName;
+	friend class CGXDLMSAssociationShortName;
+
 	CGXAttributeCollection m_Attributes;
 	CGXAttributeCollection m_MethodAttributes;
 	void Initialize(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>* pLogicalName);
-public:
-	basic_string<char> m_Description;
-	unsigned short m_SN;
+	basic_string<char> m_Description;	
 	OBJECT_TYPE m_ObjectType;
-	unsigned short m_Version;
-	unsigned char m_LN[6];
 	char m_AttributeIndex;	
 	unsigned short m_DataIndex;	
+	unsigned short m_Version;		
+protected:
+	map<int, time_t> m_ReadTimes;
+	CGXDLMSObjectCollection* m_Parent;
+	unsigned short m_SN;
+	unsigned char m_LN[6];
+
+	/*
+     * Is attribute read. This can be used with static attributes to make 
+     * meter reading faster.
+     */    
+    bool IsRead(int index);
+    bool CanRead(int index);
 public:	
-	CGXObject(void);
-	CGXObject(OBJECT_TYPE type);
+	
+
+	CGXDLMSObject(void);
+	CGXDLMSObject(OBJECT_TYPE type);
 
 	//SN Constructor.
-	CGXObject(OBJECT_TYPE type, unsigned short sn);
+	CGXDLMSObject(OBJECT_TYPE type, unsigned short sn);
 
 	//LN Constructor.
-	CGXObject(OBJECT_TYPE type, basic_string<char> ln);
-	CGXObject(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>& ln);
+	CGXDLMSObject(OBJECT_TYPE type, basic_string<char> ln);
+	CGXDLMSObject(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>& ln);
 	
-	~CGXObject(void);	
+	~CGXDLMSObject(void);	
 
 	//Get Object's Logican or Short Name as a string.
 	CGXDLMSVariant GetName();
@@ -82,18 +104,20 @@ public:
 	void SetShortName(unsigned short value);
 
 	//Get Object's Logical Name.
-	basic_string<char> GetLogicalName();
+	void GetLogicalName(string& ln);
 	
 	//Set Object's Logical Name.
 	int SetLogicalName(basic_string<char> value);
 		
+	void SetVersion(unsigned short value);
 	unsigned short GetVersion();
 
 	CGXAttributeCollection& GetAttributes();
 	CGXAttributeCollection& GetMethodAttributes();
-	DLMS_DATA_TYPE GetDataType(int index);
+	virtual int SetDataType(int index, DLMS_DATA_TYPE type);
+	virtual int GetDataType(int index, DLMS_DATA_TYPE& type);
 	
-	virtual DLMS_DATA_TYPE GetUIDataType(int index);
+	virtual int GetUIDataType(int index, DLMS_DATA_TYPE& type);
 	void SetUIDataType(int index, DLMS_DATA_TYPE type);
 
 	ACCESSMODE GetAccess(int index);
@@ -101,49 +125,74 @@ public:
 	METHOD_ACCESSMODE GetMethodAccess(int index);
 	void SetMethodAccess(int index, METHOD_ACCESSMODE access);
 
+
 	//Get description of the object.
 	basic_string<char> GetDescription();
 	
 	//Set description of the object.
 	void SetDescription(basic_string<char> value);
 
+	/* TODO:
 	//Get Object's attribute index.
 	char GetAttributeIndex();
 	//Set Object's attribute index.
 	void SetAttributeIndex(char value);
+	*/
 
+	CGXDLMSObjectCollection* GetParent()
+	{
+		return m_Parent;
+	}
+
+	/* TODO:
 	//Get Object's data index.
 	unsigned short GetDataIndex();	
 	//Set Object's data index.
 	void SetDataIndex(unsigned short value);
+	*/
+
+	virtual void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		assert(0);		
+	}
 
 	// Returns amount of attributes.
-	int GetAttributeCount()
+	virtual int GetAttributeCount()
 	{
+		assert(0);
 		return 0;
 	}
 
     // Returns amount of methods.
-	int GetMethodCount()
+	virtual int GetMethodCount()
 	{
+		assert(0);
 		return 0;
 	}
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
     {		
 		return ERROR_CODES_INVALID_PARAMETER;
     }
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
+	virtual int SetValue(int index, CGXDLMSVariant& value)
     {
 		return ERROR_CODES_INVALID_PARAMETER;		
     }
 
 	// Set value of given attribute.
-	int Invoke(int index, CGXDLMSVariant& parameters)
+	virtual int Invoke(int index, CGXDLMSVariant& parameters)
     {
 		return ERROR_CODES_INVALID_PARAMETER;		
     }
+};
+
+class CGXDLMSCustomObject : public CGXDLMSObject
+{
+public:
+	CGXDLMSCustomObject(OBJECT_TYPE type) : CGXDLMSObject(type)
+	{
+	}
 };

@@ -38,50 +38,40 @@
 #include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
-class CGXDLMSMacAddressSetup : public CGXDLMSObject
+class CGXDLMSSchedule : public CGXDLMSObject
 {
-	basic_string<char> m_MacAddress;
-public:
-    /**  
-     Constructor.
-    */
-	CGXDLMSMacAddressSetup() : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, "0.0.25.2.0.255")
-    {        
-    }
+	CGXDLMSVariant m_Entries;
+public:	
+	//Constructor.
+	CGXDLMSSchedule() : CGXDLMSObject(OBJECT_TYPE_SCHEDULE)
+	{
+	}
 
-    /**  
-     Constructor.
+	//SN Constructor.
+	CGXDLMSSchedule(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_SCHEDULE, sn)
+	{
 
-     @param ln Logican Name of the object.
-    */
-    CGXDLMSMacAddressSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, ln)
+	}
+
+	//LN Constructor.
+	CGXDLMSSchedule(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SCHEDULE, ln)
+	{
+
+	}
+
+	// Get value of COSEM Data object.
+    CGXDLMSVariant GetEntries()
     {
+        return m_Entries;
     }
-
-    /**  
-     Constructor.
-
-     @param ln Logican Name of the object.
-     @param sn Short Name of the object.
-    */
-	CGXDLMSMacAddressSetup(int sn) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, sn)
+	
+    // Set value of COSEM Data object.
+    void SetEntries(CGXDLMSVariant& value)
     {
-        
+        m_Entries = value;
     }
 
-    /** 
-     Value of COSEM Data object.
-    */
-    basic_string<char> GetMacAddress()
-    {
-        return m_MacAddress;
-    }
-    void SetMacAddress(basic_string<char> value)
-    {
-        m_MacAddress = value;
-    }
-
-	// Returns amount of attributes.
+    // Returns amount of attributes.
 	int GetAttributeCount()
 	{
 		return 2;
@@ -90,7 +80,7 @@ public:
     // Returns amount of methods.
 	int GetMethodCount()
 	{
-		return 0;
+		return 3;
 	}
 
 	void GetAttributeIndexToRead(vector<int>& attributes)
@@ -99,9 +89,9 @@ public:
 		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
         {
             attributes.push_back(1);
-		}
-		//MacAddress
-        if (!IsRead(2))
+        }
+		//Entries
+        if (CanRead(2))
         {
             attributes.push_back(2);
         }
@@ -111,19 +101,16 @@ public:
     {
 		if (index == 1)
 		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
+			type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
 		}
-        else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;			
-        }
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
+        if (index == 2)
+		{			
+			type = DLMS_DATA_TYPE_ARRAY;
+			return ERROR_CODES_OK;
 		}
-		return ERROR_CODES_OK;
+		return ERROR_CODES_INVALID_PARAMETER;
 	}
-
 
 	// Returns value of given attribute.
 	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
@@ -133,18 +120,10 @@ public:
 			GXHelpers::AddRange(value.byteArr, m_LN, 6);
 			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
-		}
-		if (index == 2)
-        {
-			basic_string<char> add = GetMacAddress();
-			GXHelpers::Replace(add, ":", ".");			
-			vector<unsigned char> data;
-			int ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, add);
-			value = data;
-			return ret;
-        }
+		}        
+		//TODO:
 		return ERROR_CODES_INVALID_PARAMETER;
-	}
+    }
 
 	// Set value of given attribute.
 	int SetValue(int index, CGXDLMSVariant& value)
@@ -155,22 +134,16 @@ public:
 			{
 				return ERROR_CODES_INVALID_PARAMETER;
 			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
+			memcpy(m_LN, &value.byteArr[0], 6);		
 		}
-		else if (index == 2)
-        {
-			CGXDLMSVariant newValue;
-			int ret = CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, newValue);
-			if (ret != ERROR_CODES_OK)
-			{
-				return ret;
-			}
-			basic_string<char> add = newValue.ToString();
-			GXHelpers::Replace(add, ".", ":");
-            SetMacAddress(add);
-			return ERROR_CODES_OK;
-        }
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
+        else if (index == 2)
+		{
+			m_Entries = value;
+		}	
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
+    }
 };

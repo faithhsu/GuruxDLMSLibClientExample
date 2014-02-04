@@ -34,7 +34,7 @@
 
 #pragma once
 
-class CGXTcpUdpSetupObject : public CGXObject
+class CGXDLMSTcpUdpSetup : public CGXDLMSObject
 {
 	int m_Port;
 	basic_string<char> m_IPReference;
@@ -55,7 +55,7 @@ public:
     /**  
      Constructor.
     */
-	CGXTcpUdpSetupObject() :  CGXObject(OBJECT_TYPE_TCP_UDP_SETUP, "0.0.25.0.0.255")
+	CGXDLMSTcpUdpSetup() :  CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, "0.0.25.0.0.255")
     {
 		Init();
     }
@@ -65,7 +65,7 @@ public:
 
      @param ln Logican Name of the object.
     */
-    CGXTcpUdpSetupObject(basic_string<char> ln) : CGXObject(OBJECT_TYPE_TCP_UDP_SETUP, ln)
+    CGXDLMSTcpUdpSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, ln)
     {
 		Init();
     }
@@ -76,7 +76,7 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXTcpUdpSetupObject(basic_string<char> ln, short sn) : CGXObject(OBJECT_TYPE_TCP_UDP_SETUP, sn)
+    CGXDLMSTcpUdpSetup(basic_string<char> ln, short sn) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, sn)
     {
         Init();
     }	
@@ -139,42 +139,104 @@ public:
 		return 0;
 	}
 
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+		}
+		//Port
+        if (!IsRead(2))
+        {
+            attributes.push_back(2);
+        }
+        //IPReference
+        if (!IsRead(3))
+        {
+            attributes.push_back(3);
+        }
+        //MaximumSegmentSize
+        if (!IsRead(4))
+        {
+            attributes.push_back(4);
+        }
+        //MaximumSimultaneousConnections
+        if (!IsRead(5))
+        {
+            attributes.push_back(5);
+        }
+        //InactivityTimeout
+        if (!IsRead(6))
+        {
+            attributes.push_back(6);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+	{
+		if (index == 1)
+		{
+			type = DLMS_DATA_TYPE_OCTET_STRING;		
+		}
+        else if (index == 2)
+		{
+			type = DLMS_DATA_TYPE_UINT16;			
+		}
+		else if (index == 3)
+		{
+			type = DLMS_DATA_TYPE_OCTET_STRING;			
+		}
+		else if (index == 4)
+		{
+			type = DLMS_DATA_TYPE_UINT16;			
+		}
+		else if (index == 5)
+		{
+			type = DLMS_DATA_TYPE_UINT8;			
+		}
+		else if (index == 6)
+		{
+			type = DLMS_DATA_TYPE_UINT16;						
+		}
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
+	}
+
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)    
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)    
     {
 		if (index == 1)
 		{
 			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
         if (index == 2)
 		{
-			type = DLMS_DATA_TYPE_UINT16;
 			value = GetPort();
 			return ERROR_CODES_OK;
 		}
 		if (index == 3)
 		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;
 			value = GetIPReference();
 			return ERROR_CODES_OK;
 		}
 		if (index == 4)
 		{
-			type = DLMS_DATA_TYPE_UINT16;
 			value = GetMaximumSegmentSize();
 			return ERROR_CODES_OK;
 		}
 		if (index == 5)
 		{
-			type = DLMS_DATA_TYPE_UINT8;
 			value = GetMaximumSimultaneousConnections();
 			return ERROR_CODES_OK;
 		}
 		if (index == 6)
 		{
-			type = DLMS_DATA_TYPE_UINT16;
 			value = GetInactivityTimeout();
 			return ERROR_CODES_OK;
 		}

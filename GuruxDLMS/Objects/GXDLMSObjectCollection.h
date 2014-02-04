@@ -34,47 +34,57 @@
 
 #pragma once
 
-class CGXObjectCollection : public std::vector<CGXObject*>
+class CGXDLMSObjectCollection : public std::vector<CGXDLMSObject*>
 {
 public:	
-	~CGXObjectCollection()
+	~CGXDLMSObjectCollection()
 	{
 		clear();
 	}
 
-	CGXObject* FindByLN(OBJECT_TYPE type, basic_string<char> ln)
+	CGXDLMSObject* FindByLN(OBJECT_TYPE type, basic_string<char> ln)
     {
 		const char* pLn = ln.c_str();
-		for (CGXObjectCollection::iterator it = this->begin(); it != end(); ++it)
-        {
-			if ((type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type) && strcmp((*it)->GetLogicalName().c_str(), pLn) == 0)
+		string ln2;
+		for (CGXDLMSObjectCollection::iterator it = this->begin(); it != end(); ++it)
+        {			
+			if ((type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type))
             {
-                return *it;
+				(*it)->GetLogicalName(ln2);
+				if (strcmp(ln2.c_str(), pLn) == 0)
+				{
+					return *it;
+				}
             }
         }
         return NULL;
     }
 
-	CGXObject* FindByLN(OBJECT_TYPE type, vector<unsigned char> ln)
+	CGXDLMSObject* FindByLN(OBJECT_TYPE type, vector<unsigned char> ln)
     {
 		if (ln.size() != 6)
 		{
 			return NULL;
-		}
-		for (CGXObjectCollection::iterator it = this->begin(); it != end(); ++it)
-        {
-			if ((type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type) && 
-				memcmp((*it)->m_LN, &ln[0], 6) == 0)
+		}	
+		
+		string ln2;
+		for (CGXDLMSObjectCollection::iterator it = this->begin(); it != end(); ++it)
+        {			
+			if (type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type)
             {
-                return *it;
-            }
+				(*it)->GetLogicalName(ln2);
+				if (memcmp(ln2.c_str(), &ln[0], 6) == 0)
+				{
+					return *it;
+				}
+			}
         }
         return NULL;
     }
 
-    CGXObject* FindBySN(unsigned short sn)
+    CGXDLMSObject* FindBySN(unsigned short sn)
     {
-        for (CGXObjectCollection::iterator it = begin(); it != end(); ++it)
+        for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
         {
             if ((*it)->GetShortName() == sn)
             {
@@ -84,12 +94,35 @@ public:
         return NULL;
     }
 
+	void GetObjects(OBJECT_TYPE type, CGXDLMSObjectCollection& items)
+    {        
+        for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
+        {
+            if ((*it)->GetObjectType() == type)
+            {
+				items.push_back(*it);
+            }
+        }
+    }
+
+	void push_back(CGXDLMSObject* item)
+	{
+		if (item->m_Parent == NULL)
+		{
+			item->m_Parent = this;
+		}
+		std::vector<CGXDLMSObject*>::push_back(item);
+	}
+
     void clear()
     {
-    	for (CGXObjectCollection::iterator it = begin(); it != end(); ++it)
+    	for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
 		{
-			delete (*it);
+			if ((*it)->m_Parent == this)
+			{				
+				delete (*it);
+			}
 		}
-    	std::vector<CGXObject*>::clear();
+    	std::vector<CGXDLMSObject*>::clear();
     }
 };

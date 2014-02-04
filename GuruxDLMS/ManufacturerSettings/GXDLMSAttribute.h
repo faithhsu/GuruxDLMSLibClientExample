@@ -76,9 +76,14 @@ public:
     /// <summary>
     /// Attribute data type.
     /// </summary>
-    DLMS_DATA_TYPE GetType()
+    DLMS_DATA_TYPE GetDataType()
     {
         return m_Type;
+    }
+
+	void SetDataType(DLMS_DATA_TYPE type)
+    {
+        m_Type = type;
     }
 
     /// <summary>

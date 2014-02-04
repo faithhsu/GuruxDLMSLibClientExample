@@ -35,40 +35,28 @@
 #pragma once
 
 #include "IGXDLMSBase.h"
-#include "GXObject.h"
+#include "GXDLMSObject.h"
 #include "../GXHelpers.h"
 
-class CGXDataObject : public CGXObject
+class CGXDLMSRegisterActivation : public CGXDLMSObject
 {
 	CGXDLMSVariant m_Value;
 public:	
 	//Constructor.
-	CGXDataObject() : CGXObject(OBJECT_TYPE_DATA)
+	CGXDLMSRegisterActivation() : CGXDLMSObject(OBJECT_TYPE_DATA)
 	{
 	}
 
 	//SN Constructor.
-	CGXDataObject(unsigned short sn) : CGXObject(OBJECT_TYPE_DATA, sn)
-	{
-
-	}
-
-	//SN Constructor.
-	CGXDataObject(unsigned short sn, CGXDLMSVariant value) : CGXObject(OBJECT_TYPE_DATA, sn)
-	{
-		m_Value = value;
-	}
-
-	//LN Constructor.
-	CGXDataObject(basic_string<char> ln) : CGXObject(OBJECT_TYPE_DATA, ln)
+	CGXDLMSRegisterActivation(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_DATA, sn)
 	{
 
 	}
 
 	//LN Constructor.
-	CGXDataObject(basic_string<char> ln, CGXDLMSVariant value) : CGXObject(OBJECT_TYPE_DATA, ln)
+	CGXDLMSRegisterActivation(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_DATA, ln)
 	{
-		m_Value = value;
+
 	}
 
 	// Get value of COSEM Data object.
@@ -95,13 +83,41 @@ public:
 		return 0;
 	}
 
+	void GetAttributeIndexToRead(vector<int>& attributes)
+	{
+		//LN is static and read only once.
+		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
+        {
+            attributes.push_back(1);
+        }
+		//Value
+        if (CanRead(2))
+        {
+            attributes.push_back(2);
+        }
+	}
+
+	int GetDataType(int index, DLMS_DATA_TYPE& type)
+    {
+		if (index == 1)
+		{
+			type = DLMS_DATA_TYPE_OCTET_STRING;
+			return ERROR_CODES_OK;
+		}
+        if (index == 2)
+		{			
+			return CGXDLMSObject::GetDataType(index, type);			
+		}
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value, DLMS_DATA_TYPE& type)
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
     {
 		if (index == 1)
 		{
 			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			type = value.vt = DLMS_DATA_TYPE_OCTET_STRING;
+			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 			return ERROR_CODES_OK;
 		}
         if (index == 2)
@@ -121,14 +137,16 @@ public:
 			{
 				return ERROR_CODES_INVALID_PARAMETER;
 			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
+			memcpy(m_LN, &value.byteArr[0], 6);		
 		}
-        if (index == 2)
+        else if (index == 2)
 		{
-			SetValue(value);
-			return ERROR_CODES_OK;			
-		}				
-		return ERROR_CODES_INVALID_PARAMETER;
+			SetValue(value);			
+		}	
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
     }
 };

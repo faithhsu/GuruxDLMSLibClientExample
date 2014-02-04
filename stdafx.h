@@ -38,7 +38,6 @@
 //
 
 #pragma once
-
 #include "targetver.h"
 
 #include <stdio.h>
@@ -50,7 +49,12 @@
 
 
 #ifdef WIN32 //Windows includes
-    #include <tchar.h>
+	#define _CRTDBG_MAP_ALLOC 
+	#define CRTDBG_MAP_ALLOC
+	#include <stdlib.h>
+	#include <crtdbg.h>
+
+	#include <tchar.h>
     #include <Winsock.h> //Add support for sockets
 	#include <time.h>
 #else //Linux includes.
