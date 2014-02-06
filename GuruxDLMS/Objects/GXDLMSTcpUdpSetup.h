@@ -253,9 +253,8 @@ public:
 				return ERROR_CODES_INVALID_PARAMETER;
 			}
 			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
 		}
-        if (index == 2)
+        else if (index == 2)
 		{
 			SetPort(value.lVal);
 			return ERROR_CODES_OK;			
@@ -284,8 +283,7 @@ public:
                 {
                     SetIPReference(value.ToString());
                 }
-            }
-			return ERROR_CODES_OK;
+            }			
         }
         else if (index == 4)
         {
@@ -320,6 +318,10 @@ public:
                 SetInactivityTimeout(value.lVal);
             }
         }
-		return ERROR_CODES_INVALID_PARAMETER;
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
     }
 };

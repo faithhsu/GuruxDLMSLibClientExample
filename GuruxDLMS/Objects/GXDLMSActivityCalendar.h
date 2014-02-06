@@ -460,7 +460,6 @@ public:
 				return ERROR_CODES_INVALID_PARAMETER;
 			}
 			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
 		}
         else if (index == 2)
         {
@@ -587,6 +586,10 @@ public:
 			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_DATETIME, tmp);
 			SetTime(tmp.dateTime);
         }			
-		return ERROR_CODES_INVALID_PARAMETER;
+		else
+		{
+			return ERROR_CODES_INVALID_PARAMETER;
+		}
+		return ERROR_CODES_OK;
     }
 };
