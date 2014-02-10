@@ -34,32 +34,22 @@
 
 #pragma once
 
+#include <string>
+using namespace std;
+
 class CGXDLMSActionItem
 {
 	basic_string<char> m_LogicalName;
     int m_ScriptSelector;
 public:
     //Constructor.
-	CGXDLMSActionItem()
-	{
-		m_ScriptSelector = 0;
-	}
+	CGXDLMSActionItem();
 
-    basic_string<char> GetLogicalName()
-    {
-        return m_LogicalName;
-    }
-    void SetLogicalName(basic_string<char> value)
-    {
-        m_LogicalName = value;
-    }
+    basic_string<char> GetLogicalName();
 
-    int GetScriptSelector()
-    {
-        return m_ScriptSelector;
-    }
-    void SetScriptSelector(int value)
-    {
-        m_ScriptSelector = value;
-    }
+	void SetLogicalName(basic_string<char> value);
+
+    int GetScriptSelector();
+
+	void SetScriptSelector(int value);
 };

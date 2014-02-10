@@ -43,43 +43,15 @@ class CGXDLMSMonitoredValue
     int m_AttributeIndex;
 public:
 
-	CGXDLMSMonitoredValue()
-	{
-		m_ObjectType = OBJECT_TYPE_NONE;
-		m_AttributeIndex = 0;
-	}
+	CGXDLMSMonitoredValue();
+	void Update(CGXDLMSObject* pObj, int attributeIndex);
 
-	void Update(CGXDLMSObject* pObj, int attributeIndex)
-    {
-        m_ObjectType = pObj->GetObjectType();
-        pObj->GetLogicalName(m_LogicalName);
-        m_AttributeIndex = attributeIndex;
-    }
+    OBJECT_TYPE GetObjectType();
+    void SetObjectType(OBJECT_TYPE value);
 
-    OBJECT_TYPE GetObjectType()
-    {
-        return m_ObjectType;
-    }
-    void SetObjectType(OBJECT_TYPE value)
-    {
-        m_ObjectType = value;
-    }
+    basic_string<char> GetLogicalName();    
+	void SetLogicalName(basic_string<char> value);
 
-    basic_string<char> GetLogicalName()
-    {
-        return m_LogicalName;
-    }
-    void SetLogicalName(basic_string<char> value)
-    {
-        m_LogicalName = value;
-    }
-
-    int GetAttributeIndex()
-    {
-        return m_AttributeIndex;
-    }
-    void SetAttributeIndex(int value)
-    {
-        m_AttributeIndex = value;
-    }
+    int GetAttributeIndex();
+    void SetAttributeIndex(int value);
 };

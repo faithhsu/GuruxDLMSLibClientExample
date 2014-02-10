@@ -45,54 +45,28 @@ public:
     /** 
      Constructor.
     */
-    CGXDLMSDayProfileAction()
-    {
-		m_ScriptSelector = 0;
-    }
+    CGXDLMSDayProfileAction();
 
     /** 
      Constructor.
     */
-    CGXDLMSDayProfileAction(CGXDateTime startTime, basic_string<char> scriptLogicalName, int scriptSelector)
-    {
-        SetStartTime(startTime);
-        SetScriptLogicalName(scriptLogicalName);
-        SetScriptSelector(scriptSelector);
-    }
+    CGXDLMSDayProfileAction(CGXDateTime startTime, basic_string<char> scriptLogicalName, int scriptSelector);
 
     /** 
      Defines the time when the script is to be executed.
     */   
-    CGXDateTime GetStartTime()
-    {
-        return m_StartTime;
-    }
-    void SetStartTime(CGXDateTime value)
-    {
-        m_StartTime = value;
-    }
+    CGXDateTime GetStartTime();
+    void SetStartTime(CGXDateTime value);
 
-    /** 
+	/** 
      Defines the logical name of the "Script table" object;
     */
-    basic_string<char> GetScriptLogicalName()
-    {
-        return m_ScriptLogicalName;
-    }
-    void SetScriptLogicalName(basic_string<char> value)
-    {
-        m_ScriptLogicalName = value;
-    }
+    basic_string<char> GetScriptLogicalName();
+    void SetScriptLogicalName(basic_string<char> value);
 
     /** 
      Defines the script_identifier of the script to be executed.
     */    
-    int GetScriptSelector()
-    {
-        return m_ScriptSelector;
-    }
-    void SetScriptSelector(int value)
-    {
-        m_ScriptSelector = value;
-    }
+    int GetScriptSelector();
+    void SetScriptSelector(int value);
 };

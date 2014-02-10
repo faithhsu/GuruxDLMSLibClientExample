@@ -46,54 +46,28 @@ public:
     /** 
      Constructor.
     */
-    CGXDLMSSeasonProfile()
-    {
-
-    }
+    CGXDLMSSeasonProfile();
 
     /** 
      Constructor.
     */
-    CGXDLMSSeasonProfile(basic_string<char> name, CGXDateTime start, basic_string<char> weekName)
-    {
-        SetName(name);
-        SetStart(start);
-        SetWeekName(weekName);
-    }
-
+    CGXDLMSSeasonProfile(basic_string<char> name, CGXDateTime start, basic_string<char> weekName);
+    
     /** 
      Name of season profile.
     */
-    basic_string<char> GetName()
-    {
-        return m_Name;
-    }
-    void SetName(basic_string<char> value)
-    {
-        m_Name = value;
-    }
+    basic_string<char> GetName();
+	void SetName(basic_string<char> value);
 
-    /** 
+	/** 
      Season Profile start time.
     */    
-    CGXDateTime GetStart()
-    {
-        return m_Start;
-    }
-    void SetStart(CGXDateTime value)
-    {
-        m_Start = value;
-    }
-
-    /** 
+    CGXDateTime GetStart();
+    void SetStart(CGXDateTime value);
+    
+	/** 
      Week name of season profile.
     */    
-    basic_string<char> GetWeekName()
-    {
-        return m_WeekName;
-    }
-    void SetWeekName(basic_string<char> value)
-    {
-        m_WeekName = value;
-    }
+    basic_string<char> GetWeekName();    
+    void SetWeekName(basic_string<char> value);    
 };

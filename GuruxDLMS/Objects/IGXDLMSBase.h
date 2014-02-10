@@ -33,6 +33,8 @@
 //---------------------------------------------------------------------------
 #pragma once
 
+#include "../GXDLMSVariant.h"
+
 struct IGXDLMSBase
 {
 public:

@@ -34,10 +34,8 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
+
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
-#include "../GXDateTime.h"
 
 class CGXDLMSSapAssignment : public CGXDLMSObject
 {
@@ -46,148 +44,40 @@ public:
     /**  
      Constructor.
     */
-	CGXDLMSSapAssignment() : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, "0.0.41.0.0.255")
-    {
-    }
-
+	CGXDLMSSapAssignment();
+    
     /**  
      Constructor.
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSSapAssignment(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, ln)
-    {
-    }
-
+    CGXDLMSSapAssignment(basic_string<char> ln);
+    
     /**  
      Constructor.
      @param sn Short Name of the object.
     */
-    CGXDLMSSapAssignment(int sn) : CGXDLMSObject(OBJECT_TYPE_SAP_ASSIGNMENT, sn)
-    {
-
-    }
-
-    std::map<int, basic_string<char> >& GetSapAssignmentList()
-    {
-        return m_SapAssignmentList;
-    }
-    void SetSapAssignmentList(std::map<int, basic_string<char> >& value)
-    {
-        m_SapAssignmentList = value;
-    }
+    CGXDLMSSapAssignment(int sn);
+    
+    std::map<int, basic_string<char> >& GetSapAssignmentList();
+    
+	void SetSapAssignmentList(std::map<int, basic_string<char> >& value);
     
 	// Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 2;
-	}
-
+	int GetAttributeCount();
+	
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 1;
-	}
-
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//SapAssignmentList
-        if (!IsRead(2))
-        {
-            attributes.push_back(2);
-        }
-	}
-
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-        if (index == 1)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK; 
-        }
-        if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ARRAY;
-			return ERROR_CODES_OK; 
-        }    
-        return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int GetMethodCount();
+	
+	void GetAttributeIndexToRead(vector<int>& attributes);
+	
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
     
-
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-        if (index == 1)
-        {
-            GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-        }
-        if (index == 2)
-        {            
-            int cnt = m_SapAssignmentList.size();
-            vector<unsigned char> data;
-            data.push_back(DLMS_DATA_TYPE_ARRAY);
-            //Add count            
-            CGXOBISTemplate::SetObjectCount(cnt, data);
-            if (cnt != 0)
-            {
-				for (std::map<int, basic_string<char> >::iterator it = m_SapAssignmentList.begin();
-					it != m_SapAssignmentList.end(); ++it)                                
-                {
-                    data.push_back(DLMS_DATA_TYPE_STRUCTURE);
-                    data.push_back(2); //Count
-					CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).first);
-					CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).second);
-                }
-            }
-            value = data;
-			return ERROR_CODES_OK;
-        }    
-        return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);    
     
     /*
      * Set value of given attribute.
      */
-    int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-        {
-            if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
-        }
-        if (index == 2)
-        {
-            m_SapAssignmentList.clear();
-			for (vector<CGXDLMSVariant>::iterator item = value.Arr.begin(); 
-				item != value.Arr.end(); ++item)
-            {
-                basic_string<char> str;
-                if ((*item).Arr[1].vt == DLMS_DATA_TYPE_OCTET_STRING)
-                {
-					CGXDLMSVariant tmp;
-					CGXDLMSClient::ChangeType((*item).Arr[1].byteArr, DLMS_DATA_TYPE_STRING, tmp);
-					str = tmp.strVal;
-                }
-                else
-                {
-                    str = (*item).Arr[1].ToString();
-                }            
-				m_SapAssignmentList[(*item).Arr[0].lVal] = str;
-                //m_SapAssignmentList.put(((Number) Array.get(item, 0)).intValue(), str);
-            }                    
-			return ERROR_CODES_OK;
-        }
-        return ERROR_CODES_INVALID_PARAMETER;
-    }
+    int SetValue(int index, CGXDLMSVariant& value);    
 };

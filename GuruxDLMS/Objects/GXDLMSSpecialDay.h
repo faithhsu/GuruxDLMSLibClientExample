@@ -34,9 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
-#include "GXDLMSObject.h"
-#include "../GXHelpers.h"
+#include "../GXDateTime.h"
 
 class CGXDLMSSpecialDay
 {
@@ -45,32 +43,12 @@ class CGXDLMSSpecialDay
     int m_DayId;
 
 public:	
-    int GetIndex()
-    {
-        return m_Index;
-    }
-    void SetIndex(int value)
-    {
-        m_Index = value;
-    }
+    int GetIndex();
+    void SetIndex(int value);
 
-    CGXDateTime& GetDate()
-    {
-        return m_Date;
-    }
-    void SetDate(CGXDateTime value)
-    {
-        m_Date = value;
-    }
+    CGXDateTime& GetDate();
+	void SetDate(CGXDateTime value);
 
-    int GetDayId()
-    {
-        return m_DayId;
-    }
-    void SetDayId(int value)
-    {
-        m_DayId = value;
-    }
-
-
+    int GetDayId();    
+    void SetDayId(int value);
 };

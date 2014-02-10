@@ -34,11 +34,9 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
+
 #include "GXDLMSObject.h"
-#include "GXDLMSObjectCollection.h"
-#include "../GXOBISTemplate.h"
-#include "../GXHelpers.h"
+//Mikko #include "GXDLMSObjectCollection.h"
 
 class CGXDLMSAssociationShortName : public CGXDLMSObject
 {
@@ -46,71 +44,15 @@ class CGXDLMSAssociationShortName : public CGXDLMSObject
     CGXDLMSObjectCollection m_ObjectList;
     //TODO: Object m_SecuritySetupReference;	
 
-	int GetAccessRights(CGXDLMSObject* pObj, vector<unsigned char>& data) 
-    {        
-        data.push_back(DLMS_DATA_TYPE_STRUCTURE);
-        data.push_back(3);
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, pObj->GetShortName());
-        data.push_back(DLMS_DATA_TYPE_ARRAY);
-        data.push_back(pObj->GetAttributes().size());		
-		for(vector<CGXDLMSAttribute>::iterator att = pObj->GetAttributes().begin(); att != pObj->GetAttributes().end(); ++att)
-        {
-            data.push_back(DLMS_DATA_TYPE_STRUCTURE); //attribute_access_item
-            data.push_back(3);
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_INT8, att->GetIndex());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_ENUM, att->GetAccess());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_NONE, NULL);
-        }
-        data.push_back(DLMS_DATA_TYPE_ARRAY);
-        data.push_back(pObj->GetMethodAttributes().size());
-		for(vector<CGXDLMSAttribute>::iterator it = pObj->GetMethodAttributes().begin(); it != pObj->GetMethodAttributes().end(); ++it)
-        {
-            data.push_back(DLMS_DATA_TYPE_STRUCTURE); //attribute_access_item
-            data.push_back(2);
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_INT8, it->GetIndex());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_ENUM, it->GetMethodAccess());
-        }  
-		return ERROR_CODES_OK;
-    }
+	int GetAccessRights(CGXDLMSObject* pObj, vector<unsigned char>& data);
+	void UpdateAccessRights(CGXDLMSVariant& buff);
 
-	void UpdateAccessRights(CGXDLMSVariant& buff)
-    {     
-		for(vector<CGXDLMSVariant>::iterator access = buff.Arr.begin(); access != buff.Arr.end(); ++access)
-        //for (Object access : buff)
-        {            
-			int sn = access->Arr[0].ToInteger();
-            CGXDLMSObject* pObj = m_ObjectList.FindBySN(sn);    
-            if (pObj != NULL)
-            {            
-				for(vector<CGXDLMSVariant>::iterator attributeAccess = access->Arr[1].Arr.begin(); access != access->Arr[1].Arr.end(); ++access)                
-                {                          
-					int id = attributeAccess->Arr[0].ToInteger();
-                    int tmp = attributeAccess->Arr[1].ToInteger();
-                    pObj->SetAccess(id, (ACCESSMODE) tmp);
-                } 
-				for(vector<CGXDLMSVariant>::iterator methodAccess = access->Arr[2].Arr.begin(); access != access->Arr[2].Arr.end(); ++access)                
-                {
-                    int id = methodAccess->Arr[0].ToInteger();
-                    int tmp = methodAccess->Arr[1].ToInteger();                    
-                    pObj->SetMethodAccess(id, (METHOD_ACCESSMODE) tmp);
-                }
-            }
-        }
-    }
-    
 public:	
 	//Constructor.
-	CGXDLMSAssociationShortName() : CGXDLMSObject(OBJECT_TYPE_ASSOCIATION_SHORT_NAME)
-	{
-		SetLogicalName("0.0.40.0.0.255");
-		m_SN = 0xFA00;
-	}
+	CGXDLMSAssociationShortName();
 
-	CGXDLMSObjectCollection& GetObjectList()
-    {
-        return m_ObjectList;
-    }
-
+	CGXDLMSObjectCollection& GetObjectList();
+    
 	/* TODO:
     Object GetAccessRightsList()
     {
@@ -131,181 +73,20 @@ public:
     }
 */
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//ObjectList is static and read only once.
-        if (!IsRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //AccessRightsList is static and read only once.
-        if (!IsRead(3))
-        {
-            attributes.push_back(3);
-        }
-        //SecuritySetupReference is static and read only once.
-        if (!IsRead(4))
-        {
-            attributes.push_back(4);
-        }
-	}
+	void GetAttributeIndexToRead(vector<int>& attributes);
 
 	// Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 4;
-	}
+	int GetAttributeCount();
 
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 8;
-	}
+	int GetMethodCount();
 
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-		else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ARRAY;                  
-        }  
-        else if (index == 3)
-        {
-            type = DLMS_DATA_TYPE_ARRAY;
-        }  
-        else if (index == 4)
-        {
-            
-        }  
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns SN Association View.
-	int GetObjects(vector<unsigned char>& data)
-	{
-		data.push_back(DLMS_DATA_TYPE_ARRAY);
-		//Add count
-		CGXOBISTemplate::SetObjectCount(m_ObjectList.size(), data);
-		for(CGXDLMSObjectCollection::iterator it = m_ObjectList.begin(); it != m_ObjectList.end(); ++it)
-		{
-			data.push_back(DLMS_DATA_TYPE_STRUCTURE);
-			data.push_back(4);//Count    
-			OBJECT_TYPE type = (*it)->GetObjectType();
-			unsigned short version = (*it)->GetVersion();
-			unsigned short sn = (*it)->GetShortName();
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, sn); //base address.
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, type); //ClassID
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, version); //Version
-			CGXDLMSVariant ln((*it)->m_LN, 6, DLMS_DATA_TYPE_OCTET_STRING);
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, ln); //LN
-		}
-		return ERROR_CODES_OK;
-	}
+	int GetObjects(vector<unsigned char>& data);
 
-    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-		if (index == 2)
-		{
-			vector<unsigned char> Packets;
-			int ret = GetObjects(Packets);
-			value = Packets;
-			return ret;
-		}
-		if (index == 3)
-		{
-			bool lnExists = m_ObjectList.FindBySN(GetShortName()) != NULL;
-            //Add count        
-            int cnt = m_ObjectList.size();
-            if (!lnExists)
-            {
-                ++cnt;
-            }            
-            vector<unsigned char> data;
-            data.push_back(DLMS_DATA_TYPE_ARRAY);
-            CGXOBISTemplate::SetObjectCount(cnt, data);
-			for(vector<CGXDLMSObject*>::iterator it = m_ObjectList.begin(); it != m_ObjectList.end(); ++it)
-            {
-                GetAccessRights(*it, data);
-            }
-            if (!lnExists)
-            {
-                GetAccessRights(this, data);
-            }
-            value = data;
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-        {
-            if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
-        }
-		else if (index == 2)
-        {
-            m_ObjectList.clear();
-            if (value.vt == DLMS_DATA_TYPE_ARRAY)
-            {
-				for(vector<CGXDLMSVariant>::iterator item = value.Arr.begin(); item != value.Arr.end(); ++item)
-                {
-					int sn = item->Arr[0].ToInteger();
-					CGXDLMSObject* pObj = GetParent()->FindBySN(sn);
-					if (pObj == NULL)
-					{
-	                    OBJECT_TYPE type = (OBJECT_TYPE) item->Arr[1].ToInteger();
-						int version = item->Arr[2].ToInteger();
-						string ln;
-						CGXOBISTemplate::GetLogicalName(&(*item).Arr[3].byteArr[0], ln);
-						pObj = CGXDLMSObjectFactory::CreateObject(type);
-                        pObj->SetLogicalName(ln);
-						pObj->SetShortName(sn);
-						pObj->SetVersion(version);						
-					}
-					m_ObjectList.push_back(pObj);
-                }               
-            }
-        }  
-        else if (index == 3)
-        {
-            if (value.vt == DLMS_DATA_TYPE_NONE)
-            {
-				for(vector<CGXDLMSObject*>::iterator it = m_ObjectList.begin(); it != m_ObjectList.end(); ++it)
-                {
-                    for(int pos = 1; pos != (*it)->GetAttributeCount(); ++pos)
-                    {
-						(*it)->SetAccess(pos, ACCESSMODE_NONE);
-                    }
-                }
-            }
-            else
-            {
-                UpdateAccessRights(value);
-            }
-        }
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);
 };

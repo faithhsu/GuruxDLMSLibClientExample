@@ -34,95 +34,24 @@
 
 #pragma once
 
+#include <vector>
+using namespace std;
+#include "GXDLMSObject.h"
+
 class CGXDLMSObjectCollection : public std::vector<CGXDLMSObject*>
 {
 public:	
-	~CGXDLMSObjectCollection()
-	{
-		clear();
-	}
+	~CGXDLMSObjectCollection();
 
-	CGXDLMSObject* FindByLN(OBJECT_TYPE type, basic_string<char> ln)
-    {
-		const char* pLn = ln.c_str();
-		string ln2;
-		for (CGXDLMSObjectCollection::iterator it = this->begin(); it != end(); ++it)
-        {			
-			if ((type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type))
-            {
-				(*it)->GetLogicalName(ln2);
-				if (strcmp(ln2.c_str(), pLn) == 0)
-				{
-					return *it;
-				}
-            }
-        }
-        return NULL;
-    }
+	CGXDLMSObject* FindByLN(OBJECT_TYPE type, basic_string<char> ln);
 
-	CGXDLMSObject* FindByLN(OBJECT_TYPE type, vector<unsigned char> ln)
-    {
-		if (ln.size() != 6)
-		{
-			return NULL;
-		}	
-		
-		string ln2;
-		for (CGXDLMSObjectCollection::iterator it = this->begin(); it != end(); ++it)
-        {			
-			if (type == OBJECT_TYPE_ALL || (*it)->GetObjectType() == type)
-            {
-				(*it)->GetLogicalName(ln2);
-				if (memcmp(ln2.c_str(), &ln[0], 6) == 0)
-				{
-					return *it;
-				}
-			}
-        }
-        return NULL;
-    }
+	CGXDLMSObject* FindByLN(OBJECT_TYPE type, vector<unsigned char> ln);
 
-    CGXDLMSObject* FindBySN(unsigned short sn)
-    {
-        for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
-        {
-            if ((*it)->GetShortName() == sn)
-            {
-                return *it;
-            }
-        }
-        return NULL;
-    }
+    CGXDLMSObject* FindBySN(unsigned short sn);
 
-	void GetObjects(OBJECT_TYPE type, CGXDLMSObjectCollection& items)
-    {        
-        for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
-        {
-            if ((*it)->GetObjectType() == type)
-            {
-				items.push_back(*it);
-            }
-        }
-    }
-
-	void push_back(CGXDLMSObject* item)
-	{
-		if (item->m_Parent == NULL)
-		{
-			item->m_Parent = this;
-		}
-		std::vector<CGXDLMSObject*>::push_back(item);
-	}
-
-    void clear()
-    {
-    	for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
-		{
-			if ((*it)->m_Parent == this)
-			{				
-				delete (*it);
-			}
-		}
-    	std::vector<CGXDLMSObject*>::clear();
-    }
+	void GetObjects(OBJECT_TYPE type, CGXDLMSObjectCollection& items);
+	
+	void push_back(CGXDLMSObject* item);
+    
+	void clear();
 };

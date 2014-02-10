@@ -34,7 +34,8 @@
 
 #pragma once
 
-#include "../GXHelpers.h"
+#include <string>
+using namespace std;
 
 class CGXDLMSImageActivateInfo
 {
@@ -45,57 +46,31 @@ public:
 	/**
      * Constructor.
      */
-    CGXDLMSImageActivateInfo()
-    {
-        
-    }
-    
-    /**
+    CGXDLMSImageActivateInfo();
+
+	/**
      * Constructor.
      */
-    CGXDLMSImageActivateInfo(long size, string identification, string signature)
-    {
-        m_Size = size;
-        m_Identification = identification;
-        m_Signature = signature;
-    }
-
+    CGXDLMSImageActivateInfo(long size, string identification, string signature);
+    
 	 /** 
       *  Image_size is the size of the Image(s) to be activated. 
       *  Expressed in octets;
     */
-    long GetSize()
-    {
-        return m_Size;
-    }
-    void SetSize(long value)
-    {
-        m_Size = value;
-    }
+    long GetSize();
+    void SetSize(long value);
     
      /** 
       * Image identification is the identification of the Image(s)
       * to be activated, and may contain information like
       * manufacturer, device type, version information, etc.
     */
-    string GetIdentification()
-    {
-        return m_Identification;
-    }
-    void SetIdentification(string value)
-    {
-        m_Identification = value;
-    }
+    string GetIdentification();
+    void SetIdentification(string value);
     
      /** 
       * Image signature is the signature of the Image(s) to be activated.
     */
-    string GetSignature()
-    {
-        return m_Signature;
-    }
-    void SetSignature(string value)
-    {
-        m_Signature = value;
-    }
+    string GetSignature();
+    void SetSignature(string value);
 };

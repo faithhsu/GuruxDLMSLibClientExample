@@ -34,116 +34,41 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
+
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
 class CGXDLMSSchedule : public CGXDLMSObject
 {
 	CGXDLMSVariant m_Entries;
 public:	
 	//Constructor.
-	CGXDLMSSchedule() : CGXDLMSObject(OBJECT_TYPE_SCHEDULE)
-	{
-	}
+	CGXDLMSSchedule();
 
 	//SN Constructor.
-	CGXDLMSSchedule(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_SCHEDULE, sn)
-	{
-
-	}
-
+	CGXDLMSSchedule(unsigned short sn);
+	
 	//LN Constructor.
-	CGXDLMSSchedule(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SCHEDULE, ln)
-	{
-
-	}
-
+	CGXDLMSSchedule(basic_string<char> ln);
+	
 	// Get value of COSEM Data object.
-    CGXDLMSVariant GetEntries()
-    {
-        return m_Entries;
-    }
+    CGXDLMSVariant GetEntries();
 	
     // Set value of COSEM Data object.
-    void SetEntries(CGXDLMSVariant& value)
-    {
-        m_Entries = value;
-    }
-
+    void SetEntries(CGXDLMSVariant& value);
+    
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 2;
-	}
-
+	int GetAttributeCount();
+	
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 3;
-	}
+	int GetMethodCount();
+	
+	void GetAttributeIndexToRead(vector<int>& attributes);	
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//Entries
-        if (CanRead(2))
-        {
-            attributes.push_back(2);
-        }
-	}
-
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-		{			
-			type = DLMS_DATA_TYPE_ARRAY;
-			return ERROR_CODES_OK;
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
-
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
+    
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}        
-		//TODO:
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
-
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+    
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);		
-		}
-        else if (index == 2)
-		{
-			m_Entries = value;
-		}	
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);    
 };

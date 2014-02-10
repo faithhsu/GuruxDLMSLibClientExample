@@ -71,7 +71,6 @@ int main( int argc, char* argv[] )
 	//ZIV settings.
 	CGXDLMSClient cl(true, (unsigned short) 1, (unsigned short)1, GXDLMS_AUTHENTICATION_NONE, NULL, GXDLMS_INTERFACETYPE_NET);
 */
-	bool UseLogicalNameReferencing = true;
 	bool trace = true;
 	CGXDLMSClient cl(true, (unsigned short) 1, (unsigned short)1, GXDLMS_AUTHENTICATION_NONE, NULL, GXDLMS_INTERFACETYPE_NET);
 
@@ -178,7 +177,9 @@ int main( int argc, char* argv[] )
 	}	
 	comm.Close();
 	}
+#if _MSC_VER > 12
 	_CrtDumpMemoryLeaks();
+#endif
 	return 0;
 }
 

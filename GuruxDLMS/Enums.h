@@ -33,7 +33,7 @@
 //---------------------------------------------------------------------------
 #pragma once
 
-#ifdef WIN32 //Windows includes
+#if _MSC_VER > 12
 #define _CRTDBG_MAP_ALLOC 
 #define CRTDBG_MAP_ALLOC
 #include <stdlib.h>

@@ -34,131 +34,46 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
 class CGXDLMSData : public CGXDLMSObject
 {
 	CGXDLMSVariant m_Value;
 public:	
 	//Constructor.
-	CGXDLMSData() : CGXDLMSObject(OBJECT_TYPE_DATA)
-	{
-	}
+	CGXDLMSData();
 
 	//SN Constructor.
-	CGXDLMSData(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_DATA, sn)
-	{
-
-	}
+	CGXDLMSData(unsigned short sn);
 
 	//SN Constructor.
-	CGXDLMSData(unsigned short sn, CGXDLMSVariant value) : CGXDLMSObject(OBJECT_TYPE_DATA, sn)
-	{
-		m_Value = value;
-	}
+	CGXDLMSData(unsigned short sn, CGXDLMSVariant value);
 
 	//LN Constructor.
-	CGXDLMSData(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_DATA, ln)
-	{
-
-	}
+	CGXDLMSData(basic_string<char> ln);
 
 	//LN Constructor.
-	CGXDLMSData(basic_string<char> ln, CGXDLMSVariant value) : CGXDLMSObject(OBJECT_TYPE_DATA, ln)
-	{
-		m_Value = value;
-	}
+	CGXDLMSData(basic_string<char> ln, CGXDLMSVariant value);
 
 	// Get value of COSEM Data object.
-    CGXDLMSVariant GetValue()
-    {
-        return m_Value;
-    }
+    CGXDLMSVariant GetValue();
 	
     // Set value of COSEM Data object.
-    void SetValue(CGXDLMSVariant& value)
-    {
-        m_Value = value;
-    }
+    void SetValue(CGXDLMSVariant& value);
 
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 2;
-	}
+	int GetAttributeCount();
 
-    // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 0;
-	}
+	// Returns amount of methods.
+	int GetMethodCount();
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//Value
-        if (CanRead(2))
-        {
-            attributes.push_back(2);
-        }
-	}
+	void GetAttributeIndexToRead(vector<int>& attributes);	
 
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-		{			
-			return CGXDLMSObject::GetDataType(index, type);			
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-		{
-			value = m_Value;
-			return ERROR_CODES_OK;
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);		
-		}
-        else if (index == 2)
-		{
-			SetValue(value);			
-		}	
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);
 };

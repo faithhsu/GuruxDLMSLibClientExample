@@ -34,9 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
 class CGXDLMSMBusClient : public CGXDLMSObject
 {
@@ -54,387 +52,68 @@ class CGXDLMSMBusClient : public CGXDLMSObject
 
 public:	
 	//Constructor.
-	CGXDLMSMBusClient() : CGXDLMSObject(OBJECT_TYPE_MBUS_CLIENT)
-	{
-	}
+	CGXDLMSMBusClient();
 
 	//SN Constructor.
-	CGXDLMSMBusClient(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_MBUS_CLIENT, sn)
-	{
-
-	}
+	CGXDLMSMBusClient(unsigned short sn);
 
 	//LN Constructor.
-	CGXDLMSMBusClient(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MBUS_CLIENT, ln)
-	{
-
-	}
+	CGXDLMSMBusClient(basic_string<char> ln);
 
 	/** 
     Provides reference to an "M-Bus master port setup" object, used to configure
     an M-Bus port, each interface allowing to exchange data with one or more
     M-Bus slave devices
 */
-    string GetMBusPortReference()
-    {
-        return m_MBusPortReference;
-    }
-    void SetMBusPortReference(string value)
-    {
-        m_MBusPortReference = value;
-    }
+    string GetMBusPortReference();
+    void SetMBusPortReference(string value);
+    
+    vector<pair<string, string> >& GetCaptureDefinition();
+    
+	long GetCapturePeriod();    
+	void SetCapturePeriod(long value);
 
-    vector<pair<string, string> >& GetCaptureDefinition()
-    {
-        return m_CaptureDefinition;
-    }
-
-    long GetCapturePeriod()
-    {
-        return m_CapturePeriod;
-    }
-    void SetCapturePeriod(long value)
-    {
-        m_CapturePeriod = value;
-    }
-
-    int GetPrimaryAddress()
-    {
-        return m_PrimaryAddress;
-    }
-    void SetPrimaryAddress(int value)
-    {
-        m_PrimaryAddress = value;
-    }
-
-    long GetIdentificationNumber()
-    {
-        return m_IdentificationNumber;
-    }
-    void SetIdentificationNumber(long value)
-    {
-        m_IdentificationNumber = value;
-    }
-
-    int GetManufacturerID()
-    {
-        return m_ManufacturerID;
-    }
-    void SetManufacturerID(int value)
-    {
-        m_ManufacturerID = value;
-    }
+    int GetPrimaryAddress();
+    void SetPrimaryAddress(int value);
+    
+    long GetIdentificationNumber();
+    void SetIdentificationNumber(long value);
+    
+	int GetManufacturerID();    
+	void SetManufacturerID(int value);
 
     /*
      * Carries the Version element of the data header as specified in EN
      * 13757-3 sub-clause 5.6.
      */
-    int GetDataHeaderVersion()
-    {
-        return m_DataHeaderVersion;
-    }
-    void SetDataHeaderVersion(int value)
-    {
-        m_DataHeaderVersion = value;
-    }
+    int GetDataHeaderVersion();
+	void SetDataHeaderVersion(int value);
 
-    int GetDeviceType()
-    {
-        return m_DeviceType;
-    }
-    void SetDeviceType(int value)
-    {
-        m_DeviceType = value;
-    }
+    int GetDeviceType();
+	void SetDeviceType(int value);
 
-    int GetAccessNumber()
-    {
-        return m_AccessNumber;
-    }
-    void SetAccessNumber(int value)
-    {
-        m_AccessNumber = value;
-    }
+    int GetAccessNumber();
+	void SetAccessNumber(int value);
 
-    int GetStatus()
-    {
-        return m_Status;
-    }
-    void SetStatus(int value)
-    {
-        m_Status = value;
-    }
+    int GetStatus();
+	void SetStatus(int value);
 
-    int GetAlarm()
-    {
-        return m_Alarm;
-    }
-    void SetAlarm(int value)
-    {
-        m_Alarm = value;
-    }
-
+    int GetAlarm();
+    void SetAlarm(int value);
 
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 12;
-	}
+	int GetAttributeCount();
 
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 8;
-	}
+	int GetMethodCount();
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//MBusPortReference
-        if (CanRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //CaptureDefinition
-        if (CanRead(3))
-        {
-            attributes.push_back(3);
-        }
-        //CapturePeriod
-        if (CanRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //PrimaryAddress
-        if (CanRead(5))
-        {
-            attributes.push_back(5);
-        }
-        //IdentificationNumber
-        if (CanRead(6))
-        {
-            attributes.push_back(6);
-        }
-        //ManufacturerID
-        if (CanRead(7))
-        {
-            attributes.push_back(7);
-        }
-        //Version
-        if (CanRead(8))
-        {
-            attributes.push_back(8);
-        }
-        //DeviceType
-        if (CanRead(9))
-        {
-            attributes.push_back(9);
-        }
-        //AccessNumber
-        if (CanRead(10))
-        {
-            attributes.push_back(10);
-        }
-        //Status
-        if (CanRead(11))
-        {
-            attributes.push_back(11);
-        }
-        //Alarm
-        if (CanRead(12))
-        {
-            attributes.push_back(12);
-        }
-	}
+	void GetAttributeIndexToRead(vector<int>& attributes);
 
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-		}
-		else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }
-        else if (index == 3)
-        {
-            type = DLMS_DATA_TYPE_ARRAY;
-        }
-        else if (index == 4)
-        {
-            type = DLMS_DATA_TYPE_UINT32;
-        }
-        else if (index == 5)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        }
-        else if (index == 6)
-        {
-            type = DLMS_DATA_TYPE_UINT32;
-        }
-        else if (index == 7)
-        {
-            type = DLMS_DATA_TYPE_UINT16;
-        }
-        else if (index == 8)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        }
-        else if (index == 9)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        }
-        else if (index == 10)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        }
-        else if (index == 11)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        }
-        else if (index == 12)
-        {
-            type = DLMS_DATA_TYPE_UINT8;
-        } 
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
-
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
+    
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-        else if (index == 2)
-        {
-            value = m_MBusPortReference;
-        }
-        else if (index == 3)
-        {
-            //value = m_CaptureDefinition;//TODO;
-        }
-        else if (index == 4)
-        {
-            value = m_CapturePeriod;
-        }
-        else if (index == 5)
-        {
-            value = m_PrimaryAddress;
-        }
-        else if (index == 6)
-        {
-            value = m_IdentificationNumber;
-        }
-        else if (index == 7)
-        {
-            value = m_ManufacturerID;
-        }
-        else if (index == 8)
-        {
-            value = m_DataHeaderVersion;
-        }
-        else if (index == 9)
-        {
-            value = m_DeviceType;
-        }
-        else if (index == 10)
-        {
-            value = m_AccessNumber;
-        }
-        else if (index == 11)
-        {
-            value = m_Status;
-        }
-        else if (index == 12)
-        {
-            value = m_Alarm;
-        }  
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);		
-		}
-        else if (index == 2)
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-			m_MBusPortReference = tmp.ToString();
-        }
-        else if (index == 3)
-        {
-            m_CaptureDefinition.clear();            
-			CGXDLMSVariant tmp1, tmp2;
-			for(vector<CGXDLMSVariant>::iterator it = value.Arr.begin(); it != value.Arr.end(); ++it)
-            {
-				CGXDLMSClient::ChangeType((*it).Arr[0].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp1);
-				CGXDLMSClient::ChangeType((*it).Arr[1].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp2);
-				m_CaptureDefinition.push_back(std::pair<string, string>(tmp1.ToString(), tmp2.ToString()));                    
-            }            
-        }
-        else if (index == 4)
-        {
-            m_CapturePeriod = value.ToInteger();
-        }
-        else if (index == 5)
-        {
-            m_PrimaryAddress = value.ToInteger();
-        }
-        else if (index == 6)
-        {
-            m_IdentificationNumber = value.ToInteger();
-        }
-        else if (index == 7)
-        {
-            m_ManufacturerID = value.ToInteger();
-        }
-        else if (index == 8)
-        {
-            m_DataHeaderVersion = value.ToInteger();
-        }
-        else if (index == 9)
-        {
-            m_DeviceType = value.ToInteger();
-        }
-        else if (index == 10)
-        {
-            m_AccessNumber = value.ToInteger();
-        }
-        else if (index == 11)
-        {
-            m_Status = value.ToInteger();
-        }
-        else if (index == 12)
-        {
-			m_Alarm = value.ToInteger();
-        }	
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);
 };

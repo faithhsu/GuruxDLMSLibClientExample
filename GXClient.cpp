@@ -40,7 +40,7 @@ GXClient::GXClient(CGXDLMSClient* pParser, bool trace) : m_Parser(pParser),
 						m_SendSize(60), m_ReceiveSize(60), m_Trace(trace)
 {
 	InitializeBuffers(m_SendSize, m_ReceiveSize);
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	ZeroMemory(&m_osReader, sizeof(OVERLAPPED));
 	ZeroMemory(&m_osWrite, sizeof(OVERLAPPED));
 	m_hComPort = INVALID_HANDLE_VALUE;	
@@ -69,8 +69,10 @@ GXClient::~GXClient(void)
 {
 	Close();
 	InitializeBuffers(0, 0);
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	CloseHandle(m_osReader.hEvent);
 	CloseHandle(m_osWrite.hEvent);
+#endif
 }
 
 //Close connection to the meter.
@@ -84,7 +86,7 @@ int GXClient::Close()
 	{
 		//Show error.			
 	}	
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	if (m_hComPort != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_hComPort);
@@ -121,7 +123,7 @@ int GXClient::Connect(const char* pAddress, unsigned short Port)
 		hostent *Hostent = gethostbyname(pAddress);
 		if (Hostent == NULL)
 		{
-#ifdef WIN32
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 			int err = WSAGetLastError();
 #else
 			int err = h_errno;
@@ -234,11 +236,19 @@ int GXClient::Open(const char* pPortName, bool IEC)
 					//Wait until data is actually read
 					::WaitForSingleObject(m_osReader.hEvent, INFINITE);
 				}
-				if (m_Trace)
+				//USB Serial port converter can return 0.
+				if (bytesRead == 0)
 				{
-					TRACE("%.2X ", m_Receivebuff[cnt]);
+					Sleep(200);
 				}
-				++cnt;
+				else
+				{
+					if (m_Trace)
+					{
+						TRACE("%.2X ", m_Receivebuff[cnt]);
+					}
+					++cnt;
+				}
 			}while(m_Receivebuff[cnt - 1] != 0x0A);
 			m_Receivebuff[cnt] = 0;			
 		}
@@ -419,7 +429,7 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
 		tmp += "\t" + GXHelpers::bytesToHex(&data[0], data.size());
 		GXHelpers::Write("trace.txt", tmp + "\r\n");
 	}
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	int len = data.size();
 	if (m_hComPort != INVALID_HANDLE_VALUE)
 	{
@@ -463,7 +473,7 @@ int GXClient::ReadDLMSPacket(vector<unsigned char>& data, int& ReplySize)
 		{
 			return ERROR_CODES_OUTOFMEMORY;
 		}
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 		if (m_hComPort != INVALID_HANDLE_VALUE)
 		{			
 			DWORD bytesRead;

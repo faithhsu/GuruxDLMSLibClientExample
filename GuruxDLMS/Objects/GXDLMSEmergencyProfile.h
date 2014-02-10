@@ -34,10 +34,6 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
-#include "GXDLMSObject.h"
-#include "../GXHelpers.h"
-
 class CGXDLMSEmergencyProfile
 {
 	int m_ID;
@@ -45,28 +41,12 @@ class CGXDLMSEmergencyProfile
     int m_Duration;
 public:	
 
-    int GetID()
-    {
-        return m_ID;
-    }
-    void SetID(int value)
-    {
-        m_ID = value;
-    }
-    CGXDateTime& GetActivationTime()
-    {
-        return m_ActivationTime;
-    }
-    void SetActivationTime(CGXDateTime value)
-    {
-        m_ActivationTime = value;
-    }
-    int GetDuration()
-    {
-        return m_Duration;
-    }
-    void SetDuration(int value)
-    {
-        m_Duration = value;
-    }
+    int GetID();
+    void SetID(int value);
+
+	CGXDateTime& GetActivationTime();
+	void SetActivationTime(CGXDateTime value);
+
+	int GetDuration();
+    void SetDuration(int value);
 };

@@ -44,40 +44,21 @@ public:
 	/*
      * Constructor.
      */
-    CGXDLMSCaptureObject()
-    {
-        
-    }
+    CGXDLMSCaptureObject();
     /*
      * Constructor.
      */
-    CGXDLMSCaptureObject(int attributeIndex, int dataIndex)
-    {
-        m_AttributeIndex = attributeIndex;
-        m_DataIndex = dataIndex;
-    }
+    CGXDLMSCaptureObject(int attributeIndex, int dataIndex);
 
 	/** 
      Index of DLMS object in the profile generic table
     */
-    int GetAttributeIndex()
-    {
-        return m_AttributeIndex;
-    }
-    void SetAttributeIndex(int value)
-    {
-        m_AttributeIndex = value;
-    }
+    int GetAttributeIndex();
+    void SetAttributeIndex(int value);    
 
     /** 
      Data index of DLMS object in the profile generic table. 
     */
-    int GetDataIndex()
-    {
-        return m_DataIndex;
-    }
-    void SetDataIndex(int value)
-    {
-        m_DataIndex = value;
-    }
+    int GetDataIndex();
+    void SetDataIndex(int value);
 };

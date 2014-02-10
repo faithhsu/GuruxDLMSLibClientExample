@@ -34,10 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
-#include "../GXDateTime.h"
 
 enum GXDLMS_CLOCK_STATUS
 {

@@ -42,33 +42,21 @@ class CGXDLMSTcpUdpSetup : public CGXDLMSObject
 	int m_InactivityTimeout;
 	int m_MaximumSegmentSize;
 
-	void Init()
-	{
-		m_Port = 4059;
-		m_IPReference = "127.0.0.1";
-		m_MaximumSimultaneousConnections = 1;
-		SetInactivityTimeout(180);
-        SetMaximumSegmentSize(576);
-	}
+	void Init();
 
 public:
     /**  
      Constructor.
     */
-	CGXDLMSTcpUdpSetup() :  CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, "0.0.25.0.0.255")
-    {
-		Init();
-    }
+	CGXDLMSTcpUdpSetup();
 
     /**  
      Constructor.
 
      @param ln Logican Name of the object.
     */
-    CGXDLMSTcpUdpSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, ln)
-    {
-		Init();
-    }
+    CGXDLMSTcpUdpSetup(basic_string<char> ln);
+    
 
     /**  
      Constructor.
@@ -76,252 +64,41 @@ public:
      @param ln Logican Name of the object.
      @param sn Short Name of the object.
     */
-    CGXDLMSTcpUdpSetup(basic_string<char> ln, short sn) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, sn)
-    {
-        Init();
-    }	
+    CGXDLMSTcpUdpSetup(basic_string<char> ln, short sn);
+    
+    int GetPort();
 
-    int GetPort()
-    {
-        return m_Port;
-    }
+    void SetPort(int value);
 
-    void SetPort(int value)
-    {
-       m_Port = value;
-    }
+    basic_string<char> GetIPReference();
 
-    basic_string<char> GetIPReference()
-    {
-        return m_IPReference;
-    }
-    void SetIPReference(basic_string<char> value)
-    {
-       m_IPReference = value;
-    }
+	void SetIPReference(basic_string<char> value);
 
-    int GetMaximumSegmentSize()
-    {
-        return m_MaximumSegmentSize;
-    }
-    void SetMaximumSegmentSize(int value)
-    {
-       m_MaximumSegmentSize = value;
-    }
-   
-    int GetMaximumSimultaneousConnections()
-    {
-        return m_MaximumSimultaneousConnections;
-    }
-    void SetMaximumSimultaneousConnections(int value)
-    {
-       m_MaximumSimultaneousConnections = value;
-    }
+    int GetMaximumSegmentSize();
+    
+	void SetMaximumSegmentSize(int value);
+       
+    int GetMaximumSimultaneousConnections();
 
-    int GetInactivityTimeout()
-    {
-        return m_InactivityTimeout;
-    }
-    void SetInactivityTimeout(int value)
-    {
-       m_InactivityTimeout = value;
-    }
-
+	void SetMaximumSimultaneousConnections(int value);
+    
+    int GetInactivityTimeout();
+    
+    void SetInactivityTimeout(int value);
+    
 	// Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 6;
-	}
-
+	int GetAttributeCount();
+	
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 0;
-	}
-
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-		}
-		//Port
-        if (!IsRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //IPReference
-        if (!IsRead(3))
-        {
-            attributes.push_back(3);
-        }
-        //MaximumSegmentSize
-        if (!IsRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //MaximumSimultaneousConnections
-        if (!IsRead(5))
-        {
-            attributes.push_back(5);
-        }
-        //InactivityTimeout
-        if (!IsRead(6))
-        {
-            attributes.push_back(6);
-        }
-	}
-
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-	{
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;		
-		}
-        else if (index == 2)
-		{
-			type = DLMS_DATA_TYPE_UINT16;			
-		}
-		else if (index == 3)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-		else if (index == 4)
-		{
-			type = DLMS_DATA_TYPE_UINT16;			
-		}
-		else if (index == 5)
-		{
-			type = DLMS_DATA_TYPE_UINT8;			
-		}
-		else if (index == 6)
-		{
-			type = DLMS_DATA_TYPE_UINT16;						
-		}
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
+	int GetMethodCount();
+	
+	void GetAttributeIndexToRead(vector<int>& attributes);
+	
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)    
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-		{
-			value = GetPort();
-			return ERROR_CODES_OK;
-		}
-		if (index == 3)
-		{
-			value = GetIPReference();
-			return ERROR_CODES_OK;
-		}
-		if (index == 4)
-		{
-			value = GetMaximumSegmentSize();
-			return ERROR_CODES_OK;
-		}
-		if (index == 5)
-		{
-			value = GetMaximumSimultaneousConnections();
-			return ERROR_CODES_OK;
-		}
-		if (index == 6)
-		{
-			value = GetInactivityTimeout();
-			return ERROR_CODES_OK;
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-		}
-        else if (index == 2)
-		{
-			SetPort(value.lVal);
-			return ERROR_CODES_OK;			
-		}
-		else if (index == 3)
-        {
-            if (value.vt == DLMS_DATA_TYPE_NONE)
-            {
-                SetIPReference("");
-            }
-            else
-            {
-                if (value.vt == DLMS_DATA_TYPE_OCTET_STRING)
-                {
-					/*
-                    String str = "";
-                    for(int ch : (byte[]) value)
-                    {
-                        str += String.valueOf(ch) + ".";
-                    }
-                    str = str.substring(0, str.length() - 1);
-                    setIPReference(str);
-					*/
-                }
-                else
-                {
-                    SetIPReference(value.ToString());
-                }
-            }			
-        }
-        else if (index == 4)
-        {
-            if (value.vt == DLMS_DATA_TYPE_NONE)
-            {
-                SetMaximumSegmentSize(576);
-            }
-            else
-            {
-                SetMaximumSegmentSize(value.lVal);
-            }
-        }
-        else if (index == 5)
-        {
-            if (value.vt == DLMS_DATA_TYPE_NONE)
-            {
-                SetMaximumSimultaneousConnections(1);
-            }
-            else
-            {
-                SetMaximumSimultaneousConnections(value.lVal);
-            }
-        }
-        else if (index == 6)
-        {
-            if (value.vt == DLMS_DATA_TYPE_NONE)
-            {
-                SetInactivityTimeout(180);
-            }
-            else
-            {
-                SetInactivityTimeout(value.lVal);
-            }
-        }
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);    
 };

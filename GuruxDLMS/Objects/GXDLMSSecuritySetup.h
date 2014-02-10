@@ -34,10 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
-
 
  /** 
     Security policy Enforces authentication and/or encryption algorithm provided with security_suite.
@@ -77,211 +74,44 @@ class CGXDLMSSecuritySetup : public CGXDLMSObject
     string m_ClientSystemTitle;	
 public:	
 	//Constructor.
-	CGXDLMSSecuritySetup() : CGXDLMSObject(OBJECT_TYPE_SECURITY_SETUP)
-	{
-	}
-
+	CGXDLMSSecuritySetup();
+	
 	//SN Constructor.
-	CGXDLMSSecuritySetup(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_SECURITY_SETUP, sn)
-	{
-
-	}
+	CGXDLMSSecuritySetup(unsigned short sn);
+	
 
 	//LN Constructor.
-	CGXDLMSSecuritySetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_SECURITY_SETUP, ln)
-	{
-
-	}
-
-	SECURITY_POLICY GetSecurityPolicy()
-    {
-		return m_SecurityPolicy;
-    }
+	CGXDLMSSecuritySetup(basic_string<char> ln);
+	
+	SECURITY_POLICY GetSecurityPolicy();
     
-	void SetSecurityPolicy(SECURITY_POLICY value)
-    {
-		m_SecurityPolicy = value;
-    }
-
-    SECURITY_SUITE GetSecuritySuite()
-    {
-		return m_SecuritySuite;
-    }
+	void SetSecurityPolicy(SECURITY_POLICY value);
     
-	void SetSecuritySuite(SECURITY_SUITE value)
-    {
-		m_SecuritySuite = value;
-    }
-
-    string GetClientSystemTitle()
-    {
-		return m_ClientSystemTitle;
-    }
-    void SetClientSystemTitle(string value)
-    {
-		m_ClientSystemTitle = value;
-    }
-
-    string GetServerSystemTitle()
-    {
-		return m_ServerSystemTitle;
-    }
-    void SetServerSystemTitle(string value)
-    {
-		m_ServerSystemTitle = value;
-    }
-
+    SECURITY_SUITE GetSecuritySuite();
+    
+	void SetSecuritySuite(SECURITY_SUITE value);
+    
+    string GetClientSystemTitle();
+    
+	void SetClientSystemTitle(string value);
+    
+    string GetServerSystemTitle();
+    
+	void SetServerSystemTitle(string value);
+    
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 5;
-	}
-
+	int GetAttributeCount();
+	
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 2;
-	}
+	int GetMethodCount();
+	
+	void GetAttributeIndexToRead(vector<int>& attributes);	
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//SECURITY_POLICY
-        if (CanRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //SECURITY_SUITE
-        if (CanRead(3))
-        {
-            attributes.push_back(3);
-        }
-
-        //ClientSystemTitle
-        if (CanRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //ServerSystemTitle
-        if (CanRead(5))
-        {
-            attributes.push_back(5);
-        }
-	}
-
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-        else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 3)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 4)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }
-        else if (index == 5)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }   
-		else 
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
-
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
+    
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-        else if (index == 2)
-        {
-            value = m_SecurityPolicy;
-        }
-        else if (index == 3)
-        {
-            value = m_SecuritySuite;
-        }
-        else if (index == 4)
-        {
-            value = m_ClientSystemTitle;
-        }
-        else if (index == 5)
-        {
-            value = m_ServerSystemTitle;
-        }   
-		else 
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
-
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+    
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);		
-		}
-        else if (index == 2)
-        {
-            m_SecurityPolicy = (SECURITY_POLICY) value.ToInteger();
-        }
-        else if (index == 3)
-        {
-            m_SecuritySuite = (SECURITY_SUITE) value.ToInteger();
-        }
-        else if (index == 4)
-        {
-			if (value.vt == DLMS_DATA_TYPE_STRING)
-            {
-                m_ClientSystemTitle = value.ToString();
-            }
-            else
-            {
-				CGXDLMSVariant tmp;
-				CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-				m_ClientSystemTitle = tmp.ToString();
-            }
-        }
-        else if (index == 5)
-        {
-			if (value.vt == DLMS_DATA_TYPE_STRING)
-            {
-                m_ServerSystemTitle = value.ToString();
-            }
-            else
-            {
-				CGXDLMSVariant tmp;
-				CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-				m_ServerSystemTitle = tmp.ToString();
-            }
-        }	
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);    
 };

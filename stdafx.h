@@ -48,12 +48,13 @@
 #define TRACE(var, fmt) printf(var, fmt)
 
 
-#ifdef WIN32 //Windows includes
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
+#if _MSC_VER > 1500
 	#define _CRTDBG_MAP_ALLOC 
 	#define CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
 	#include <crtdbg.h>
-
+#endif
 	#include <tchar.h>
     #include <Winsock.h> //Add support for sockets
 	#include <time.h>

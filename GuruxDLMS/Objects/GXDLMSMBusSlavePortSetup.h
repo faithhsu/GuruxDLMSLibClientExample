@@ -34,11 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
-
-
 
 /*
  * Defines whether or not the device has been assigned an address 
@@ -65,204 +61,56 @@ class CGXDLMSMBusSlavePortSetup : public CGXDLMSObject
 
 public:	
 	//Constructor.
-	CGXDLMSMBusSlavePortSetup() : CGXDLMSObject(OBJECT_TYPE_MBUS_SLAVE_PORT_SETUP)
-	{
-	}
+	CGXDLMSMBusSlavePortSetup();
 
 	//SN Constructor.
-	CGXDLMSMBusSlavePortSetup(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_MBUS_SLAVE_PORT_SETUP, sn)
-	{
-
-	}
+	CGXDLMSMBusSlavePortSetup(unsigned short sn);
 
 	//LN Constructor.
-	CGXDLMSMBusSlavePortSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MBUS_SLAVE_PORT_SETUP, ln)
-	{
+	CGXDLMSMBusSlavePortSetup(basic_string<char> ln);
 
-	}
-
-	 /** 
+	/** 
      Defines the baud rate for the opening sequence.
     */
-    BAUDRATE GetDefaultBaud()
-    {
-        return m_DefaultBaud;
-    }
-    void SetDefaultBaud(BAUDRATE value)
-    {
-    	m_DefaultBaud = value;
-    }    
-    /** 
+    BAUDRATE GetDefaultBaud();
+    
+	void SetDefaultBaud(BAUDRATE value);
+    
+	/** 
      Defines the baud rate for the opening sequence.
     */
-    BAUDRATE GetAvailableBaud()
-    {
-        return m_AvailableBaud;
-    }
-    void SetAvailableBaud(BAUDRATE value)
-    {
-    	m_AvailableBaud = value;
-    }
+    BAUDRATE GetAvailableBaud();
+    
+	void SetAvailableBaud(BAUDRATE value);
         
     /** 
      Defines whether or not the device has been assigned an address
      * since last power up of the device.
     */
-    ADDRESS_STATE GetAddressState()
-    {
-        return m_AddressState;
-    }
-    void SetAddressState(ADDRESS_STATE value)
-    {
-        m_AddressState = value;
-    }
+    ADDRESS_STATE GetAddressState();
     
-    
+	void SetAddressState(ADDRESS_STATE value);
+        
     /** 
      Defines the baud rate for the opening sequence.
     */
-    int GetBusAddress()
-    {
-        return m_BusAddress;
-    }
-    void SetBusAddress(int value)
-    {
-    	m_BusAddress = value;
-    }
-
+    int GetBusAddress();
+    
+	void SetBusAddress(int value);
+    
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 5;
-	}
+	int GetAttributeCount();
 
-    // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 0;
-	}
+	// Returns amount of methods.
+	int GetMethodCount();
+	
+	void GetAttributeIndexToRead(vector<int>& attributes);	
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//DefaultBaud
-        if (IsRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //AvailableBaud
-        if (IsRead(3))
-        {
-            attributes.push_back(3);
-        }
-        //ADDRESS_STATE
-        if (IsRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //BusAddress
-        if (IsRead(5))
-        {
-            attributes.push_back(5);
-        }
-	}
-
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-		else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 3)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 4)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 5)
-        {
-            type = DLMS_DATA_TYPE_UINT16;
-        } 
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
-
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
+    
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-        else if (index == 2)
-        {
-            value = m_DefaultBaud;
-        }
-        else if (index == 3)
-        {
-            value = m_AvailableBaud;
-        }
-        else if (index == 4)
-        {
-            value = m_AddressState;
-        }
-        else if (index == 5)
-        {
-            value = m_BusAddress;
-        }
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);		
-		}
-        else if (index == 2)
-        {
-			m_DefaultBaud = (BAUDRATE) value.ToInteger();            
-        }
-        else if (index == 3)
-        {
-            m_AvailableBaud = (BAUDRATE) value.ToInteger();                       
-        }
-        else if (index == 4)
-        {
-			m_AddressState = (ADDRESS_STATE) value.ToInteger();            
-        }
-        else if (index == 5)
-        {
-            m_BusAddress = value.ToInteger();
-        }
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);    
 };

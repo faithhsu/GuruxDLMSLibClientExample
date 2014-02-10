@@ -43,48 +43,18 @@ private:
     int m_MeanThroughput;
     
 public:
-    int GetPrecedence()
-    {
-        return m_Precedence;
-    }
-    void SetPrecedence(int value)
-    {
-        m_Precedence = value;
-    }
+    int GetPrecedence();
+    void SetPrecedence(int value);
     
-    int GetDelay()
-    {
-        return m_Delay;
-    }
-    void SetDelay(int value)
-    {
-        m_Delay = value;
-    }
+    int GetDelay();
+    void SetDelay(int value);
     
-    int GetReliability()
-    {
-        return m_Reliability;
-    }
-    void SetReliability(int value)
-    {
-        m_Reliability = value;
-    }
+    int GetReliability();
+    void SetReliability(int value);
     
-    int GetPeakThroughput()
-    {
-        return m_PeakThroughput;
-    }
-    void SetPeakThroughput(int value)
-    {
-        m_PeakThroughput = value;
-    }
+    int GetPeakThroughput();
+    void SetPeakThroughput(int value);
     
-    int GetMeanThroughput()
-    {
-        return m_MeanThroughput;
-    }
-    void SetMeanThroughput(int value)
-    {
-        m_MeanThroughput = value;
-    }
+    int GetMeanThroughput();
+    void SetMeanThroughput(int value);    
 };

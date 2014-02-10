@@ -34,6 +34,7 @@
 
 #pragma once
 
+#include <vector>
 #include "GXDLMSDayProfileAction.h"
 
 class CGXDLMSDayProfile
@@ -44,38 +45,19 @@ public:
     /** 
      Constructor.
     */
-    CGXDLMSDayProfile()
-    {
-		m_DayId = 0;
-    }
+    CGXDLMSDayProfile();
 
     /** 
      Constructor.
     */
-    CGXDLMSDayProfile(int dayId, vector<CGXDLMSDayProfileAction> schedules)
-    {
-        SetDayId(dayId);
-        SetDaySchedules(schedules);
-    }
+    CGXDLMSDayProfile(int dayId, vector<CGXDLMSDayProfileAction> schedules);
 
     /** 
      User defined identifier, identifying the currentday_profile.
     */
-    int GetDayId()
-    {
-        return m_DayId;
-    }
-    void SetDayId(int value)
-    {
-        m_DayId = value;
-    }
+    int GetDayId();
+    void SetDayId(int value);
     
-    vector<CGXDLMSDayProfileAction>& GetDaySchedules()
-    {
-        return m_DaySchedules;
-    }
-    void SetDaySchedules(vector<CGXDLMSDayProfileAction>& value)
-    {
-        m_DaySchedules = value;
-    }
+    vector<CGXDLMSDayProfileAction>& GetDaySchedules();
+    void SetDaySchedules(vector<CGXDLMSDayProfileAction>& value);
 };

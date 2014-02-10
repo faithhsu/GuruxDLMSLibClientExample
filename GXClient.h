@@ -41,7 +41,7 @@ class GXClient
 public:
 	CGXDLMSClient* m_Parser;
 	int m_socket;
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	HANDLE			m_hComPort;
 	OVERLAPPED		m_osWrite;
 	OVERLAPPED		m_osReader;
@@ -57,7 +57,7 @@ public:
 	void InitializeBuffers(int sendSize, int receiveSize);
 	int Close();
 	int Connect(const char* pAddress, unsigned short port = 4059);
-#if _MSC_VER > 1000
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 	int Open(const char* pPortName, bool IEC);
 #endif
 

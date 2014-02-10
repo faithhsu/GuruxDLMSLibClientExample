@@ -44,25 +44,11 @@ public:
     /** 
      Constructor.
     */
-    CGXDLMSActionSet()
-    {
-    }
+    CGXDLMSActionSet();
 
-    CGXDLMSActionItem& GetActionUp()
-    {
-        return m_ActionUp;
-    }
-    void SetActionUp(CGXDLMSActionItem& value)
-    {
-        m_ActionUp = value;
-    }
+	CGXDLMSActionItem& GetActionUp();   
+	void SetActionUp(CGXDLMSActionItem& value);
 
-    CGXDLMSActionItem GetActionDown()
-    {
-        return m_ActionDown;
-    }
-    void SetActionDown(CGXDLMSActionItem value)
-    {
-        m_ActionDown = value;
-    }
+    CGXDLMSActionItem GetActionDown();
+    void SetActionDown(CGXDLMSActionItem value);
 };

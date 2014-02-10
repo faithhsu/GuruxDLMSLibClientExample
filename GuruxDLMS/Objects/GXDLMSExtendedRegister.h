@@ -32,11 +32,9 @@
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 #pragma once
-#include <math.h>
-#include "IGXDLMSBase.h"
-#include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
+#include <math.h>
+#include "GXDLMSRegister.h"
 
 class CGXDLMSExtendedRegister : public CGXDLMSRegister
 {
@@ -45,152 +43,42 @@ private:
     CGXDLMSVariant m_Status;
 
 protected:
-	bool IsRead(int index)
-    {
-        if (index == 3)
-        {
-            return m_Unit != 0;
-        }
-		return CGXDLMSObject::IsRead(index);
-    }
+	bool IsRead(int index);
 public:
 	//Constructor.
-	CGXDLMSExtendedRegister(void) : CGXDLMSRegister(OBJECT_TYPE_EXTENDED_REGISTER, 0)
-	{
-	}
+	CGXDLMSExtendedRegister(void);
 
 	//SN Constructor.
-	CGXDLMSExtendedRegister(unsigned short sn) : CGXDLMSRegister(OBJECT_TYPE_EXTENDED_REGISTER, sn)
-	{
-	}
+	CGXDLMSExtendedRegister(unsigned short sn);
 
 	//LN Constructor.
-	CGXDLMSExtendedRegister(basic_string<char> ln) : CGXDLMSRegister(OBJECT_TYPE_EXTENDED_REGISTER, ln)
-	{
-	}
+	CGXDLMSExtendedRegister(basic_string<char> ln);
 
 	/** 
      Status of COSEM Extended Register object.
     */
-    CGXDLMSVariant GetStatus()
-    {
-        return m_Status;
-    }
-    void SetStatus(CGXDLMSVariant value)
-    {
-        m_Status = value;
-    }
+    CGXDLMSVariant GetStatus();
+
+	void SetStatus(CGXDLMSVariant value);
    
     /** 
      Capture time of COSEM Extended Register object.
     */
-    CGXDateTime& GetCaptureTime()
-    {
-        return m_CaptureTime;
-    }
+    CGXDateTime& GetCaptureTime();
 
-	void SetCaptureTime(CGXDateTime value)
-    {
-        m_CaptureTime = value;
-    }
+	void SetCaptureTime(CGXDateTime value);
 
 	// Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 5;
-	}
+	int GetAttributeCount();
 
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 1;
-	}
+	int GetMethodCount();
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		CGXDLMSRegister::GetAttributeIndexToRead(attributes);
-		//Status
-        if (!IsRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //CaptureTime
-        if (CanRead(5))
-        {
-            attributes.push_back(5);
-        }
-	}
+	void GetAttributeIndexToRead(vector<int>& attributes);
 	
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index < 4)
-		{
-			return CGXDLMSRegister::GetDataType(index, type);
-		}
-		if (index == 4)
-        {
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-        }
-		if (index == 5)
-        {
-			type = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-        }
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-	{
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-		{
-			value = m_Value;
-			return ERROR_CODES_OK;
-		}
-		if (index == 3)
-		{
-			value.Clear();
-			value.vt = DLMS_DATA_TYPE_STRUCTURE;
-			value.Arr.push_back(m_Scaler);
-			value.Arr.push_back(m_Unit);
-			return ERROR_CODES_OK;
-		}
-		return ERROR_CODES_INVALID_PARAMETER;
-	}
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
-	int SetValue(int index, CGXDLMSVariant& value)
-	{
-		if (index < 4)
-		{
-			return CGXDLMSRegister::SetValue(index, value);
-		}
-        else if (index == 4)
-        {                
-            m_Status = value;
-        }
-        else if (index == 5)
-        {
-			if (value.vt == DLMS_DATA_TYPE_OCTET_STRING)
-			{
-				CGXDLMSVariant tmp;
-				CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_DATETIME, tmp);
-				m_CaptureTime = tmp.dateTime;
-			}
-			else
-			{
-				m_CaptureTime = value.dateTime;
-			}
-        }		
-		else 
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-    }    
+	int SetValue(int index, CGXDLMSVariant& value);
 };

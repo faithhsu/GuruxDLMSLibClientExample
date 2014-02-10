@@ -34,9 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
 enum IP_OPTION_TYPE
 {
@@ -90,30 +88,11 @@ class CGXDLMSIp4SetupIpOption
     short m_Length;
     vector<unsigned char> m_Data;    
 public:
-	IP_OPTION_TYPE GetType()
-    {
-        return m_Type;
-    }
-    void SetType(IP_OPTION_TYPE value)
-    {
-        m_Type = value;
-    }
+	IP_OPTION_TYPE GetType();
+    void SetType(IP_OPTION_TYPE value);
 
-    short GetLength()
-    {
-        return m_Length;
-    }
-    void SetLength(short value)
-    {
-        m_Length = value;
-    }
-
-    vector<unsigned char>& GetData()
-    {
-        return m_Data;
-    }
-    void SetData(vector<unsigned char>& value)
-    {
-        m_Data = value;
-    }
+	short GetLength();
+    void SetLength(short value);
+    vector<unsigned char>& GetData();
+    void SetData(vector<unsigned char>& value);    
 };

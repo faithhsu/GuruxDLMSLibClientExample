@@ -34,9 +34,7 @@
 
 #pragma once
 
-#include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
-#include "../GXHelpers.h"
 
 /** 
  Defines the protocol used by the meter on the port.
@@ -83,322 +81,53 @@ class CGXDLMSIECOpticalPortSetup : public CGXDLMSObject
     basic_string<char> m_DeviceAddress;
     basic_string<char> m_Password1;
 
-	void Init()
-	{
-		m_DefaultMode = OPTICAL_PROTOCOL_MODE_DEFAULT;
-		m_DefaultBaudrate = BAUDRATE_300;
-		m_ProposedBaudrate = BAUDRATE_9600;
-	}
+	void Init();
 
 public:	
 	//Constructor.
-	CGXDLMSIECOpticalPortSetup() : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, "0.0.20.0.0.255")
-	{
-		Init();
-	}
-
+	CGXDLMSIECOpticalPortSetup();
 	//SN Constructor.
-	CGXDLMSIECOpticalPortSetup(unsigned short sn) : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, sn)
-	{
-		Init();
-	}
-
+	CGXDLMSIECOpticalPortSetup(unsigned short sn);
 	//LN Constructor.
-	CGXDLMSIECOpticalPortSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_IEC_LOCAL_PORT_SETUP, ln)
-	{
-		Init();
-	}
+	CGXDLMSIECOpticalPortSetup(basic_string<char> ln);
 
-	OPTICAL_PROTOCOL_MODE GetDefaultMode()
-    {
-        return m_DefaultMode;
-    }
-    void SetDefaultMode(OPTICAL_PROTOCOL_MODE value)
-    {
-        m_DefaultMode = value;
-    }
+	OPTICAL_PROTOCOL_MODE GetDefaultMode();
+    void SetDefaultMode(OPTICAL_PROTOCOL_MODE value);
+    
+	BAUDRATE GetDefaultBaudrate();
+    void SetDefaultBaudrate(BAUDRATE value);
+    
+    BAUDRATE GetProposedBaudrate();
+    void SetProposedBaudrate(BAUDRATE value);
 
-    BAUDRATE GetDefaultBaudrate()
-    {
-        return m_DefaultBaudrate;
-    }
-    void SetDefaultBaudrate(BAUDRATE value)
-    {
-        m_DefaultBaudrate = value;
-    }
+    LOCAL_PORT_RESPONSE_TIME GetResponseTime();    
+    void SetResponseTime(LOCAL_PORT_RESPONSE_TIME value);    
 
-    BAUDRATE GetProposedBaudrate()
-    {
-        return m_ProposedBaudrate;
-    }
-    void SetProposedBaudrate(BAUDRATE value)
-    {
-        m_ProposedBaudrate = value;
-    }
+    basic_string<char> GetDeviceAddress();
+    void SetDeviceAddress(basic_string<char> value);
+    
+    basic_string<char> GetPassword1();    
+	void SetPassword1(basic_string<char> value);
 
-    LOCAL_PORT_RESPONSE_TIME GetResponseTime()
-    {
-        return m_ResponseTime;
-    }
-    void SetResponseTime(LOCAL_PORT_RESPONSE_TIME value)
-    {
-        m_ResponseTime = value;
-    }
+    basic_string<char> GetPassword2();
+    void SetPassword2(basic_string<char> value);
 
-    basic_string<char> GetDeviceAddress()
-    {
-        return m_DeviceAddress;
-    }
-    void SetDeviceAddress(basic_string<char> value)
-    {
-        m_DeviceAddress = value;
-    }
-
-    basic_string<char> GetPassword1()
-    {
-        return m_Password1;
-    }
-    void SetPassword1(basic_string<char> value)
-    {
-        m_Password1 = value;
-    }
-
-    basic_string<char> GetPassword2()
-    {
-        return m_Password2;
-    }
-    void SetPassword2(basic_string<char> value)
-    {
-        m_Password2 = value;
-    }
-
-    basic_string<char> GetPassword5()
-    {
-        return m_Password5;
-    }
-    void SetPassword5(basic_string<char> value)
-    {
-        m_Password5 = value;
-    }
+    basic_string<char> GetPassword5();
+    void SetPassword5(basic_string<char> value);
 
     // Returns amount of attributes.
-	int GetAttributeCount()
-	{
-		return 9;
-	}
-
+	int GetAttributeCount();
+	
     // Returns amount of methods.
-	int GetMethodCount()
-	{
-		return 0;
-	}
+	int GetMethodCount();
 
-	void GetAttributeIndexToRead(vector<int>& attributes)
-	{
-		//LN is static and read only once.
-		if (CGXOBISTemplate::IsLogicalNameEmpty(m_LN))
-        {
-            attributes.push_back(1);
-        }
-		//DefaultMode
-        if (!IsRead(2))
-        {
-            attributes.push_back(2);
-        }
-        //DefaultBaudrate
-        if (!IsRead(3))
-        {
-            attributes.push_back(3);
-        }
-        //ProposedBaudrate
-        if (!IsRead(4))
-        {
-            attributes.push_back(4);
-        }
-        //ResponseTime
-        if (!IsRead(5))
-        {
-            attributes.push_back(5);
-        }
-        //DeviceAddress
-        if (!IsRead(6))
-        {
-            attributes.push_back(6);
-        }
-        //Password1
-        if (!IsRead(7))
-        {
-            attributes.push_back(7);
-        }
-        //Password2
-        if (!IsRead(8))
-        {
-            attributes.push_back(8);
-        }
-        //Password5
-        if (!IsRead(9))
-        {
-            attributes.push_back(9);
-        }	
-	}
+	void GetAttributeIndexToRead(vector<int>& attributes);
 
-	int GetDataType(int index, DLMS_DATA_TYPE& type)
-    {
-		if (index == 1)
-		{
-			type = DLMS_DATA_TYPE_OCTET_STRING;			
-		}
-		else if (index == 2)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 3)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 4)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 5)
-        {
-            type = DLMS_DATA_TYPE_ENUM;
-        }
-        else if (index == 6)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }
-        else if (index == 7)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }
-        else if (index == 8)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }
-        else if (index == 9)
-        {
-            type = DLMS_DATA_TYPE_OCTET_STRING;
-        }   
-		else
-		{
-			return ERROR_CODES_INVALID_PARAMETER;
-		}
-		return ERROR_CODES_OK;
-	}
+	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{
-			GXHelpers::AddRange(value.byteArr, m_LN, 6);
-			value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-			return ERROR_CODES_OK;
-		}
-        if (index == 2)
-        {            
-            value = GetDefaultMode();
-			return ERROR_CODES_OK;
-        }
-        if (index == 3)
-        {
-            value = GetDefaultBaudrate();
-			return ERROR_CODES_OK;
-        }
-        if (index == 4)
-        {
-            value = GetProposedBaudrate();
-			return ERROR_CODES_OK;
-        }
-        if (index == 5)
-        {
-            value = GetResponseTime();
-			return ERROR_CODES_OK;
-        }
-        if (index == 6)
-        {
-			value.Add(&m_DeviceAddress[0], m_DeviceAddress.size());
-			return ERROR_CODES_OK;
-        }
-        if (index == 7)
-        {
-			value.Add(&m_Password1[0], m_Password1.size());
-			return ERROR_CODES_OK;
-        }
-        if (index == 8)
-        {
-			value.Add(&m_Password2[0], m_Password2.size());
-			return ERROR_CODES_OK;
-        }
-        if (index == 9)
-        {
-			value.Add(&m_Password5[0], m_Password5.size());
-			return ERROR_CODES_OK;
-        }
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
-	int SetValue(int index, CGXDLMSVariant& value)
-    {
-		if (index == 1)
-		{			
-			if (value.vt != DLMS_DATA_TYPE_OCTET_STRING || value.GetSize() != 6)
-			{
-				return ERROR_CODES_INVALID_PARAMETER;
-			}
-			memcpy(m_LN, &value.byteArr[0], 6);
-			return ERROR_CODES_OK;
-		}
-        else if (index == 2)
-        {
-			SetDefaultMode((OPTICAL_PROTOCOL_MODE) value.lVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 3)
-        {
-            SetDefaultBaudrate((BAUDRATE) value.lVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 4)
-        {
-            SetProposedBaudrate((BAUDRATE) value.lVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 5)
-        {
-            SetResponseTime((LOCAL_PORT_RESPONSE_TIME) value.lVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 6)
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_STRING, tmp);
-			SetDeviceAddress(tmp.strVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 7)
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_STRING, tmp);
-            SetPassword1(tmp.strVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 8)
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_STRING, tmp);
-            SetPassword2(tmp.strVal);
-			return ERROR_CODES_OK;
-        }
-        else if (index == 9)
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_STRING, tmp);
-            SetPassword5(tmp.strVal);
-			return ERROR_CODES_OK;
-        }			
-		return ERROR_CODES_INVALID_PARAMETER;
-    }
+	int SetValue(int index, CGXDLMSVariant& value);
 };
