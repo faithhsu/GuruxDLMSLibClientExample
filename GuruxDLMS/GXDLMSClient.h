@@ -379,4 +379,7 @@ public:
 	// Returns: 0 if succeed. Otherwise error number.
 	/////////////////////////////////////////////////////////////////////////////
 	int GetDataType(unsigned char* pBuff, int Size, DLMS_DATA_TYPE& Type);
+
+	static string ObjectTypeToString(OBJECT_TYPE type);
+
 };

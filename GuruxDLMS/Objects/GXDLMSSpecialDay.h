@@ -51,4 +51,6 @@ public:
 
     int GetDayId();    
     void SetDayId(int value);
+
+	string ToString();
 };

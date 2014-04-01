@@ -86,6 +86,15 @@ int CGXDLMSMacAddressSetup::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSMacAddressSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_MacAddress);
+}
+
 void CGXDLMSMacAddressSetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.

@@ -84,6 +84,19 @@ void CGXDLMSExtendedRegister::SetCaptureTime(CGXDateTime value)
     m_CaptureTime = value;
 }
 
+int CGXDLMSExtendedRegister::GetUIDataType(int index, DLMS_DATA_TYPE& type)
+{
+    if (index == 5)
+    {
+		type = DLMS_DATA_TYPE_DATETIME;			
+    }
+	else
+	{
+		return CGXDLMSObject::GetUIDataType(index, type);
+	}
+	return ERROR_CODES_OK;
+}
+
 // Returns amount of attributes.
 int CGXDLMSExtendedRegister::GetAttributeCount()
 {
@@ -94,6 +107,13 @@ int CGXDLMSExtendedRegister::GetAttributeCount()
 int CGXDLMSExtendedRegister::GetMethodCount()
 {
 	return 1;
+}
+
+void CGXDLMSExtendedRegister::GetValues(vector<string>& values)
+{
+	CGXDLMSRegister::GetValues(values);
+	values.push_back(m_Status.ToString());
+	values.push_back(m_CaptureTime.ToString());
 }
 
 void CGXDLMSExtendedRegister::GetAttributeIndexToRead(vector<int>& attributes)

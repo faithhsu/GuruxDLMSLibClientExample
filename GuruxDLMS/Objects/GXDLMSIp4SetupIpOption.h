@@ -95,4 +95,6 @@ public:
     void SetLength(short value);
     vector<unsigned char>& GetData();
     void SetData(vector<unsigned char>& value);    
+
+	string ToString();
 };

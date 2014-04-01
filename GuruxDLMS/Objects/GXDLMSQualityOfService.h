@@ -33,6 +33,8 @@
 //---------------------------------------------------------------------------
 #pragma once
 
+#include <string>
+
 class CGXDLMSQualityOfService
 {
 private:
@@ -57,4 +59,6 @@ public:
     
     int GetMeanThroughput();
     void SetMeanThroughput(int value);    
+
+	std::string ToString();
 };

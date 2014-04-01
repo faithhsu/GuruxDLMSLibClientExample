@@ -92,6 +92,20 @@ enum ERROR_CODE
 	ERROR_CODES_UNMATCH_TYPE,		
 	// Access Error : Device reports scope of access violated
 	ERROR_CODES_VIOLATED,		
+	// Access Error : Data Block Unavailable.
+	ERROR_CODES_BLOCK_UNAVAILABLE,
+	// Access Error : Long Get Or Read Aborted.
+	ERROR_CODES_READ_ABORTED,
+	// Access Error : No Long Get Or Read In Progress.
+	ERROR_CODES_READ_IN_PROGRESS,
+	// Access Error : Long Set Or Write Aborted.
+	ERROR_CODES_WRITE_ABORTED,
+	// Access Error : No Long Set Or Write In Progress.
+	ERROR_CODES_WRITE_IN_PROGRESS,
+	// Access Error : Data Block Number Invalid.
+	ERROR_CODES_BLOCK_NUMBER_INVALID,
+	// Access Error : Other Reason.
+	ERROR_CODES_OTHER_REASON,
 	//Unknown error.
 	ERROR_CODES_UNKNOWN,
 	//Data send failed.

@@ -32,6 +32,7 @@
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 #include "GXDLMSWeekProfile.h"
+#include <sstream> 
 
 /** 
  Constructor.
@@ -125,4 +126,11 @@ int CGXDLMSWeekProfile::GetSunday()
 void CGXDLMSWeekProfile::SetSunday(int value)
 {
     m_Sunday = value;
+}
+
+string CGXDLMSWeekProfile::ToString()
+{
+	std::stringstream sb;
+	sb << m_Name;
+	return sb.str();
 }

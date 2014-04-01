@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSObjectCollection.h"
+#include <sstream> 
 
 CGXDLMSObjectCollection::~CGXDLMSObjectCollection()
 {
@@ -121,4 +122,23 @@ void CGXDLMSObjectCollection::clear()
 		}
 	}
 	std::vector<CGXDLMSObject*>::clear();
+}
+
+string CGXDLMSObjectCollection::ToString()
+{
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for (CGXDLMSObjectCollection::iterator it = begin(); it != end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = (*it)->GetName().ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	return sb.str();
 }

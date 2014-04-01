@@ -41,7 +41,7 @@ class CGXDLMSRegister : public CGXDLMSObject
 	void Init();
 protected:
 	CGXDLMSVariant m_Value;
-	unsigned char m_Scaler;
+	char m_Scaler;
 	unsigned char m_Unit;
 
 	//SN Constructor.
@@ -101,6 +101,9 @@ public:
 	
 	int Invoke(int index, CGXDLMSVariant& value);
 	
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);	
 
 	int GetDataType(int index, DLMS_DATA_TYPE& type);

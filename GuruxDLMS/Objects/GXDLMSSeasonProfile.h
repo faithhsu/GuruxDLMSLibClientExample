@@ -70,4 +70,6 @@ public:
     */    
     basic_string<char> GetWeekName();    
     void SetWeekName(basic_string<char> value);    
+
+	string ToString();
 };

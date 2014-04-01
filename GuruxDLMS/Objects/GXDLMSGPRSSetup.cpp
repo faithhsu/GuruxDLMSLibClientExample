@@ -93,6 +93,17 @@ int CGXDLMSGPRSSetup::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSGPRSSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_APN);
+	values.push_back(CGXDLMSVariant(m_PINCode).ToString());
+	values.push_back(m_DefaultQualityOfService.ToString() + " " + m_RequestedQualityOfService.ToString());
+}
+
 void CGXDLMSGPRSSetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -168,17 +179,24 @@ int CGXDLMSGPRSSetup::GetValue(int index, unsigned char* parameters, int length,
         data.push_back(2);
         data.push_back(DLMS_DATA_TYPE_STRUCTURE);            
         data.push_back(5);
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetPrecedence());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetDelay());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetReliability());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetPeakThroughput());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetMeanThroughput());
+		int ret;
+        if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetPrecedence())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetDelay())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetReliability())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetPeakThroughput())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_DefaultQualityOfService.GetMeanThroughput())) != 0)
+		{
+			return ret;
+		}
         data.push_back(5);
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetPrecedence());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetDelay());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetReliability());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetPeakThroughput());
-        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetMeanThroughput());                
+        if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetPrecedence())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetDelay())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetReliability())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetPeakThroughput())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_RequestedQualityOfService.GetMeanThroughput())) != 0)
+		{
+			return ret;
+		}
 		value = data;
 		return ERROR_CODES_OK;
     } 		
@@ -211,8 +229,9 @@ int CGXDLMSGPRSSetup::SetValue(int index, CGXDLMSVariant& value)
 			{
 				return ret;
 			}
-			m_APN = tmp.strVal;
+			m_APN = tmp.strVal;			
         }
+		value = m_APN;
     }
     else if (index == 3)
     {            

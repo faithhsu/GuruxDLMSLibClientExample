@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSHdlcSetup.h"
+#include "../GXDLMSConverter.h"
 
 //Constructor.
 CGXDLMSHdlcSetup::CGXDLMSHdlcSetup() : CGXDLMSObject(OBJECT_TYPE_IEC_HDLC_SETUP)
@@ -140,6 +141,22 @@ int CGXDLMSHdlcSetup::GetAttributeCount()
 int CGXDLMSHdlcSetup::GetMethodCount()
 {
 	return 0;
+}
+
+void CGXDLMSHdlcSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);	
+	values.push_back(CGXDLMSConverter::ToString(m_CommunicationSpeed));
+	values.push_back(CGXDLMSVariant(m_WindowSizeTransmit).ToString());
+	values.push_back(CGXDLMSVariant(m_WindowSizeReceive).ToString());
+	values.push_back(CGXDLMSVariant(m_MaximumInfoLengthTransmit).ToString());
+	values.push_back(CGXDLMSVariant(m_MaximumInfoLengthReceive).ToString());
+	values.push_back(CGXDLMSVariant(m_InterCharachterTimeout).ToString());
+	values.push_back(CGXDLMSVariant(m_InactivityTimeout).ToString());
+	values.push_back(CGXDLMSVariant(m_DeviceAddress).ToString());
 }
 
 void CGXDLMSHdlcSetup::GetAttributeIndexToRead(vector<int>& attributes)

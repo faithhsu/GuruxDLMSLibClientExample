@@ -37,10 +37,14 @@
 #include "IGXDLMSBase.h"
 #include "GXDLMSObject.h"
 #include "../GXHelpers.h"
+#include "GXDLMSObjectDefinition.h"
 
 class CGXDLMSRegisterActivation : public CGXDLMSObject
 {
-	CGXDLMSVariant m_Value;
+	vector<CGXDLMSObjectDefinition> m_RegisterAssignment;
+	vector<std::pair<vector<unsigned char>, vector<unsigned char> > > m_MaskList;
+	vector<unsigned char> m_ActiveMask;
+
 public:	
 	//Constructor.
 	CGXDLMSRegisterActivation();
@@ -51,11 +55,11 @@ public:
 	//LN Constructor.
 	CGXDLMSRegisterActivation(basic_string<char> ln);
 	
-	// Get value of COSEM Data object.
-    CGXDLMSVariant GetValue();
-    
-    // Set value of COSEM Data object.
-    void SetValue(CGXDLMSVariant& value);
+	vector<CGXDLMSObjectDefinition>& GetRegisterAssignment();
+
+	vector<std::pair<vector<unsigned char>, vector<unsigned char> > >& GetMaskList();
+
+	vector<unsigned char>& GetActiveMask();
     
     // Returns amount of attributes.
 	int GetAttributeCount();
@@ -63,6 +67,8 @@ public:
     // Returns amount of methods.
 	int GetMethodCount();
 	
+	void GetValues(vector<string>& attributes);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);
 	
 	int GetDataType(int index, DLMS_DATA_TYPE& type);

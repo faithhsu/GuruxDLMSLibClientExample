@@ -69,4 +69,6 @@ public:
     */    
     int GetScriptSelector();
     void SetScriptSelector(int value);
+
+	string ToString();
 };

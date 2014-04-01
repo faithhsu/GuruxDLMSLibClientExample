@@ -34,6 +34,7 @@
 
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
+#include "../GXDLMSConverter.h"
 #include "GXDLMSDemandRegister.h"
 
 bool CGXDLMSDemandRegister::IsRead(int index)
@@ -193,6 +194,35 @@ void CGXDLMSDemandRegister::NextPeriod()
 {
 
 }    
+
+void CGXDLMSDemandRegister::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);	
+	values.push_back(m_CurrentAvarageValue.ToString());
+	values.push_back(m_LastAvarageValue.ToString());
+	string str = "Scaler: ";
+	//if there is no fractal part.
+	double s = GetScaler();
+	if (s - (long)s == 0)
+	{
+		str += CGXDLMSVariant((long)s).ToString();
+	}
+	else
+	{
+		str += CGXDLMSVariant(s).ToString();
+	}	
+	str += " Unit: ";
+	str += CGXDLMSConverter::GetUnitAsString(m_Unit);
+	values.push_back(str);
+	values.push_back(m_Status.ToString());
+	values.push_back(m_CaptureTime.ToString());
+	values.push_back(m_StartTimeCurrent.ToString());	
+	values.push_back(CGXDLMSVariant(m_Period).ToString());
+	values.push_back(CGXDLMSVariant(m_NumberOfPeriods).ToString());
+}
 
 void CGXDLMSDemandRegister::GetAttributeIndexToRead(vector<int>& attributes)
 {
@@ -382,11 +412,25 @@ int CGXDLMSDemandRegister::SetValue(int index, CGXDLMSVariant& value)
 	}
     else if (index == 2)
     {
-        SetCurrentAvarageValue(value.lVal);
+		if (m_Scaler != 0)
+		{
+			SetCurrentAvarageValue(CGXDLMSVariant(value.ToDouble() * m_Scaler));
+		}
+		else
+		{
+			SetCurrentAvarageValue(value);
+		}
     }
     else if (index == 3)
     {
-        SetLastAvarageValue(value);
+		if (m_Scaler != 0)
+		{
+			SetLastAvarageValue(CGXDLMSVariant(value.ToDouble() * GetScaler()));
+		}
+		else
+		{
+			SetLastAvarageValue(value);
+		}        
     }
     else if (index == 4)
     {

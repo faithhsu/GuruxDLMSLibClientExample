@@ -88,4 +88,6 @@ public:
     int GetSunday();
     
     void SetSunday(int value);    
+
+	string ToString();
 };

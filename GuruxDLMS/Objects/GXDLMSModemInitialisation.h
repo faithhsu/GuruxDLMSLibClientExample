@@ -50,5 +50,7 @@ public:
     basic_string<char> GetResponse();
 	void SetResponse(basic_string<char> value);
     int GetDelay();
-    void SetDelay(int value);    
+    void SetDelay(int value);  
+
+	string ToString();
 };

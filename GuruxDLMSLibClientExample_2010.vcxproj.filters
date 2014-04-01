@@ -219,6 +219,42 @@
     <ClInclude Include="GuruxDLMS\Objects\IGXDLMSBase.h">
       <Filter>GuruxDLMS\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXApplicationContextName.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXAuthenticationMechanismName.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSMBusMasterPortSetup.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSMessageHandler.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSObjectDefinition.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSPppSetupIPCPOption.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSPppSetupLcpOption.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSPushObject.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSPushSetup.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXDLMSScriptAction.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXSendDestinationAndMethod.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GuruxDLMS\Objects\GXxDLMSContextType.h">
+      <Filter>GuruxDLMS\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

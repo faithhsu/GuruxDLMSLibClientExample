@@ -35,7 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSActionSchedule.h"
-
+#include <sstream> 
     
 void CGXDLMSActionSchedule::Init()
 {
@@ -120,6 +120,31 @@ int CGXDLMSActionSchedule::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSActionSchedule::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_ExecutedScriptLogicalName + " " + CGXDLMSVariant(m_ExecutedScriptSelector).ToString());
+	values.push_back(CGXDLMSVariant(m_Type).ToString());	
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDateTime>::iterator it = m_ExecutionTime.begin(); it != m_ExecutionTime.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());
+}
+
 void CGXDLMSActionSchedule::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -181,13 +206,17 @@ int CGXDLMSActionSchedule::GetValue(int index, unsigned char* parameters, int le
     }
     if (index == 2)
     {
+		int ret;
         vector<unsigned char> stream;
 		stream.push_back(DLMS_DATA_TYPE_STRUCTURE);
         stream.push_back(2);
 		CGXDLMSVariant tmp;
 		tmp.Add(GetExecutedScriptLogicalName());
-        CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-        CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_UINT16, GetExecutedScriptSelector());
+        if ((ret = CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_OCTET_STRING, tmp)) != 0 ||
+			(ret = CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_UINT16, GetExecutedScriptSelector())) != 0)
+		{
+			return ret;
+		}
         value = stream;
 		return ERROR_CODES_OK;
     }
@@ -198,6 +227,7 @@ int CGXDLMSActionSchedule::GetValue(int index, unsigned char* parameters, int le
     }
     if (index == 4)
     {
+		int ret;
         vector<unsigned char> stream;
         stream.push_back(DLMS_DATA_TYPE_ARRAY);
         CGXOBISTemplate::SetObjectCount(GetExecutionTime().size(), stream);
@@ -205,8 +235,11 @@ int CGXDLMSActionSchedule::GetValue(int index, unsigned char* parameters, int le
         {
             stream.push_back(DLMS_DATA_TYPE_STRUCTURE);
             stream.push_back(2); //Count
-            CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_TIME, *it); //Time
-            CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_DATE, *it); //Date
+            if ((ret = CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_TIME, *it)) != 0 || //Time
+				(ret = CGXOBISTemplate::SetData(stream, DLMS_DATA_TYPE_DATE, *it)) != 0) //Date
+			{
+				return ret;
+			}
         }
         value = stream;
 		return ERROR_CODES_OK;
@@ -228,15 +261,13 @@ int CGXDLMSActionSchedule::SetValue(int index, CGXDLMSVariant& value)
     }
     else if (index == 2)
     {                
-        //CGXDLMSVariant tmp;
-		//CGXDLMSClient::ChangeType(value.Arr[0].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
 		SetExecutedScriptLogicalName(value.Arr[0].ToString());
-		SetExecutedScriptSelector(value.Arr[1].lVal);
+		SetExecutedScriptSelector(value.Arr[1].ToInteger());
 		return ERROR_CODES_OK;
     }
     else if (index == 3)
     {
-		SetType((SINGLE_ACTION_SCHEDULE_TYPE) value.lVal);
+		SetType((SINGLE_ACTION_SCHEDULE_TYPE) value.ToInteger());
 		return ERROR_CODES_OK;
     }        
     else if (index == 4)
@@ -248,9 +279,14 @@ int CGXDLMSActionSchedule::SetValue(int index, CGXDLMSVariant& value)
 			CGXDLMSVariant time, date;
 			CGXDLMSClient::ChangeType((*it).Arr[0].byteArr, DLMS_DATA_TYPE_TIME, time);
 			CGXDLMSClient::ChangeType((*it).Arr[1].byteArr, DLMS_DATA_TYPE_DATE, date);
-			tm tm2 = time.dateTime.GetValue();
-			tm dt2 = date.dateTime.GetValue();
-			m_ExecutionTime.push_back(CGXDateTime(dt2.tm_year, dt2.tm_mon, dt2.tm_mday, tm2.tm_hour, tm2.tm_min, tm2.tm_sec, 0));
+			struct tm val = time.dateTime.GetValue();
+			struct tm val2 = date.dateTime.GetValue();
+			val2.tm_hour = val.tm_hour;
+			val2.tm_min = val.tm_min;
+			val2.tm_sec = val.tm_sec;
+			date.dateTime.SetValue(val2);
+			date.dateTime.SetSkip((DATETIME_SKIPS) (time.dateTime.GetSkip() | date.dateTime.GetSkip()));
+			m_ExecutionTime.push_back(date.dateTime);
         }
 		return ERROR_CODES_OK;
     }                       

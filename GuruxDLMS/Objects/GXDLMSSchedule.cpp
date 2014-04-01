@@ -77,6 +77,15 @@ int CGXDLMSSchedule::GetMethodCount()
 	return 3;
 }
 
+void CGXDLMSSchedule::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_Entries.ToString());
+}
+
 void CGXDLMSSchedule::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.

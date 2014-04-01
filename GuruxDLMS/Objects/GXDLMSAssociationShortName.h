@@ -36,13 +36,12 @@
 
 
 #include "GXDLMSObject.h"
-//Mikko #include "GXDLMSObjectCollection.h"
 
 class CGXDLMSAssociationShortName : public CGXDLMSObject
 {
-	//TODO: Object m_AccessRightsList;
+	CGXDLMSVariant m_AccessRightsList;
     CGXDLMSObjectCollection m_ObjectList;
-    //TODO: Object m_SecuritySetupReference;	
+    string m_SecuritySetupReference;	
 
 	int GetAccessRights(CGXDLMSObject* pObj, vector<unsigned char>& data);
 	void UpdateAccessRights(CGXDLMSVariant& buff);
@@ -53,25 +52,26 @@ public:
 
 	CGXDLMSObjectCollection& GetObjectList();
     
-	/* TODO:
-    Object GetAccessRightsList()
+    CGXDLMSVariant& GetAccessRightsList()
     {
         return m_AccessRightsList;
     }
-    void SetAccessRightsList(Object value)
+    void SetAccessRightsList(CGXDLMSVariant& value)
     {
         m_AccessRightsList = value;
     }
 
-    Object GetSecuritySetupReference()
+    string& GetSecuritySetupReference()
     {
         return m_SecuritySetupReference;
     }
-    void SetSecuritySetupReference(Object value)
+    void SetSecuritySetupReference(string& value)
     {
         m_SecuritySetupReference = value;
     }
-*/
+
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
 
 	void GetAttributeIndexToRead(vector<int>& attributes);
 

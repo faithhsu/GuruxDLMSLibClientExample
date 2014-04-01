@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSImageActivateInfo.h"
+#include <sstream> 
 
 /**
  * Constructor.
@@ -89,4 +90,15 @@ string CGXDLMSImageActivateInfo::GetSignature()
 void CGXDLMSImageActivateInfo::SetSignature(string value)
 {
     m_Signature = value;
+}
+
+string CGXDLMSImageActivateInfo::ToString()
+{
+	std::stringstream sb;	
+	sb << m_Identification.c_str();
+	sb << " ";
+	sb << m_Signature.c_str();
+	sb << " ";
+	sb << m_Size;
+	return sb.str();
 }

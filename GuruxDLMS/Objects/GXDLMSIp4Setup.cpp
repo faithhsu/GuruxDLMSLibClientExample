@@ -34,6 +34,7 @@
 
 #include "GXDLMSIp4Setup.h"
 #include "../GXDLMSClient.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSIp4Setup::CGXDLMSIp4Setup() : CGXDLMSObject(OBJECT_TYPE_IP4_SETUP)
@@ -142,6 +143,55 @@ int CGXDLMSIp4Setup::GetAttributeCount()
 int CGXDLMSIp4Setup::GetMethodCount()
 {
 	return 3;
+}
+
+void CGXDLMSIp4Setup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	//CGXDLMSVariant().ToString()
+	values.push_back(m_DataLinkLayerReference);
+	values.push_back(CGXDLMSVariant(m_IPAddress).ToString());
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<unsigned long>::iterator it = m_MulticastIPAddress.begin(); it != m_MulticastIPAddress.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = CGXDLMSVariant(*it).ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());		
+
+	//Clear str.
+	sb.str(std::string());		
+	sb << '[';
+	empty = true;
+	for(vector<CGXDLMSIp4SetupIpOption>::iterator it = m_IPOptions.begin(); it != m_IPOptions.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());	
+	
+	values.push_back(CGXDLMSVariant(m_SubnetMask).ToString());
+	values.push_back(CGXDLMSVariant(m_GatewayIPAddress).ToString());
+	values.push_back(CGXDLMSVariant(m_UseDHCP).ToString());
+	values.push_back(CGXDLMSVariant(m_PrimaryDNSAddress).ToString());
+	values.push_back(CGXDLMSVariant(m_SecondaryDNSAddress).ToString());	
 }
 
 void CGXDLMSIp4Setup::GetAttributeIndexToRead(vector<int>& attributes)
@@ -269,9 +319,13 @@ int CGXDLMSIp4Setup::GetValue(int index, unsigned char* parameters, int length, 
 		vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         CGXOBISTemplate::SetObjectCount(m_MulticastIPAddress.size(), data);
+		int ret;
 		for(vector<unsigned long>::iterator it = m_MulticastIPAddress.begin(); it != m_MulticastIPAddress.end(); ++it)            
         {
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT32, *it);
+			if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT32, *it)) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
 		return ERROR_CODES_OK;
@@ -281,13 +335,17 @@ int CGXDLMSIp4Setup::GetValue(int index, unsigned char* parameters, int length, 
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         CGXOBISTemplate::SetObjectCount(m_IPOptions.size(), data);
+		int ret;
 		for(vector<CGXDLMSIp4SetupIpOption>::iterator it = m_IPOptions.begin(); it != m_IPOptions.end(); ++it)            
         {
             data.push_back(DLMS_DATA_TYPE_STRUCTURE);
             data.push_back(3);
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetType());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetLength());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetData());                        
+            if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetType())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetLength())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetData())) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
 		return ERROR_CODES_OK;

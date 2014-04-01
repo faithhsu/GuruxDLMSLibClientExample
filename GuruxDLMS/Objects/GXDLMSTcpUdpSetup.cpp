@@ -133,6 +133,19 @@ int CGXDLMSTcpUdpSetup::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSTcpUdpSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(CGXDLMSVariant(m_Port).ToString());
+	values.push_back(m_IPReference);
+	values.push_back(CGXDLMSVariant(m_MaximumSegmentSize).ToString());
+	values.push_back(CGXDLMSVariant(m_MaximumSimultaneousConnections).ToString());
+	values.push_back(CGXDLMSVariant(m_InactivityTimeout).ToString());
+}
+
 void CGXDLMSTcpUdpSetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -250,7 +263,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
 	}
     else if (index == 2)
 	{
-		SetPort(value.lVal);
+		SetPort(value.ToInteger());
 		return ERROR_CODES_OK;			
 	}
 	else if (index == 3)
@@ -263,6 +276,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
         {
             if (value.vt == DLMS_DATA_TYPE_OCTET_STRING)
             {
+				SetIPReference(value.ToString());
 				/*
                 String str = "";
                 for(int ch : (byte[]) value)
@@ -287,7 +301,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
         }
         else
         {
-            SetMaximumSegmentSize(value.lVal);
+            SetMaximumSegmentSize(value.ToInteger());
         }
     }
     else if (index == 5)
@@ -298,7 +312,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
         }
         else
         {
-            SetMaximumSimultaneousConnections(value.lVal);
+            SetMaximumSimultaneousConnections(value.ToInteger());
         }
     }
     else if (index == 6)
@@ -309,7 +323,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
         }
         else
         {
-            SetInactivityTimeout(value.lVal);
+            SetInactivityTimeout(value.ToInteger());
         }
     }
 	else

@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSSpecialDay.h"
+#include <sstream> 
 
 int CGXDLMSSpecialDay::GetIndex()
 {
@@ -59,4 +60,15 @@ int CGXDLMSSpecialDay::GetDayId()
 void CGXDLMSSpecialDay::SetDayId(int value)
 {
     m_DayId = value;
+}
+
+string CGXDLMSSpecialDay::ToString()
+{
+	std::stringstream sb;
+	sb << m_Index;
+	sb << " ";
+	sb << m_Date.ToString().c_str();
+	sb << " ";
+	sb << m_DayId;
+	return sb.str();
 }

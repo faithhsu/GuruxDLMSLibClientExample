@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSSpecialDaysTable.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSSpecialDaysTable::CGXDLMSSpecialDaysTable() : CGXDLMSObject(OBJECT_TYPE_SPECIAL_DAYS_TABLE)
@@ -73,6 +74,29 @@ int CGXDLMSSpecialDaysTable::GetAttributeCount()
 int CGXDLMSSpecialDaysTable::GetMethodCount()
 {
 	return 0;
+}
+
+void CGXDLMSSpecialDaysTable::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln, str;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDLMSSpecialDay>::iterator it = m_Entries.begin(); it != m_Entries.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());
 }
 
 void CGXDLMSSpecialDaysTable::GetAttributeIndexToRead(vector<int>& attributes)
@@ -120,13 +144,17 @@ int CGXDLMSSpecialDaysTable::GetValue(int index, unsigned char* parameters, int 
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         //Add count            
 		CGXOBISTemplate::SetObjectCount(m_Entries.size(), data);
+		int ret;
 		for (vector<CGXDLMSSpecialDay>::iterator it = m_Entries.begin(); it != m_Entries.end(); ++it)
         {
             data.push_back(DLMS_DATA_TYPE_STRUCTURE);
             data.push_back(3); //Count
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).GetIndex());
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_DATETIME, (*it).GetDate());
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, (*it).GetDayId());
+			if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).GetIndex())) != ERROR_CODES_OK ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_DATETIME, (*it).GetDate())) != ERROR_CODES_OK ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, (*it).GetDayId())) != ERROR_CODES_OK)
+			{
+				return ret;
+			}
         }
 		return ERROR_CODES_OK;
 	}

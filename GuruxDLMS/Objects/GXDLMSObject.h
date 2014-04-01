@@ -132,24 +132,16 @@ public:
 	//Set description of the object.
 	void SetDescription(basic_string<char> value);
 
-	/* TODO:
-	//Get Object's attribute index.
-	char GetAttributeIndex();
-	//Set Object's attribute index.
-	void SetAttributeIndex(char value);
-	*/
-
 	CGXDLMSObjectCollection* GetParent()
 	{
 		return m_Parent;
 	}
 
-	/* TODO:
-	//Get Object's data index.
-	unsigned short GetDataIndex();	
-	//Set Object's data index.
-	void SetDataIndex(unsigned short value);
-	*/
+	//Get values as string.
+	virtual void GetValues(vector<string>& values)
+	{
+		assert(0);		
+	}
 
 	virtual void GetAttributeIndexToRead(vector<int>& attributes)
 	{

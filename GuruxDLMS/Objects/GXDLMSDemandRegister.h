@@ -41,7 +41,7 @@ class CGXDLMSDemandRegister : public CGXDLMSObject
 {
 	CGXDLMSVariant m_CurrentAvarageValue;    
     CGXDLMSVariant m_LastAvarageValue;    
-    unsigned char m_Scaler;
+    char m_Scaler;
 	unsigned char m_Unit;
     CGXDLMSVariant m_Status;
     CGXDateTime m_CaptureTime;
@@ -129,6 +129,9 @@ public:
      */
     void NextPeriod();
     
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);
     
 	// Returns amount of attributes.

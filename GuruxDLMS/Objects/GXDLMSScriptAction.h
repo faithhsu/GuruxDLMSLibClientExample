@@ -56,7 +56,6 @@ class CGXDLMSScriptAction
     string m_LogicalName;
     int m_Index;
     CGXDLMSVariant m_Parameter;
-    DLMS_DATA_TYPE m_ParameterType;
 public:
     /** 
      Defines which action to be applied to the referenced object.
@@ -87,10 +86,7 @@ public:
      Parameter is service spesific.
     */
     CGXDLMSVariant GetParameter();
-    void SetParameter(CGXDLMSVariant value, DLMS_DATA_TYPE type);
-    
-    /** 
-     Return parameter type..
-    */
-    DLMS_DATA_TYPE GetParameterType();
+    void SetParameter(CGXDLMSVariant value);
+
+	string ToString();
 };

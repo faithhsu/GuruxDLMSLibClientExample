@@ -122,6 +122,17 @@ void SetSecuritySetupReference(Object value)
 }
 */
 
+void CGXDLMSAssociationShortName::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_ObjectList.ToString());	
+	values.push_back(m_AccessRightsList.ToString());
+	values.push_back(m_SecuritySetupReference);
+}
+
 void CGXDLMSAssociationShortName::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -186,6 +197,7 @@ int CGXDLMSAssociationShortName::GetDataType(int index, DLMS_DATA_TYPE& type)
 // Returns SN Association View.
 int CGXDLMSAssociationShortName::GetObjects(vector<unsigned char>& data)
 {
+	int ret;
 	data.push_back(DLMS_DATA_TYPE_ARRAY);
 	//Add count
 	CGXOBISTemplate::SetObjectCount(m_ObjectList.size(), data);
@@ -196,11 +208,14 @@ int CGXDLMSAssociationShortName::GetObjects(vector<unsigned char>& data)
 		OBJECT_TYPE type = (*it)->GetObjectType();
 		unsigned short version = (*it)->GetVersion();
 		unsigned short sn = (*it)->GetShortName();
-		CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, sn); //base address.
-		CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, type); //ClassID
-		CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, version); //Version
 		CGXDLMSVariant ln((*it)->m_LN, 6, DLMS_DATA_TYPE_OCTET_STRING);
-		CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, ln); //LN
+		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, sn)) != 0 || //base address.
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, type)) != 0 || //ClassID
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, version)) != 0 || //Version			
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, ln)) != 0) //LN
+		{
+			return ret;
+		}
 	}
 	return ERROR_CODES_OK;
 }
@@ -222,6 +237,7 @@ int CGXDLMSAssociationShortName::GetValue(int index, unsigned char* parameters, 
 	}
 	if (index == 3)
 	{
+		int ret;
 		bool lnExists = m_ObjectList.FindBySN(GetShortName()) != NULL;
         //Add count        
         int cnt = m_ObjectList.size();
@@ -234,11 +250,17 @@ int CGXDLMSAssociationShortName::GetValue(int index, unsigned char* parameters, 
         CGXOBISTemplate::SetObjectCount(cnt, data);
 		for(vector<CGXDLMSObject*>::iterator it = m_ObjectList.begin(); it != m_ObjectList.end(); ++it)
         {
-            GetAccessRights(*it, data);
+            if ((ret = GetAccessRights(*it, data)) != 0)
+			{
+				return ret;
+			}
         }
         if (!lnExists)
         {
-            GetAccessRights(this, data);
+            if ((ret = GetAccessRights(this, data)) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
 	}

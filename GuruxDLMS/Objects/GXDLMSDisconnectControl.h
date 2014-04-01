@@ -36,65 +36,6 @@
 
 #include "GXDLMSObject.h"
 
-enum CONTROLSTATE 
-{
-    /*
-     * The output_state is set to false and the consumer is disconnected.
-     */
-    CONTROLSTATE_DISCONNECTED,
-    /*
-     * The output_state is set to true and the consumer is connected.
-     */
-    CONTROLSTATE_CONNECTED,
-    /*
-     * The output_state is set to false and the consumer is disconnected.
-     */
-    CONTROLSTATE_READY_FOR_RECONNECTION
-};
-
-
-/*
- * Configures the behaviour of the disconnect control object for all
-triggers, i.e. the possible state transitions.
- */
-enum CONTROLMODE 
-{
-    /*
-     * The disconnect control object is always in 'connected' state,
-     */
-    CONTROLMODE_NONE,
-    /*
-     * Disconnection: Remote (b, c), manual (f), local (g) 
-     * Reconnection: Remote (d), manual (e).
-     */
-    CONTROLMODE_MODE_1,
-    /*
-     * Disconnection: Remote (b, c), manual (f), local (g) 
-     * Reconnection: Remote (a), manual (e).
-     */
-    CONTROLMODE_MODE_2,
-    /*
-     * Disconnection: Remote (b, c), manual (-), local (g) 
-     * Reconnection: Remote (d), manual (e).
-     */
-    CONTROLMODE_MODE_3,
-    /*
-     * Disconnection: Remote (b, c), manual (-), local (g) 
-     * Reconnection: Remote (a), manual (e)
-     */
-    CONTROLMODE_MODE_4,
-    /*
-     * Disconnection: Remote (b, c), manual (f), local (g) 
-     * Reconnection: Remote (d), manual (e), local (h),
-     */
-    CONTROLMODE_MODE_5,
-    /*
-     * Disconnection: Remote (b, c), manual (-), local (g) 
-     * Reconnection: Remote (d), manual (e), local (h)
-     */
-    CONTROLMODE_MODE_6,
-};
-
 class CGXDLMSDisconnectControl : public CGXDLMSObject
 {
 	bool m_OutputState;
@@ -134,6 +75,9 @@ public:
 
     // Returns amount of methods.
 	int GetMethodCount();
+
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
 
 	void GetAttributeIndexToRead(vector<int>& attributes);
 

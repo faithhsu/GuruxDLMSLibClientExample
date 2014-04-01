@@ -49,7 +49,7 @@
 
 
 #if defined(_WIN32) || defined(_WIN64)//Windows includes
-#if _MSC_VER > 1500
+#if _MSC_VER > 1400
 	#define _CRTDBG_MAP_ALLOC 
 	#define CRTDBG_MAP_ALLOC
 	#include <stdlib.h>

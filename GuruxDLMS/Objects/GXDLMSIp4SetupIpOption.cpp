@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSIp4SetupIpOption.h"
+#include <sstream> 
 
 IP_OPTION_TYPE CGXDLMSIp4SetupIpOption::GetType()
 {
@@ -60,4 +61,11 @@ vector<unsigned char>& CGXDLMSIp4SetupIpOption::GetData()
 void CGXDLMSIp4SetupIpOption::SetData(vector<unsigned char>& value)
 {
     m_Data = value;
+}
+
+string CGXDLMSIp4SetupIpOption::ToString()
+{
+	std::stringstream sb;	
+	sb << m_Type;
+	return sb.str();
 }

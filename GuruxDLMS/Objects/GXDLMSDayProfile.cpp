@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSDayProfile.h"
+#include <sstream> 
 
 /** 
  Constructor.
@@ -70,4 +71,17 @@ vector<CGXDLMSDayProfileAction>& CGXDLMSDayProfile::GetDaySchedules()
 void CGXDLMSDayProfile::SetDaySchedules(vector<CGXDLMSDayProfileAction>& value)
 {
     m_DaySchedules = value;
+}
+
+string CGXDLMSDayProfile::ToString()
+{
+	std::stringstream sb;
+	sb << m_DayId;	
+	for(vector<CGXDLMSDayProfileAction>::iterator it = m_DaySchedules.begin(); it != m_DaySchedules.end(); ++it)
+    {
+        sb << " ";
+		sb << it->ToString().c_str();
+    }
+	return sb.str();
+
 }

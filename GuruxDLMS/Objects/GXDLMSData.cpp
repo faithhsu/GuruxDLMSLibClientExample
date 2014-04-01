@@ -87,6 +87,15 @@ int CGXDLMSData::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSData::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_Value.ToString());
+}
+
 void CGXDLMSData::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.

@@ -35,10 +35,11 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSClock.h"
+#include "../GXDLMSConverter.h"
 
 void CGXDLMSClock::Init()
 {
-    m_Deviation = m_ClockBase = 0;		
+	m_Deviation = m_ClockBase = CLOCKBASE_NONE;		
 	m_Enabled = false;		
 	m_TimeZone = 0;
 	m_Status = GXDLMS_CLOCK_STATUS_OK;
@@ -87,11 +88,11 @@ void CGXDLMSClock::SetTime(CGXDateTime& value)
 /** 
  TimeZone of COSEM Clock object.
 */
-unsigned short CGXDLMSClock::GetTimeZone()
+short CGXDLMSClock::GetTimeZone()
 {
     return m_TimeZone;
 }
-void CGXDLMSClock::SetTimeZone(unsigned short value)
+void CGXDLMSClock::SetTimeZone(short value)
 {
     m_TimeZone = value;
 }
@@ -148,11 +149,11 @@ void CGXDLMSClock::SetEnabled(bool value)
 /** 
  Clock base of COSEM Clock object.
 */
-char CGXDLMSClock::GetClockBase()
+CLOCKBASE CGXDLMSClock::GetClockBase()
 {
     return m_ClockBase;
 }
-void CGXDLMSClock::SetClockBase(char value)
+void CGXDLMSClock::SetClockBase(CLOCKBASE value)
 {
     m_ClockBase = value;
 }
@@ -167,6 +168,22 @@ int CGXDLMSClock::GetAttributeCount()
 int CGXDLMSClock::GetMethodCount()
 {
 	return 0;
+}
+
+void CGXDLMSClock::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_Time.ToString());
+	values.push_back(CGXDLMSVariant(m_TimeZone).ToString());
+	values.push_back(CGXDLMSConverter::ToString(m_Status));
+	values.push_back(m_Begin.ToString());
+	values.push_back(m_End.ToString());
+	values.push_back(CGXDLMSVariant(m_Deviation).ToString());
+	values.push_back(CGXDLMSVariant(m_Enabled).ToString());
+	values.push_back(CGXDLMSConverter::ToString(m_ClockBase));
 }
 
 void CGXDLMSClock::GetAttributeIndexToRead(vector<int>& attributes)
@@ -216,6 +233,19 @@ void CGXDLMSClock::GetAttributeIndexToRead(vector<int>& attributes)
     {
         attributes.push_back(9);
     }
+}
+
+int CGXDLMSClock::GetUIDataType(int index, DLMS_DATA_TYPE& type)
+{
+	if (index == 2)
+    {
+		type = DLMS_DATA_TYPE_DATETIME;			
+    }
+	else
+	{
+		return CGXDLMSObject::GetUIDataType(index, type);
+	}
+	return ERROR_CODES_OK;
 }
 
 int CGXDLMSClock::GetDataType(int index, DLMS_DATA_TYPE& type)
@@ -388,7 +418,7 @@ int CGXDLMSClock::SetValue(int index, CGXDLMSVariant& value)
     }
     else if (index == 9)
     {
-        SetClockBase(value.ToInteger());
+        SetClockBase((CLOCKBASE)value.ToInteger());
     }
     else
 	{

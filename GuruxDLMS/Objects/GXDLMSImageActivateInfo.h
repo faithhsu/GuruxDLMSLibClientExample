@@ -73,4 +73,6 @@ public:
     */
     string GetSignature();
     void SetSignature(string value);
+
+	string ToString();
 };

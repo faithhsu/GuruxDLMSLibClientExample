@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSActionSet.h"
+#include <sstream> 
 
 CGXDLMSActionSet::CGXDLMSActionSet()
 {
@@ -54,4 +55,13 @@ CGXDLMSActionItem CGXDLMSActionSet::GetActionDown()
 void CGXDLMSActionSet::SetActionDown(CGXDLMSActionItem value)
 {
     m_ActionDown = value;
+}
+
+string CGXDLMSActionSet::ToString()
+{
+	std::stringstream sb;
+	sb << m_ActionUp.ToString().c_str();
+	sb << " ";
+	sb << m_ActionDown.ToString().c_str();
+	return sb.str();
 }

@@ -33,7 +33,6 @@
 //---------------------------------------------------------------------------
 #pragma once
 
-//Mikko #include "GXDLMSObjectCollection.h"
 #include "GXDLMSCaptureObject.h"
 #include "GXDLMSRegister.h"
 
@@ -77,7 +76,8 @@ private:
     int m_CapturePeriod;
     GX_SORT_METHOD m_SortMethod;
     CGXDLMSObject* m_SortObject;
-    char m_ProfileEntries;
+    unsigned long m_ProfileEntries;
+	unsigned long m_EntriesInUse;
 
     int m_SortObjectAttributeIndex;
     int m_SortObjectDataIndex;
@@ -147,13 +147,14 @@ public:
     /** 
      Entries (rows) in Use.
     */
-    char GetEntriesInUse();
+    unsigned long GetEntriesInUse();
+	void SetEntriesInUse(unsigned long value);
     
     /** 
      Maximum Entries (rows) count.
     */
-    char GetProfileEntries();   
-	void SetProfileEntries(char value);
+    unsigned long GetProfileEntries();   
+	void SetProfileEntries(unsigned long value);
 	 /** 
      Attribute index of sort object.
     */
@@ -177,6 +178,9 @@ public:
 	*/
 	void Capture();
     
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);
 
 	//Returns amount of attributes.     

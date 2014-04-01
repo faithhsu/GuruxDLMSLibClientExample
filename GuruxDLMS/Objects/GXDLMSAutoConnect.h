@@ -71,7 +71,7 @@ enum AUTOCONNECTMODE
 
 class CGXDLMSAutoConnect : public CGXDLMSObject
 {
-	AUTOCONNECTMODE Mode;
+	AUTOCONNECTMODE m_Mode;
 	std::vector<std::pair< CGXDateTime, CGXDateTime> > m_CallingWindow;	
     vector< basic_string<char> > m_Destinations;   
     int m_RepetitionDelay;
@@ -111,6 +111,9 @@ public:
 
     // Returns amount of methods.
 	int GetMethodCount();
+
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
 
 	void GetAttributeIndexToRead(vector<int>& attributes);
 	

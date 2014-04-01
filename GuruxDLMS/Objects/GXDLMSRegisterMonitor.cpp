@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSRegisterMonitor.h"
+#include <sstream> 
 
 /**  
  Constructor.
@@ -100,6 +101,47 @@ int CGXDLMSRegisterMonitor::GetAttributeCount()
 int CGXDLMSRegisterMonitor::GetMethodCount()
 {
 	return 0;
+}
+
+void CGXDLMSRegisterMonitor::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDLMSVariant>::iterator it = m_Thresholds.begin(); it != m_Thresholds.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());	
+	values.push_back(m_MonitoredValue.ToString());
+	
+	//Clear str.
+	sb.str(std::string());		
+	sb << '[';
+	empty = true;
+	for(vector<CGXDLMSActionSet>::iterator it = m_Actions.begin(); it != m_Actions.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());	
 }
 
 void CGXDLMSRegisterMonitor::GetAttributeIndexToRead(vector<int>& attributes)
@@ -168,10 +210,14 @@ int CGXDLMSRegisterMonitor::GetValue(int index, unsigned char* parameters, int l
 		data.push_back(DLMS_DATA_TYPE_ARRAY);
 		//Add count
 		CGXOBISTemplate::SetObjectCount(m_Thresholds.size(), data);
+		int ret;
 		for(vector<CGXDLMSVariant>::iterator it = m_Thresholds.begin(); it != m_Thresholds.end(); ++it)
 		{
 			DLMS_DATA_TYPE type = (*it).vt;
-			CGXOBISTemplate::SetData(data, type, *it);
+			if ((ret = CGXOBISTemplate::SetData(data, type, *it)) != 0)
+			{
+				return ret;
+			}
 		}			
 		value = data;
 		return ERROR_CODES_OK;
@@ -244,11 +290,11 @@ int CGXDLMSRegisterMonitor::SetValue(int index, CGXDLMSVariant& value)
     }
     if (index == 3)
     {
-		GetMonitoredValue().SetObjectType((OBJECT_TYPE) value.Arr[0].lVal);
-		CGXDLMSVariant tmp;
-		CGXDLMSClient::ChangeType(value.Arr[1].byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-		GetMonitoredValue().SetLogicalName(tmp.strVal);
-		GetMonitoredValue().SetAttributeIndex(value.Arr[2].lVal);
+		GetMonitoredValue().SetObjectType((OBJECT_TYPE) value.Arr[0].ToInteger());
+        string ln;
+		CGXOBISTemplate::GetLogicalName(value.Arr[1].byteArr, ln);
+		m_MonitoredValue.SetLogicalName(ln);
+		m_MonitoredValue.SetAttributeIndex(value.Arr[2].ToInteger());
 		return ERROR_CODES_OK;
     }
     if (index == 4)

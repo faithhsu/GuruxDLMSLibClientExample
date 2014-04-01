@@ -54,4 +54,6 @@ public:
 
     int GetAttributeIndex();
     void SetAttributeIndex(int value);
+
+	string ToString();
 };

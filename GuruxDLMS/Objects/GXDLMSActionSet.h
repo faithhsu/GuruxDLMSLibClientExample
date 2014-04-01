@@ -51,4 +51,6 @@ public:
 
     CGXDLMSActionItem GetActionDown();
     void SetActionDown(CGXDLMSActionItem value);
+
+	string ToString();
 };

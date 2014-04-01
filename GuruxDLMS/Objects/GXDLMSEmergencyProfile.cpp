@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSEmergencyProfile.h"
+#include <sstream> 
 
 int CGXDLMSEmergencyProfile::GetID()
 {
@@ -59,4 +60,15 @@ int CGXDLMSEmergencyProfile::GetDuration()
 void CGXDLMSEmergencyProfile::SetDuration(int value)
 {
     m_Duration = value;
+}
+
+string CGXDLMSEmergencyProfile::ToString()
+{
+	std::stringstream sb;	
+	sb << m_ID;
+	sb << " ";
+	sb << m_ActivationTime.ToString().c_str();
+	sb << " ";
+	sb << m_Duration;
+	return sb.str();
 }

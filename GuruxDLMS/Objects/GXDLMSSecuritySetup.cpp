@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSSecuritySetup.h"
+#include "../GXDLMSConverter.h"
 
 //Constructor.
 CGXDLMSSecuritySetup::CGXDLMSSecuritySetup() : CGXDLMSObject(OBJECT_TYPE_SECURITY_SETUP)
@@ -73,20 +74,20 @@ void CGXDLMSSecuritySetup::SetSecuritySuite(SECURITY_SUITE value)
 	m_SecuritySuite = value;
 }
 
-string CGXDLMSSecuritySetup::GetClientSystemTitle()
+vector<unsigned char>& CGXDLMSSecuritySetup::GetClientSystemTitle()
 {
 	return m_ClientSystemTitle;
 }
-void CGXDLMSSecuritySetup::SetClientSystemTitle(string value)
+void CGXDLMSSecuritySetup::SetClientSystemTitle(vector<unsigned char>& value)
 {
 	m_ClientSystemTitle = value;
 }
 
-string CGXDLMSSecuritySetup::GetServerSystemTitle()
+vector<unsigned char>& CGXDLMSSecuritySetup::GetServerSystemTitle()
 {
 	return m_ServerSystemTitle;
 }
-void CGXDLMSSecuritySetup::SetServerSystemTitle(string value)
+void CGXDLMSSecuritySetup::SetServerSystemTitle(vector<unsigned char>& value)
 {
 	m_ServerSystemTitle = value;
 }
@@ -103,6 +104,36 @@ int CGXDLMSSecuritySetup::GetMethodCount()
 	return 2;
 }
 
+void CGXDLMSSecuritySetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(CGXDLMSConverter::ToString(m_SecurityPolicy));
+	values.push_back(CGXDLMSConverter::ToString(m_SecuritySuite));
+	string str;
+	if (m_ClientSystemTitle.size() != 0)
+	{
+		str = GXHelpers::bytesToHex(&m_ClientSystemTitle[0], m_ClientSystemTitle.size());		
+	}
+	else
+	{
+		str.append("");
+	}
+	values.push_back(str);
+	str.clear();
+	if (m_ServerSystemTitle.size() != 0)
+	{
+		str = GXHelpers::bytesToHex(&m_ServerSystemTitle[0], m_ServerSystemTitle.size());				
+	}
+	else
+	{
+		str.append("");
+	}
+	values.push_back(str);
+}
+
 void CGXDLMSSecuritySetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -110,12 +141,12 @@ void CGXDLMSSecuritySetup::GetAttributeIndexToRead(vector<int>& attributes)
     {
         attributes.push_back(1);
     }
-	//SECURITY_POLICY
+	//SecurityPolicy
     if (CanRead(2))
     {
         attributes.push_back(2);
     }
-    //SECURITY_SUITE
+    //SecuritySuite
     if (CanRead(3))
     {
         attributes.push_back(3);
@@ -214,29 +245,11 @@ int CGXDLMSSecuritySetup::SetValue(int index, CGXDLMSVariant& value)
     }
     else if (index == 4)
     {
-		if (value.vt == DLMS_DATA_TYPE_STRING)
-        {
-            m_ClientSystemTitle = value.ToString();
-        }
-        else
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-			m_ClientSystemTitle = tmp.ToString();
-        }
+		m_ClientSystemTitle = value.byteArr;		
     }
     else if (index == 5)
     {
-		if (value.vt == DLMS_DATA_TYPE_STRING)
-        {
-            m_ServerSystemTitle = value.ToString();
-        }
-        else
-        {
-			CGXDLMSVariant tmp;
-			CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp);
-			m_ServerSystemTitle = tmp.ToString();
-        }
+		m_ServerSystemTitle = value.byteArr;
     }	
 	else
 	{

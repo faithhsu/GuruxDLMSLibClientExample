@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSActionItem.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSActionItem::CGXDLMSActionItem()
@@ -56,4 +57,13 @@ int CGXDLMSActionItem::GetScriptSelector()
 void CGXDLMSActionItem::SetScriptSelector(int value)
 {
     m_ScriptSelector = value;
+}
+
+string CGXDLMSActionItem::ToString()
+{
+	std::stringstream sb;
+	sb << m_LogicalName.c_str();
+	sb << " ";
+	sb << m_ScriptSelector;
+	return sb.str();
 }

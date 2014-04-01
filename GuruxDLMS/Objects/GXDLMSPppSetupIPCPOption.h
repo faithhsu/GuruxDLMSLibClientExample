@@ -62,4 +62,6 @@ public:
 
     CGXDLMSVariant GetData();
     void SetData(CGXDLMSVariant value);
+
+	string ToString();
 };

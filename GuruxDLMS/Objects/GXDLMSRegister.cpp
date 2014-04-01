@@ -34,6 +34,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSRegister.h"
+#include "../GXDLMSConverter.h"
 
 void CGXDLMSRegister::Init()
 {
@@ -98,7 +99,7 @@ CGXDLMSRegister::CGXDLMSRegister(basic_string<char> ln, double scaler, int unit,
 /// Get value of COSEM Data object.
 /// </summary>        
 CGXDLMSVariant CGXDLMSRegister::GetValue()
-{
+{	
     return m_Value;
 }
 
@@ -160,6 +161,29 @@ int CGXDLMSRegister::Invoke(int index, CGXDLMSVariant& value)
 		return ERROR_CODES_OK;
 	}
 	return ERROR_CODES_INVALID_PARAMETER;
+}
+
+void CGXDLMSRegister::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_Value.ToString());
+	string str = "Scaler: ";	
+	double s = GetScaler();
+	//if there is no fractal part.
+	if (s - (long)s == 0)
+	{
+		str += CGXDLMSVariant((long)s).ToString();
+	}
+	else
+	{
+		str += CGXDLMSVariant(s).ToString();
+	}
+	str += " Unit: ";
+	str += CGXDLMSConverter::GetUnitAsString(m_Unit);
+	values.push_back(str);
 }
 
 void CGXDLMSRegister::GetAttributeIndexToRead(vector<int>& attributes)
@@ -235,13 +259,23 @@ int CGXDLMSRegister::SetValue(int index, CGXDLMSVariant& value)
 		memcpy(m_LN, &value.byteArr[0], 6);		
 	}
     else if (index == 2)
-	{
-		SetValue(value);			
+	{	
+		if (m_Scaler != 0)
+		{
+			double val = GetScaler();
+			val *= value.ToDouble();
+			CGXDLMSVariant tmp(val);
+			SetValue(tmp);
+		}
+		else
+		{
+			SetValue(value);
+		}
 	}
     else if (index == 3 && value.vt == DLMS_DATA_TYPE_STRUCTURE)
 	{
-		m_Scaler = value.Arr[0].bVal;
-		m_Unit = value.Arr[1].bVal;			
+		m_Scaler = value.Arr[0].ToInteger();
+		m_Unit = value.Arr[1].ToInteger();			
 	}
 	else
 	{

@@ -32,6 +32,7 @@
 // Full text may be retrieved at http://www.gnu.org/licenses/gpl-2.0.txt
 //---------------------------------------------------------------------------
 #include "GXDLMSQualityOfService.h"
+#include <sstream> 
 
 int CGXDLMSQualityOfService::GetPrecedence()
 {
@@ -76,4 +77,20 @@ int CGXDLMSQualityOfService::GetMeanThroughput()
 void CGXDLMSQualityOfService::SetMeanThroughput(int value)
 {
     m_MeanThroughput = value;
+}
+
+
+std::string CGXDLMSQualityOfService::ToString()
+{
+	std::stringstream sb;
+	sb << m_Precedence;
+	sb << " ";
+	sb << m_Delay;
+	sb << " ";
+	sb << m_Reliability;
+	sb << " ";
+	sb << m_PeakThroughput;
+	sb << " ";
+	sb << m_MeanThroughput;
+	return sb.str();
 }

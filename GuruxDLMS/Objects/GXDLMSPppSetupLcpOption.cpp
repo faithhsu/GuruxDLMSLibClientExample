@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSPppSetupLcpOption.h"
+#include <sstream> 
 
 CGXDLMSVariant CGXDLMSPppSetupLcpOption::GetType()
 {
@@ -61,4 +62,13 @@ CGXDLMSVariant CGXDLMSPppSetupLcpOption::GetData()
 void CGXDLMSPppSetupLcpOption::SetData(CGXDLMSVariant value)
 {
     m_Data = value;
+}
+
+string CGXDLMSPppSetupLcpOption::ToString()
+{
+	std::stringstream sb;
+	sb << m_Type.ToString().c_str();
+	sb << " ";
+	sb << m_Length;
+	return sb.str();
 }

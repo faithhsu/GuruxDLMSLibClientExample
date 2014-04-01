@@ -36,42 +36,12 @@
 
 #include "GXDLMSObject.h"
 
- /** 
-    Security policy Enforces authentication and/or encryption algorithm provided with security_suite.
- */
-enum SECURITY_POLICY
-{
-    SECURITY_POLICY_NOTHING,
-    /** 
-     All messages to be authenticated.
-    */
-    SECURITY_POLICY_AUTHENTICATED,
-    /** 
-     All messages to be encrypted.
-    */
-    SECURITY_POLICY_ENCRYPTED,
-    /** 
-     All messages to be authenticated and encrypted.
-    */
-    SECURITY_POLICY_AUTHENTICATED_ENCRYPTED
-};
-
-
-//Security suite Specifies authentication, encryption and key wrapping algorithm.
-enum SECURITY_SUITE
-{
-    /** 
-     AES-GCM-128 for authenticated encryption and AES-128 for key wrapping.
-    */
-    SECURITY_SUITE_AES_GCM_128    
-};
-
 class CGXDLMSSecuritySetup : public CGXDLMSObject
 {
 	SECURITY_POLICY m_SecurityPolicy;
     SECURITY_SUITE m_SecuritySuite;
-    string m_ServerSystemTitle;
-    string m_ClientSystemTitle;	
+    vector<unsigned char> m_ServerSystemTitle;
+    vector<unsigned char> m_ClientSystemTitle;	
 public:	
 	//Constructor.
 	CGXDLMSSecuritySetup();
@@ -91,13 +61,13 @@ public:
     
 	void SetSecuritySuite(SECURITY_SUITE value);
     
-    string GetClientSystemTitle();
+    vector<unsigned char>& GetClientSystemTitle();
     
-	void SetClientSystemTitle(string value);
+	void SetClientSystemTitle(vector<unsigned char>& value);
     
-    string GetServerSystemTitle();
+    vector<unsigned char>& GetServerSystemTitle();
     
-	void SetServerSystemTitle(string value);
+	void SetServerSystemTitle(vector<unsigned char>& value);
     
     // Returns amount of attributes.
 	int GetAttributeCount();
@@ -105,6 +75,9 @@ public:
     // Returns amount of methods.
 	int GetMethodCount();
 	
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);	
 
 	int GetDataType(int index, DLMS_DATA_TYPE& type);

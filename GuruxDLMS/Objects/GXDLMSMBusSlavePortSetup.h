@@ -36,22 +36,6 @@
 
 #include "GXDLMSObject.h"
 
-/*
- * Defines whether or not the device has been assigned an address 
- * since last power up of the device.
- */
-enum ADDRESS_STATE {
-    /*
-     * Not assigned an address yet-
-     */    
-	ADDRESS_STATE_NONE,
-    /*
-     * Assigned an address either by manual setting, or by automated method.
-     */
-    ADDRESS_STATE_ASSIGNED
-};
-
-
 class CGXDLMSMBusSlavePortSetup : public CGXDLMSObject
 {
 	BAUDRATE m_DefaultBaud;
@@ -104,6 +88,9 @@ public:
 	// Returns amount of methods.
 	int GetMethodCount();
 	
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);	
 
 	int GetDataType(int index, DLMS_DATA_TYPE& type);

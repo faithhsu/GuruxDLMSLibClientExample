@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSMBusSlavePortSetup.h"
+#include "../GXDLMSConverter.h"
 
 //Constructor.
 CGXDLMSMBusSlavePortSetup::CGXDLMSMBusSlavePortSetup() : CGXDLMSObject(OBJECT_TYPE_MBUS_SLAVE_PORT_SETUP)
@@ -112,6 +113,18 @@ int CGXDLMSMBusSlavePortSetup::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSMBusSlavePortSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);	
+	values.push_back(CGXDLMSConverter::ToString(m_DefaultBaud));
+	values.push_back(CGXDLMSConverter::ToString(m_AvailableBaud));
+	values.push_back(CGXDLMSConverter::ToString(m_AddressState));
+	values.push_back(CGXDLMSVariant(m_BusAddress).ToString());
+}
+
 void CGXDLMSMBusSlavePortSetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -120,22 +133,22 @@ void CGXDLMSMBusSlavePortSetup::GetAttributeIndexToRead(vector<int>& attributes)
         attributes.push_back(1);
     }
 	//DefaultBaud
-    if (IsRead(2))
+    if (!IsRead(2))
     {
         attributes.push_back(2);
     }
     //AvailableBaud
-    if (IsRead(3))
+    if (!IsRead(3))
     {
         attributes.push_back(3);
     }
-    //ADDRESS_STATE
-    if (IsRead(4))
+    //m_AddressState
+    if (!IsRead(4))
     {
         attributes.push_back(4);
     }
     //BusAddress
-    if (IsRead(5))
+    if (!IsRead(5))
     {
         attributes.push_back(5);
     }

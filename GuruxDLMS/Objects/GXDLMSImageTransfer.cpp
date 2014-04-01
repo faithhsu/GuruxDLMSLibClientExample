@@ -34,6 +34,7 @@
 
 #include "GXDLMSImageTransfer.h"
 #include "../GXDLMSClient.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSImageTransfer::CGXDLMSImageTransfer() : CGXDLMSObject(OBJECT_TYPE_IMAGE_TRANSFER)
@@ -132,6 +133,34 @@ int CGXDLMSImageTransfer::GetAttributeCount()
 int CGXDLMSImageTransfer::GetMethodCount()
 {
 	return 4;
+}
+
+void CGXDLMSImageTransfer::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);	
+	values.push_back(CGXDLMSVariant(m_ImageBlockSize).ToString());
+	values.push_back(CGXDLMSVariant(m_ImageTransferredBlocksStatus).ToString());
+	values.push_back(CGXDLMSVariant(m_ImageFirstNotTransferredBlockNumber).ToString());
+	values.push_back(CGXDLMSVariant(m_ImageTransferEnabled).ToString());
+	values.push_back(CGXDLMSVariant(m_ImageTransferStatus).ToString());
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDLMSImageActivateInfo>::iterator it = m_ImageActivateInfo.begin(); it != m_ImageActivateInfo.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;	
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());		
 }
 
 void CGXDLMSImageTransfer::GetAttributeIndexToRead(vector<int>& attributes)
@@ -253,13 +282,17 @@ int CGXDLMSImageTransfer::GetValue(int index, unsigned char* parameters, int len
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         data.push_back(m_ImageActivateInfo.size()); //Count  
+		int ret;
 		for (vector<CGXDLMSImageActivateInfo>::iterator it = m_ImageActivateInfo.begin(); it != m_ImageActivateInfo.end(); ++it)           
         {
             data.push_back(DLMS_DATA_TYPE_STRUCTURE);                    
             data.push_back(3);//Item count.
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT32, (*it).GetSize());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).GetIdentification());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).GetSignature());
+            if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT32, (*it).GetSize())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).GetIdentification())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).GetSignature())) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
     }

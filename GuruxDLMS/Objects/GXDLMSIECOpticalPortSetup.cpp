@@ -34,6 +34,7 @@
 
 #include "GXDLMSIECOpticalPortSetup.h"
 #include "../GXDLMSClient.h"
+#include "../GXDLMSConverter.h"
 
 void CGXDLMSIECOpticalPortSetup::Init()
 {
@@ -142,6 +143,22 @@ int CGXDLMSIECOpticalPortSetup::GetAttributeCount()
 int CGXDLMSIECOpticalPortSetup::GetMethodCount()
 {
 	return 0;
+}
+
+void CGXDLMSIECOpticalPortSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(CGXDLMSVariant(m_DefaultMode).ToString());
+	values.push_back(CGXDLMSConverter::ToString(m_DefaultBaudrate));
+	values.push_back(CGXDLMSConverter::ToString(m_ProposedBaudrate));
+	values.push_back(CGXDLMSVariant(m_ResponseTime).ToString());	
+	values.push_back(m_DeviceAddress);
+	values.push_back(m_Password1);
+	values.push_back(m_Password2);
+	values.push_back(m_Password5);
 }
 
 void CGXDLMSIECOpticalPortSetup::GetAttributeIndexToRead(vector<int>& attributes)

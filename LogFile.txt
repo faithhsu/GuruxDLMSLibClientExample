@@ -1,0 +1,883 @@
+Profile Generic 0.0.98.1.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2
+Profile Generic 0.0.99.98.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.11.0.255 Ch. 0 Event code 1
+Profile Generic 0.0.99.98.1.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.11.1.255 Ch. 0 Event code 2
+Profile Generic 1.0.99.97.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.7.19.255 Ch. 0 Duration of long power failure in any phase
+Profile Generic 0.0.99.98.2.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.11.2.255 Ch. 0 Event code 3 | 1.0.17.0.0.255 
+Profile Generic 0.0.21.0.0.255 Columns:
+1.3.0.2.8.255 Ch. 3 Active firmware signature | 0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.1.1.255 Ch. 0 Device ID 2 | 1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 0.0.96.14.0.255 Ch. 0 Currently active tariff 1 | 1.0.1.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.2.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 0.0.17.0.0.255 Ch. 0 Limiter 1 | 0.0.96.3.10.255 Ch. 0 Disconnect control object | 0.0.96.7.21.255 Ch. 0 No. of power failures in any phase | 0.0.96.7.9.255 Ch. 0 No. of long power failures in any phase | 1.0.99.97.0.255 Ch. 0 Power failure event log 1 | 1.0.32.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms | 1.0.52.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms | 1.0.72.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms | 1.0.32.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current) | 1.0.52.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current) | 1.0.72.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current) | 0.0.96.13.1.255 Ch. 0 Consumer message via the meter display and/or via local consumer information port | 0.0.96.13.0.255 Ch. 0 Consumer message via local consumer information port | 1.0.31.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.51.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.71.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.21.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.41.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.61.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.22.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.42.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.62.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.151.7.0.255 Man. specific | 1.0.171.7.0.255 Man. specific | 1.0.191.7.0.255 Man. specific | 1.0.14.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 0.1.24.1.0.255 Ch. 1 M-Bus client 1 | 0.1.96.1.0.255 Ch. 1 Device ID 1, manufacturing number | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.1.24.4.0.255 Ch. 1 M-Bus Disconnect control 1 | 0.2.24.1.0.255 Ch. 2 M-Bus client 1 | 0.2.96.1.0.255 Ch. 2 Device ID 1, manufacturing number | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.2.24.4.0.255 Ch. 2 M-Bus Disconnect control 1 | 0.3.24.1.0.255 Ch. 3 M-Bus client 1 | 0.3.96.1.0.255 Ch. 3 Device ID 1, manufacturing number | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.3.24.4.0.255 Ch. 3 M-Bus Disconnect control 1 | 0.4.24.1.0.255 Ch. 4 M-Bus client 1 | 0.4.96.1.0.255 Ch. 4 Device ID 1, manufacturing number | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2 | 0.4.24.4.0.255 Ch. 4 M-Bus Disconnect control 1
+Profile Generic 1.0.99.1.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.10.1.255  | 1.0.1.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total) | 1.0.2.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Profile Generic 1.0.99.2.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.10.2.255 Ch. 0 Status register #2 | 1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2
+Profile Generic 0.1.24.3.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.1.96.10.3.255 Ch. 1 Status register #3 | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2 | 0.1.24.2.1.255 Ch. 1 M-Bus value object 2
+Profile Generic 0.2.24.3.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.2.96.10.3.255 Ch. 2 Status register #3 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2 | 0.2.24.2.1.255 Ch. 2 M-Bus value object 2
+Profile Generic 0.3.24.3.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.3.96.10.3.255 Ch. 3 Status register #3 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2 | 0.3.24.2.1.255 Ch. 3 M-Bus value object 2
+Profile Generic 0.4.24.3.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.4.96.10.3.255 Ch. 4 Status register #3 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2 | 0.4.24.2.1.255 Ch. 4 M-Bus value object 2
+Profile Generic 0.0.99.98.3.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.0.96.11.3.255 Ch. 0 Event code 4
+Profile Generic 0.1.24.5.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.1.96.11.4.255 Ch. 1 Event code 5
+Profile Generic 0.2.24.5.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.2.96.11.4.255 Ch. 2 Event code 5
+Profile Generic 0.3.24.5.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.3.96.11.4.255 Ch. 3 Event code 5
+Profile Generic 0.4.24.5.0.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 0.4.96.11.4.255 Ch. 4 Event code 5
+Profile Generic 0.1.94.31.6.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1
+Profile Generic 0.0.21.0.1.255 Columns:
+1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total)
+Profile Generic 0.0.21.0.2.255 Columns:
+1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total)
+Profile Generic 0.0.21.0.3.255 Columns:
+0.0.1.0.0.255 Ch. 0 Clock object 1 | 1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total) | 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total) | 1.0.0.2.0.255 Ch. 0 Active firmware identifier | 1.1.0.2.0.255 Ch. 1 Active firmware identifier | 1.0.21.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.22.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.41.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.42.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.61.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value | 1.0.62.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+-------- Reading GXDLMSTcpUdpSetup 0.0.25.0.0.255 Ch. 0 TCP-UDP setup
+Index: 2 Value: 4059
+Index: 3 Value: 0.0.25.1.0.255
+Index: 4 Value: 576
+Index: 5 Value: 1
+Index: 6 Value: 300
+-------- Reading GXDLMSIp4Setup 0.0.25.1.0.255 Ch. 0 IPv4 setup
+Index: 2 Value: 0.0.25.3.0.255
+Index: 3 Value: 167829123
+Index: 4 Value: []
+Index: 5 Value: []
+Index: 6 Value: 0
+Index: 7 Value: 0
+Index: 8 Value: True
+Index: 9 Value: 0
+Index: 10 Value: 0
+-------- Reading GXDLMSMacAddressSetup 0.0.25.2.0.255 Ch. 0 MAC address setup
+Index: 2 Value: 
+-------- Reading GXDLMSPppSetup 0.0.25.3.0.255 Ch. 0 PPP setup
+Index: 2 Value: 0.0.25.4.0.255
+Index: 3 Value: []
+Index: 4 Value: []
+Index: 5 Value: cdma cdma
+-------- Reading GXDLMSGprsSetup 0.0.25.4.0.255 Ch. 0 GPRS setup
+Index: 2 Value: maingatelan.telia.se
+Index: 3 Value: 1302
+Error! Index: 4 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.0.96.10.2.255 Ch. 0 Status register #2
+Index: 2 Value: 0
+-------- Reading GXDLMSData 0.1.96.10.3.255 Ch. 1 Status register #3
+Index: 2 Value: 0
+-------- Reading GXDLMSData 0.2.96.10.3.255 Ch. 2 Status register #3
+Index: 2 Value: 0
+-------- Reading GXDLMSData 0.3.96.10.3.255 Ch. 3 Status register #3
+Index: 2 Value: 0
+-------- Reading GXDLMSData 0.4.96.10.3.255 Ch. 4 Status register #3
+Index: 2 Value: 0
+-------- Reading GXDLMSSapAssignment 0.0.41.0.0.255 Ch. 0 SAP Assignment
+Index: 2 Value: [1, XMXCGB3000002743]
+-------- Reading GXDLMSAssociationLogicalName 0.0.40.0.0.255 Ch. 0 Current association
+Index: 2 Value: [0.0.25.0.0.255, 0.0.25.1.0.255, 0.0.25.2.0.255, 0.0.25.3.0.255, 0.0.25.4.0.255, 0.0.96.10.2.255, 0.1.96.10.3.255, 0.2.96.10.3.255, 0.3.96.10.3.255, 0.4.96.10.3.255, 0.0.41.0.0.255, 0.0.40.0.0.255, 0.0.43.0.0.255, 0.0.42.0.0.255, 0.0.96.1.0.255, 0.0.96.1.1.255, 0.0.96.1.3.255, 0.0.96.1.4.255, 0.0.96.1.7.255, 0.0.96.1.8.255, 0.0.1.0.0.255, 1.0.0.9.11.255, 0.0.13.0.0.255, 0.0.11.0.0.255, 0.0.96.14.0.255, 0.0.10.0.100.255, 0.0.14.0.0.255, 0.0.15.0.0.255, 0.0.98.1.0.255, 0.0.97.97.0.255, 0.0.97.98.0.255, 0.0.97.98.10.255, 0.0.99.98.0.255, 0.0.99.98.1.255, 0.0.96.7.21.255, 0.0.96.7.9.255, 0.0.96.7.20.255, 0.0.96.7.19.255, 1.0.99.97.0.255, 0.0.96.3.10.255, 0.0.99.98.2.255, 0.0.15.0.1.255, 0.0.10.0.106.255, 0.0.17.0.0.255, 0.0.96.13.0.255, 0.0.96.13.1.255, 0.0.21.0.0.255, 0.0.44.0.0.255, 1.0.0.2.0.255, 1.0.0.2.8.255, 1.1.0.2.0.255, 1.1.0.2.8.255, 1.2.0.2.0.255, 1.2.0.2.8.255, 1.3.0.2.8.255, 1.0.1.8.0.255, 1.0.2.8.0.255, 1.0.1.8.1.255, 1.0.1.8.2.255, 1.0.2.8.1.255, 1.0.2.8.2.255, 1.0.99.1.0.255, 1.0.99.2.0.255, 1.0.32.7.0.255, 1.0.32.24.0.255, 1.0.31.7.0.255, 1.0.21.24.0.255, 1.0.22.24.0.255, 1.0.21.7.0.255, 1.0.22.7.0.255, 1.0.23.24.0.255, 1.0.24.24.0.255, 1.0.151.7.0.255, 1.0.31.24.0.255, 1.0.52.7.0.255, 1.0.52.24.0.255, 1.0.51.7.0.255, 1.0.41.24.0.255, 1.0.42.24.0.255, 1.0.41.7.0.255, 1.0.42.7.0.255, 1.0.43.24.0.255, 1.0.44.24.0.255, 1.0.171.7.0.255, 1.0.51.24.0.255, 1.0.72.7.0.255, 1.0.72.24.0.255, 1.0.71.7.0.255, 1.0.61.24.0.255, 1.0.62.24.0.255, 1.0.61.7.0.255, 1.0.62.7.0.255, 1.0.63.24.0.255, 1.0.64.24.0.255, 1.0.191.7.0.255, 1.0.71.24.0.255, 1.0.1.7.0.255, 1.0.2.7.0.255, 1.0.90.7.0.255, 1.0.5.8.0.255, 1.0.6.8.0.255, 1.0.7.8.0.255, 1.0.8.8.0.255, 1.0.5.24.0.255, 1.0.6.24.0.255, 1.0.7.24.0.255, 1.0.8.24.0.255, 1.0.14.7.0.255, 1.0.12.31.0.255, 1.0.12.43.0.255, 1.0.32.32.0.255, 1.0.52.32.0.255, 1.0.72.32.0.255, 1.0.12.35.0.255, 1.0.12.44.0.255, 1.0.32.36.0.255, 1.0.52.36.0.255, 1.0.72.36.0.255, 0.1.24.1.0.255, 0.2.24.1.0.255, 0.3.24.1.0.255, 0.4.24.1.0.255, 0.0.24.6.0.255, 0.0.24.0.0.255, 0.1.96.1.0.255, 0.2.96.1.0.255, 0.3.96.1.0.255, 0.4.96.1.0.255, 0.1.24.2.1.255, 0.1.24.2.2.255, 0.2.24.2.1.255, 0.2.24.2.2.255, 0.3.24.2.1.255, 0.3.24.2.2.255, 0.4.24.2.1.255, 0.4.24.2.2.255, 0.1.24.3.0.255, 0.2.24.3.0.255, 0.3.24.3.0.255, 0.4.24.3.0.255, 0.0.99.98.3.255, 0.1.24.4.0.255, 0.2.24.4.0.255, 0.3.24.4.0.255, 0.4.24.4.0.255, 0.1.24.5.0.255, 0.2.24.5.0.255, 0.3.24.5.0.255, 0.4.24.5.0.255, 0.1.15.0.1.255, 0.1.10.0.106.255, 0.1.94.31.0.255, 0.1.94.31.2.255, 0.1.94.31.3.255, 0.1.94.31.4.255, 0.1.94.31.5.255, 0.1.94.31.6.255, 0.0.20.0.0.255, 0.0.22.0.0.255, 0.0.2.2.0.255, 0.0.2.3.0.255, 0.0.21.0.1.255, 0.0.21.0.2.255, 0.0.21.0.3.255, 0.0.15.0.4.255, 0.0.16.1.0.255, 0.0.10.0.108.255, 0.0.25.9.0.255, 0.1.25.9.0.255, 0.2.25.9.0.255, 0.0.96.11.0.255, 0.0.96.11.1.255, 0.0.96.11.2.255, 0.0.96.11.3.255, 0.1.96.11.4.255, 0.2.96.11.4.255, 0.3.96.11.4.255, 0.4.96.11.4.255, 1.0.15.7.0.255, 1.0.94.32.1.0, 1.0.94.32.1.1, 1.0.94.32.1.2, 1.0.94.32.1.3, 1.0.94.32.1.4, 1.0.94.32.1.5, 1.0.94.32.1.6, 1.0.94.32.1.7, 0.1.94.32.1.0, 0.1.94.32.1.1, 0.1.94.32.1.2, 0.1.94.32.1.3, 0.1.94.32.1.4, 0.1.94.32.1.5, 0.1.94.32.1.6, 0.1.94.32.1.7, 0.2.94.32.1.0, 0.2.94.32.1.1, 0.2.94.32.1.2, 0.2.94.32.1.3, 0.2.94.32.1.4, 0.2.94.32.1.5, 0.2.94.32.1.6, 0.2.94.32.1.7, 0.3.94.32.1.0, 0.3.94.32.1.1, 0.3.94.32.1.2, 0.3.94.32.1.3, 0.3.94.32.1.4, 0.3.94.32.1.5, 0.3.94.32.1.6, 0.3.94.32.1.7, 0.4.94.32.1.0, 0.4.94.32.1.1, 0.4.94.32.1.2, 0.4.94.32.1.3, 0.4.94.32.1.4, 0.4.94.32.1.5, 0.4.94.32.1.6, 0.4.94.32.1.7, 0.128.94.32.0.255, 0.128.94.32.1.255, 0.128.94.32.2.255, 0.128.94.32.3.255, 0.0.43.1.0.255, 255.255.255.255.255.255]
+Index: 3 Value: 1/1
+Index: 4 Value:  2 10 756 5 8 1 1
+Index: 5 Value: 000110000001100000011111 1088 1088 6 0 
+Index: 6 Value: 2 10 756 5 8 2 1
+Index: 7 Value: 33 31 33 32 33 33 33 34 
+Index: 8 Value: 2
+Index: 9 Value: 0.0.43.0.0.255
+-------- Reading GXDLMSSecuritySetup 0.0.43.0.0.255 Ch. 0 Security setup object #0
+Index: 2 Value: Nothing
+Index: 3 Value: AES_GCM_128
+Index: 4 Value: 00 00 00 00 00 00 00 00 
+Index: 5 Value: 58 4D 58 00 00 00 0A B7 
+-------- Reading GXDLMSData 0.0.42.0.0.255 Ch. 0 COSEM Logical device name
+Index: 2 Value: XMXCGB3000002743
+-------- Reading GXDLMSData 0.0.96.1.0.255 Ch. 0 Device ID 1, manufacturing number
+Index: 2 Value: 11742817
+-------- Reading GXDLMSData 0.0.96.1.1.255 Ch. 0 Device ID 2
+Index: 2 Value: 11742817        
+-------- Reading GXDLMSData 0.0.96.1.3.255 Ch. 0 Device ID 4
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.0.96.1.4.255 Ch. 0 Device ID 5
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.0.96.1.7.255 Ch. 0 Device ID 8
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.0.96.1.8.255 Ch. 0 Device ID 9
+Index: 2 Value: 
+-------- Reading GXDLMSClock 0.0.1.0.0.255 Ch. 0 Clock object 1
+Index: 2 Value: 18.3.2014 15:16:20
+Index: 3 Value: -60
+Index: 4 Value: None
+Index: 5 Value: 31.3 4:00:00
+Index: 6 Value: 31.10 3:00:00
+Index: 7 Value: 60
+Index: 8 Value: True
+Index: 9 Value: Crystal
+-------- Reading GXDLMSRegister 1.0.0.9.11.255 Ch. 0 Clock time shift limit
+Index: 3 Value: Scaler: 1 Unit: Second
+Index: 2 Value: 60
+-------- Reading GXDLMSActivityCalendar 0.0.13.0.0.255 Ch. 0 Activity calendar
+Index: 2 Value: DEFAULT CALENDAR
+Index: 3 Value: []
+Index: 4 Value: [DEFAULT WEEK]
+Index: 5 Value: [1  0:00:00 0.0.10.0.100.255]
+Index: 6 Value: 
+Index: 7 Value: []
+Index: 8 Value: []
+Index: 9 Value: []
+Index: 10 Value: 
+-------- Reading GXDLMSSpecialDaysTable 0.0.11.0.0.255 Ch. 0 Special days table
+Index: 2 Value: []
+-------- Reading GXDLMSData 0.0.96.14.0.255 Ch. 0 Currently active tariff 1
+Index: 2 Value: 0.1
+-------- Reading GXDLMSScriptTable 0.0.10.0.100.255 Ch. 0 Tariffication script table
+Index: 2 Value: [1 1 6 0.0.14.0.0.255 4 0.0, 2 1 6 0.0.14.0.0.255 4 0.0]
+-------- Reading GXDLMSRegisterActivation 0.0.14.0.0.255 Ch. 0 Register activation 1
+Index: 2 Value: [GXDLMSRegister 1.0.1.8.1.255, GXDLMSRegister 1.0.2.8.1.255, GXDLMSRegister 1.0.1.8.2.255, GXDLMSRegister 1.0.2.8.2.255]
+Index: 3 Value: 
+Index: 4 Value: 00 01 
+-------- Reading GXDLMSActionSchedule 0.0.15.0.0.255 Ch. 0 End of billing period
+Index: 2 Value: 0.0.10.0.1.255 1
+Index: 3 Value: 1
+Index: 4 Value: []
+-------- Reading GXDLMSData 0.0.97.97.0.255 Ch. 0 Error object 1
+Index: 2 Value: 8196
+-------- Reading GXDLMSData 0.0.97.98.0.255 Ch. 0 Alarm register object 1
+Index: 2 Value: 8325
+-------- Reading GXDLMSData 0.0.97.98.10.255 Ch. 0 Alarm filter object 10
+Index: 2 Value: 4294967295
+-------- Reading GXDLMSData 0.0.96.7.21.255 Ch. 0 No. of power failures in any phase
+Index: 2 Value: 22
+-------- Reading GXDLMSData 0.0.96.7.9.255 Ch. 0 No. of long power failures in any phase
+Index: 2 Value: 4
+-------- Reading GXDLMSRegister 0.0.96.7.20.255 Ch. 0 Time threshold for long of power failure
+Index: 3 Value: Scaler: 1 Unit: Second
+Index: 2 Value: 180
+-------- Reading GXDLMSRegister 0.0.96.7.19.255 Ch. 0 Duration of long power failure in any phase
+Index: 2 Value: 0
+-------- Reading GXDLMSDisconnectControl 0.0.96.3.10.255 Ch. 0 Disconnect control object
+Index: 2 Value: True
+Index: 3 Value: Connected
+Index: 4 Value: Mode3
+-------- Reading GXDLMSActionSchedule 0.0.15.0.1.255 Ch. 0 Disconnect control scheduler
+Index: 2 Value: 0.0.10.0.106.255 0
+Index: 3 Value: 1
+Index: 4 Value: []
+-------- Reading GXDLMSScriptTable 0.0.10.0.106.255 Ch. 0 Disconnect control
+Index: 2 Value: [1 2 70 0.0.96.3.10.255 2 0, 2 2 70 0.0.96.3.10.255 1 0]
+-------- Reading GXDLMSLimiter 0.0.17.0.0.255 Ch. 0 Limiter 1
+Index: 2 Value: 1.0.1.7.0.255
+Index: 3 Value: 999999
+Index: 4 Value: 999999
+Index: 5 Value: 999999
+Index: 6 Value: 30
+Index: 7 Value: 0
+Index: 8 Value: 1 1.1.2000 2:00:00 0
+Index: 9 Value: []
+Index: 10 Value: False
+Index: 11 Value: 0.0.10.0.106.255 2, 0.0.10.0.106.255 1
+-------- Reading GXDLMSData 0.0.96.13.0.255 Ch. 0 Consumer message via local consumer information port
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.0.96.13.1.255 Ch. 0 Consumer message via the meter display and/or via local consumer information port
+Index: 2 Value: 
+-------- Reading GXDLMSImageTransfer 0.0.44.0.0.255 Ch. 0 Image transfer object 0
+Index: 2 Value: 1024
+Index: 3 Value: 
+Index: 4 Value: 0
+Index: 5 Value: False
+Index: 6 Value: 0
+Index: 7 Value: [  0]
+-------- Reading GXDLMSData 1.0.0.2.0.255 Ch. 0 Active firmware identifier
+Index: 2 Value: ZMF100CB.M23
+-------- Reading GXDLMSData 1.0.0.2.8.255 Ch. 0 Active firmware signature
+Index: 2 Value: 3546
+-------- Reading GXDLMSData 1.1.0.2.0.255 Ch. 1 Active firmware identifier
+Index: 2 Value: XMXCGB30
+-------- Reading GXDLMSData 1.1.0.2.8.255 Ch. 1 Active firmware signature
+Index: 2 Value: BL_0.09|XMX_VL40_GsmV23
+-------- Reading GXDLMSData 1.2.0.2.0.255 Ch. 2 Active firmware identifier
+Index: 2 Value: Telit
+-------- Reading GXDLMSData 1.2.0.2.8.255 Ch. 2 Active firmware signature
+Index: 2 Value: 10.00.154
+-------- Reading GXDLMSData 1.3.0.2.8.255 Ch. 3 Active firmware signature
+Index: 2 Value: @
+-------- Reading GXDLMSRegister 1.0.1.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.2.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.1.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.1.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.2.8.1.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 1 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.2.8.2.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 2 (0 is total)
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.32.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 231
+-------- Reading GXDLMSRegister 1.0.32.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 231
+-------- Reading GXDLMSRegister 1.0.31.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.21.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.22.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.21.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.22.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.23.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.24.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.151.7.0.255 Man. specific
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.31.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Current
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.52.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 1
+-------- Reading GXDLMSRegister 1.0.52.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 1
+-------- Reading GXDLMSRegister 1.0.51.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.41.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.42.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.41.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.42.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.43.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.44.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.171.7.0.255 Man. specific
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.51.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Current
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.72.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.72.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.71.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.61.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.62.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ActivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.61.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.62.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.63.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.64.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.191.7.0.255 Man. specific
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.71.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: Current
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.1.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.2.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.90.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 3 Value: Scaler: 1 Unit: Current
+Index: 2 Value: 0
+-------- Reading GXDLMSRegister 1.0.5.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 3 Value: Scaler: 1 Unit: ReactiveEnergy
+Index: 2 Value: 4294967295
+-------- Reading GXDLMSRegister 1.0.6.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 3 Value: Scaler: 1 Unit: ReactiveEnergy
+Index: 2 Value: 4294967295
+-------- Reading GXDLMSRegister 1.0.7.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 3 Value: Scaler: 1 Unit: ReactiveEnergy
+Index: 2 Value: 4294967295
+-------- Reading GXDLMSRegister 1.0.8.8.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time integral 1 Rate 0 (0 is total)
+Index: 3 Value: Scaler: 1 Unit: ReactiveEnergy
+Index: 2 Value: 4294967295
+-------- Reading GXDLMSRegister 1.0.5.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSRegister 1.0.6.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSRegister 1.0.7.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSRegister 1.0.8.24.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Current avg. 3
+Index: 3 Value: Scaler: 1 Unit: ReactivePower
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSRegister 1.0.14.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Index: 2 Value: 50,100001
+-------- Reading GXDLMSRegister 1.0.12.31.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Under limit threshold Harmonic / Distortion factor 0 Threshold 255
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 207
+-------- Reading GXDLMSRegister 1.0.12.43.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time threshold for under limit Harmonic / Distortion factor 0 Billing period 255 (255 is current)
+Index: 3 Value: Scaler: 1 Unit: Second
+Index: 2 Value: 30
+-------- Reading GXDLMSData 1.0.32.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.52.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms
+Index: 2 Value: 17
+-------- Reading GXDLMSData 1.0.72.32.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Unipede voltage dip Class 10...<= 15%, 10ms...<= 100ms
+Index: 2 Value: 17
+-------- Reading GXDLMSRegister 1.0.12.35.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit threshold Harmonic / Distortion factor 0 Threshold 255
+Index: 3 Value: Scaler: 1 Unit: Voltage
+Index: 2 Value: 253
+-------- Reading GXDLMSRegister 1.0.12.44.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Time threshold for over limut Harmonic / Distortion factor 0 Billing period 255 (255 is current)
+Index: 3 Value: Scaler: 1 Unit: Second
+Index: 2 Value: 30
+-------- Reading GXDLMSData 1.0.32.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current)
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.52.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current)
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.72.36.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Over limit occurrence counter Harmonic / Distortion factor 0 Billing period 255 (255 is current)
+Index: 2 Value: 0
+-------- Reading GXDLMSMBusClient 0.1.24.1.0.255 Ch. 1 M-Bus client 1
+Index: 2 Value: 0.0.24.0.0.255
+Index: 3 Value: []
+Index: 4 Value: 3600
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+Index: 8 Value: 0
+Index: 9 Value: 0
+Index: 10 Value: 0
+Index: 11 Value: 0
+Index: 12 Value: 0
+-------- Reading GXDLMSMBusClient 0.2.24.1.0.255 Ch. 2 M-Bus client 1
+Index: 2 Value: 0.0.24.0.0.255
+Index: 3 Value: []
+Index: 4 Value: 3600
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+Index: 8 Value: 0
+Index: 9 Value: 0
+Index: 10 Value: 0
+Index: 11 Value: 0
+Index: 12 Value: 0
+-------- Reading GXDLMSMBusClient 0.3.24.1.0.255 Ch. 3 M-Bus client 1
+Index: 2 Value: 0.0.24.0.0.255
+Index: 3 Value: []
+Index: 4 Value: 3600
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+Index: 8 Value: 0
+Index: 9 Value: 0
+Index: 10 Value: 0
+Index: 11 Value: 0
+Index: 12 Value: 0
+-------- Reading GXDLMSMBusClient 0.4.24.1.0.255 Ch. 4 M-Bus client 1
+Index: 2 Value: 0.0.24.0.0.255
+Index: 3 Value: []
+Index: 4 Value: 3600
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+Index: 8 Value: 0
+Index: 9 Value: 0
+Index: 10 Value: 0
+Index: 11 Value: 0
+Index: 12 Value: 0
+-------- Reading GXDLMSMBusMasterPortSetup 0.0.24.6.0.255 Ch. 0 M-Bus master port setup 1
+Index: 2 Value: Baudrate2400
+-------- Reading GXDLMSMBusSlavePortSetup 0.0.24.0.0.255 Ch. 0 M-Bus slave port setup
+Index: 2 Value: Baudrate2400
+Index: 3 Value: Baudrate2400
+Index: 4 Value: Assigned
+Index: 5 Value: 0
+-------- Reading GXDLMSData 0.1.96.1.0.255 Ch. 1 Device ID 1, manufacturing number
+Index: 2 Value: 00000000
+-------- Reading GXDLMSData 0.2.96.1.0.255 Ch. 2 Device ID 1, manufacturing number
+Index: 2 Value: 00000000
+-------- Reading GXDLMSData 0.3.96.1.0.255 Ch. 3 Device ID 1, manufacturing number
+Index: 2 Value: 00000000
+-------- Reading GXDLMSData 0.4.96.1.0.255 Ch. 4 Device ID 1, manufacturing number
+Index: 2 Value: 00000000
+-------- Reading GXDLMSExtendedRegister 0.1.24.2.1.255 Ch. 1 M-Bus value object 2
+Index: 3 Value: Scaler: 1 Unit: None
+Index: 2 Value: 0
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.1.24.2.2.255 Ch. 1 M-Bus value object 3
+Index: 3 Value: Scaler: 1 Unit: NoUnit
+Index: 2 Value: 
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.2.24.2.1.255 Ch. 2 M-Bus value object 2
+Index: 3 Value: Scaler: 1 Unit: None
+Index: 2 Value: 0
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.2.24.2.2.255 Ch. 2 M-Bus value object 3
+Index: 3 Value: Scaler: 1 Unit: NoUnit
+Index: 2 Value: 
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.3.24.2.1.255 Ch. 3 M-Bus value object 2
+Index: 3 Value: Scaler: 1 Unit: None
+Index: 2 Value: 0
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.3.24.2.2.255 Ch. 3 M-Bus value object 3
+Index: 3 Value: Scaler: 1 Unit: NoUnit
+Index: 2 Value: 
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.4.24.2.1.255 Ch. 4 M-Bus value object 2
+Index: 3 Value: Scaler: 1 Unit: None
+Index: 2 Value: 0
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSExtendedRegister 0.4.24.2.2.255 Ch. 4 M-Bus value object 3
+Index: 3 Value: Scaler: 1 Unit: NoUnit
+Index: 2 Value: 
+Index: 4 Value: 0
+Index: 5 Value: 1.1.2000 2:00:00
+-------- Reading GXDLMSDisconnectControl 0.1.24.4.0.255 Ch. 1 M-Bus Disconnect control 1
+Index: 2 Value: True
+Index: 3 Value: Connected
+Index: 4 Value: Mode3
+-------- Reading GXDLMSDisconnectControl 0.2.24.4.0.255 Ch. 2 M-Bus Disconnect control 1
+Index: 2 Value: True
+Index: 3 Value: Connected
+Index: 4 Value: Mode3
+-------- Reading GXDLMSDisconnectControl 0.3.24.4.0.255 Ch. 3 M-Bus Disconnect control 1
+Index: 2 Value: True
+Index: 3 Value: Connected
+Index: 4 Value: Mode3
+-------- Reading GXDLMSDisconnectControl 0.4.24.4.0.255 Ch. 4 M-Bus Disconnect control 1
+Index: 2 Value: True
+Index: 3 Value: Connected
+Index: 4 Value: Mode3
+-------- Reading GXDLMSActionSchedule 0.1.15.0.1.255 Ch. 1 Disconnect control scheduler
+Index: 2 Value: 0.1.10.0.106.255 0
+Index: 3 Value: 1
+Index: 4 Value: []
+-------- Reading GXDLMSScriptTable 0.1.10.0.106.255 Ch. 1 Disconnect control
+Index: 2 Value: [1 2 70 0.1.24.4.0.255 2 0, 2 2 70 0.1.24.4.0.255 1 0, 3 2 70 0.2.24.4.0.255 2 0, 4 2 70 0.2.24.4.0.255 1 0, 5 2 70 0.3.24.4.0.255 2 0, 6 2 70 0.3.24.4.0.255 1 0, 7 2 70 0.4.24.4.0.255 2 0, 8 2 70 0.4.24.4.0.255 1 0]
+-------- Reading GXDLMSData 0.1.94.31.0.255 Ch. 1 Identifiers for the Netherlands
+Index: 2 Value: 2
+-------- Reading GXDLMSData 0.1.94.31.2.255 Ch. 1 Identifiers for the Netherlands
+Index: 2 Value: 36
+-------- Reading GXDLMSData 0.1.94.31.3.255 Ch. 1 Identifiers for the Netherlands
+Index: 2 Value: {1, 0000001000000000, }
+-------- Reading GXDLMSData 0.1.94.31.4.255 Ch. 1 Identifiers for the Netherlands
+Index: 2 Value: {75, 6, 84.101.108.105.97, }
+-------- Reading GXDLMSScriptTable 0.1.94.31.5.255 Ch. 1 Identifiers for the Netherlands
+Index: 2 Value: [1 0 0 0.0.0.0.0.0 0 0]
+-------- Reading GXDLMSIECOpticalPortSetup 0.0.20.0.0.255 Ch. 0 IEC optical port setup
+Index: 2 Value: 0
+Index: 3 Value: Baudrate115200
+Index: 4 Value: Baudrate115200
+Index: 5 Value: 1
+Index: 6 Value: 17
+Index: 7 Value: 
+Index: 8 Value: 
+Index: 9 Value: 
+-------- Reading GXDLMSHdlcSetup 0.0.22.0.0.255 Ch. 0 IEC HDLC setup
+Index: 2 Value: Baudrate9600
+Index: 3 Value: 1
+Index: 4 Value: 1
+Index: 5 Value: 128
+Index: 6 Value: 128
+Index: 7 Value: 25
+Index: 8 Value: 120
+Index: 9 Value: 17
+-------- Reading GXDLMSAutoAnswer 0.0.2.2.0.255 Ch. 0 Auto answer
+Index: 2 Value: 200
+Index: 3 Value: [ ]
+Index: 4 Value: 0
+Index: 5 Value: 0
+Index: 6 Value: 1/1
+-------- Reading GXDLMSMessageHandler 0.0.2.3.0.255 Manufacturer specific
+Index: 2 Value: [ ]
+Index: 3 Value: []
+Index: 4 Value: []
+-------- Reading GXDLMSActionSchedule 0.0.15.0.4.255 Manufacturer specific
+Index: 2 Value: 0.0.10.0.108.255 1
+Index: 3 Value: 1
+Index: 4 Value: []
+-------- Reading GXDLMSRegisterMonitor 0.0.16.1.0.255 Manufacturer specific
+Index: 2 Value: [0]
+Index: 3 Value: 1 0.0.97.98.0.255 2
+Index: 4 Value: []
+-------- Reading GXDLMSScriptTable 0.0.10.0.108.255 Manufacturer specific
+Index: 2 Value: [1 2 40 0.0.25.9.0.255 1 0, 2 2 40 0.1.25.9.0.255 1 0, 3 2 40 0.2.25.9.0.255 1 0]
+-------- Reading GXDLMSPushSetup 0.0.25.9.0.255 Manufacturer specific
+Index: 2 Value: []
+Index: 3 Value: -842 150 451  -842 150 451
+Index: 4 Value: []
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+-------- Reading GXDLMSPushSetup 0.1.25.9.0.255 Manufacturer specific
+Index: 2 Value: []
+Index: 3 Value: -842 150 451  -842 150 451
+Index: 4 Value: []
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+-------- Reading GXDLMSPushSetup 0.2.25.9.0.255 Manufacturer specific
+Index: 2 Value: []
+Index: 3 Value: -842 150 451  -842 150 451
+Index: 4 Value: []
+Index: 5 Value: 0
+Index: 6 Value: 0
+Index: 7 Value: 0
+-------- Reading GXDLMSData 0.0.96.11.0.255 Ch. 0 Event code 1
+-------- Reading GXDLMSData 0.0.96.11.1.255 Ch. 0 Event code 2
+-------- Reading GXDLMSData 0.0.96.11.2.255 Ch. 0 Event code 3
+-------- Reading GXDLMSData 0.0.96.11.3.255 Ch. 0 Event code 4
+-------- Reading GXDLMSData 0.1.96.11.4.255 Ch. 1 Event code 5
+-------- Reading GXDLMSData 0.2.96.11.4.255 Ch. 2 Event code 5
+-------- Reading GXDLMSData 0.3.96.11.4.255 Ch. 3 Event code 5
+-------- Reading GXDLMSData 0.4.96.11.4.255 Ch. 4 Event code 5
+-------- Reading GXDLMSRegister 1.0.15.7.0.255 Ch. 0 Sum Li Active power+ (QI+QIV) Inst. value
+Error! Index: 3 Access Error : Device reports Read-Write denied.
+-------- Reading GXDLMSData 1.0.94.32.1.0 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 
+-------- Reading GXDLMSData 1.0.94.32.1.1 Ch. 0 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 1.0.94.32.1.2 Ch. 0 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 1.0.94.32.1.3 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.94.32.1.4 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.94.32.1.5 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.94.32.1.6 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 0
+-------- Reading GXDLMSData 1.0.94.32.1.7 Ch. 0 Identifiers for Belgium
+Index: 2 Value: 0
+-------- Reading GXDLMSData 0.1.94.32.1.0 Ch. 1 Identifiers for Belgium
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.1.94.32.1.1 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.2 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.3 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.4 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.5 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.6 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.1.94.32.1.7 Ch. 1 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.0 Ch. 2 Identifiers for Belgium
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.2.94.32.1.1 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.2 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.3 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.4 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.5 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.6 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.2.94.32.1.7 Ch. 2 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.0 Ch. 3 Identifiers for Belgium
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.3.94.32.1.1 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.2 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.3 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.4 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.5 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.6 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.3.94.32.1.7 Ch. 3 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.0 Ch. 4 Identifiers for Belgium
+Index: 2 Value: 
+-------- Reading GXDLMSData 0.4.94.32.1.1 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.2 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.3 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.4 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.5 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.6 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSData 0.4.94.32.1.7 Ch. 4 Identifiers for Belgium
+Error! Index: 2 Access Error : Device reports a unavailable object.
+-------- Reading GXDLMSActivityCalendar 0.128.94.32.0.255 Manufacturer specific
+Index: 2 Value: DEFAULT CALENDAR
+Index: 3 Value: []
+Index: 4 Value: [DEFAULT WEEK]
+Index: 5 Value: [1  0:00:00 0.128.94.32.3.255]
+Index: 6 Value: 
+Index: 7 Value: []
+Index: 8 Value: []
+Index: 9 Value: []
+Index: 10 Value: 
+-------- Reading GXDLMSSpecialDaysTable 0.128.94.32.1.255 Manufacturer specific
+Index: 2 Value: []
+-------- Reading GXDLMSData 0.128.94.32.2.255 Manufacturer specific
+Index: 2 Value: False
+-------- Reading GXDLMSScriptTable 0.128.94.32.3.255 Manufacturer specific
+Index: 2 Value: [1 1 1 0.128.94.32.2.255 2 1, 2 1 1 0.128.94.32.2.255 2 0]
+-------- Reading GXDLMSData 0.0.43.1.0.255 Ch. 0 Frame counter #0
+Index: 2 Value: 0
+-------- Reading GXDLMSProfileGeneric 0.0.98.1.0.255 Ch. 0 Data of billing period Scheme 1 1
+Entries: 0/13
+-------- Reading GXDLMSProfileGeneric 0.0.99.98.0.255 Ch. 0 Event log 1
+Entries: 73/100
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+1.1.2000 2:00:00 | 241 | 
+1.1.2000 2:00:00 | 231 | 
+1.1.2000 2:00:00 | 241 | 
+1.1.2000 2:00:00 | 240 | 
+1.1.2000 2:00:00 | 241 | 
+1.1.2000 2:00:00 | 240 | 
+18.3.2014 11:21:16 | 1 | 
+18.3.2014 11:21:25 | 2 | 
+18.3.2014 11:21:39 | 241 | 
+18.3.2014 11:22:45 | 240 | 
+-------- Reading GXDLMSProfileGeneric 0.0.99.98.1.255 Ch. 0 Event log 2
+Entries: 17/30
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+18.3.2014 11:19:59 | 46 | 
+18.3.2014 11:25:26 | 46 | 
+-------- Reading GXDLMSProfileGeneric 1.0.99.97.0.255 Ch. 0 Power failure event log 1
+Entries: 4/10
+Error! Failed to read first row:Access Error : Other Reason.
+-------- Reading GXDLMSProfileGeneric 0.0.99.98.2.255 Ch. 0 Event log 3
+Entries: 1/10
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 999999 | 
+-------- Reading GXDLMSProfileGeneric 0.0.21.0.0.255 Ch. 0 General local port readout
+Entries: 1/1
+Error! Failed to read first row:Access Error : Other Reason.
+Error! Failed to read last day:Access Error : Other Reason.
+-------- Reading GXDLMSProfileGeneric 1.0.99.1.0.255 Ch. 0 Load profile with recording period 1 1
+Entries: 779/960
+Error! Failed to read first row:Access Error : Other Reason.
+17.3.2014 23:00:00 | 4 | 0 | 0 | 
+17.3.2014 23:15:00 | 4 | 0 | 0 | 
+17.3.2014 23:30:00 | 4 | 0 | 0 | 
+17.3.2014 23:45:00 | 4 | 0 | 0 | 
+18.3.2014 0:00:00 | 4 | 0 | 0 | 
+18.3.2014 0:15:00 | 4 | 0 | 0 | 
+18.3.2014 0:30:00 | 4 | 0 | 0 | 
+18.3.2014 0:45:00 | 4 | 0 | 0 | 
+18.3.2014 1:00:00 | 4 | 0 | 0 | 
+18.3.2014 1:15:00 | 4 | 0 | 0 | 
+18.3.2014 1:30:00 | 4 | 0 | 0 | 
+18.3.2014 1:45:00 | 4 | 0 | 0 | 
+18.3.2014 2:00:00 | 4 | 0 | 0 | 
+18.3.2014 2:15:00 | 4 | 0 | 0 | 
+18.3.2014 2:30:00 | 4 | 0 | 0 | 
+18.3.2014 2:45:00 | 4 | 0 | 0 | 
+18.3.2014 3:00:00 | 4 | 0 | 0 | 
+18.3.2014 3:15:00 | 4 | 0 | 0 | 
+18.3.2014 3:30:00 | 4 | 0 | 0 | 
+18.3.2014 3:45:00 | 4 | 0 | 0 | 
+18.3.2014 4:00:00 | 4 | 0 | 0 | 
+18.3.2014 4:15:00 | 4 | 0 | 0 | 
+18.3.2014 4:30:00 | 4 | 0 | 0 | 
+18.3.2014 4:45:00 | 4 | 0 | 0 | 
+18.3.2014 5:00:00 | 4 | 0 | 0 | 
+18.3.2014 5:15:00 | 4 | 0 | 0 | 
+18.3.2014 5:30:00 | 4 | 0 | 0 | 
+18.3.2014 5:45:00 | 4 | 0 | 0 | 
+18.3.2014 6:00:00 | 4 | 0 | 0 | 
+18.3.2014 6:15:00 | 4 | 0 | 0 | 
+18.3.2014 6:30:00 | 4 | 0 | 0 | 
+18.3.2014 6:45:00 | 4 | 0 | 0 | 
+18.3.2014 7:00:00 | 4 | 0 | 0 | 
+18.3.2014 7:15:00 | 4 | 0 | 0 | 
+18.3.2014 7:30:00 | 4 | 0 | 0 | 
+18.3.2014 7:45:00 | 4 | 0 | 0 | 
+18.3.2014 8:00:00 | 4 | 0 | 0 | 
+18.3.2014 8:15:00 | 4 | 0 | 0 | 
+18.3.2014 8:30:00 | 4 | 0 | 0 | 
+18.3.2014 8:45:00 | 4 | 0 | 0 | 
+18.3.2014 9:00:00 | 4 | 0 | 0 | 
+18.3.2014 9:15:00 | 4 | 0 | 0 | 
+18.3.2014 9:30:00 | 4 | 0 | 0 | 
+18.3.2014 9:45:00 | 4 | 0 | 0 | 
+18.3.2014 10:00:00 | 4 | 0 | 0 | 
+18.3.2014 10:15:00 | 4 | 0 | 0 | 
+18.3.2014 10:30:00 | 4 | 0 | 0 | 
+18.3.2014 10:45:00 | 4 | 0 | 0 | 
+18.3.2014 11:00:00 | 4 | 0 | 0 | 
+18.3.2014 11:15:00 | 4 | 0 | 0 | 
+18.3.2014 11:30:00 | 132 | 0 | 0 | 
+18.3.2014 11:45:00 | 4 | 0 | 0 | 
+18.3.2014 12:00:00 | 4 | 0 | 0 | 
+18.3.2014 12:15:00 | 4 | 0 | 0 | 
+18.3.2014 12:30:00 | 4 | 0 | 0 | 
+18.3.2014 12:45:00 | 4 | 0 | 0 | 
+18.3.2014 13:00:00 | 4 | 0 | 0 | 
+18.3.2014 13:15:00 | 4 | 0 | 0 | 
+18.3.2014 13:30:00 | 4 | 0 | 0 | 
+18.3.2014 13:45:00 | 4 | 0 | 0 | 
+18.3.2014 14:00:00 | 4 | 0 | 0 | 
+18.3.2014 14:15:00 | 4 | 0 | 0 | 
+18.3.2014 14:30:00 | 4 | 0 | 0 | 
+18.3.2014 14:45:00 | 4 | 0 | 0 | 
+18.3.2014 15:00:00 | 4 | 0 | 0 | 
+18.3.2014 15:15:00 | 4 | 0 | 0 | 
+-------- Reading GXDLMSProfileGeneric 1.0.99.2.0.255 Ch. 0 Load profile with recording period 2 1
+Entries: 8/40
+Error! Failed to read first row:Access Error : Other Reason.
+18.3.2014 1:00:00 | 0 | 0 | 0 | 0 | 0 | 0 | 1.1.2000 2:00:00 | 0 | 1.1.2000 2:00:00 | 0 | 1.1.2000 2:00:00 | 0 | 1.1.2000 2:00:00 | 
+-------- Reading GXDLMSProfileGeneric 0.1.24.3.0.255 Ch. 1 M-Bus profile generic object 1
+Entries: 193/240
+Error! Failed to read first row:Access Error : Other Reason.
+17.3.2014 23:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 0:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 1:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 2:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 3:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 4:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 5:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 6:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 7:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 8:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 9:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 10:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 11:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 12:00:00 | 132 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 13:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 14:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 15:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+-------- Reading GXDLMSProfileGeneric 0.2.24.3.0.255 Ch. 2 M-Bus profile generic object 1
+Entries: 193/240
+Error! Failed to read first row:Access Error : Other Reason.
+17.3.2014 23:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 0:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 1:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 2:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 3:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 4:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 5:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 6:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 7:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 8:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 9:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 10:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 11:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 12:00:00 | 132 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 13:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 14:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 15:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+-------- Reading GXDLMSProfileGeneric 0.3.24.3.0.255 Ch. 3 M-Bus profile generic object 1
+Entries: 193/240
+Error! Failed to read first row:Access Error : Other Reason.
+17.3.2014 23:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 0:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 1:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 2:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 3:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 4:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 5:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 6:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 7:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 8:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 9:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 10:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 11:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 12:00:00 | 132 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 13:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 14:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 15:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+-------- Reading GXDLMSProfileGeneric 0.4.24.3.0.255 Ch. 4 M-Bus profile generic object 1
+Entries: 193/240
+Error! Failed to read first row:Access Error : Other Reason.
+17.3.2014 23:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 0:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 1:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 2:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 3:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 4:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 5:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 6:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 7:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 8:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 9:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 10:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 11:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 12:00:00 | 132 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 13:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 14:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+18.3.2014 15:00:00 | 4 | 0 | 1.1.2000 2:00:00 | 
+-------- Reading GXDLMSProfileGeneric 0.0.99.98.3.255 Ch. 0 Event log 4
+Entries: 1/30
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+-------- Reading GXDLMSProfileGeneric 0.1.24.5.0.255 Ch. 1 M-Bus control log 1
+Entries: 1/10
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+-------- Reading GXDLMSProfileGeneric 0.2.24.5.0.255 Ch. 2 M-Bus control log 1
+Entries: 1/10
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+-------- Reading GXDLMSProfileGeneric 0.3.24.5.0.255 Ch. 3 M-Bus control log 1
+Entries: 1/10
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+-------- Reading GXDLMSProfileGeneric 0.4.24.5.0.255 Ch. 4 M-Bus control log 1
+Entries: 1/10
+Error! Failed to read first row:Access Error : Other Reason.
+1.1.2000 2:00:00 | 255 | 
+-------- Reading GXDLMSProfileGeneric 0.1.94.31.6.255 Ch. 1 Identifiers for the Netherlands
+Entries: 0/960
+-------- Reading GXDLMSProfileGeneric 0.0.21.0.1.255 Ch. 0 General display readout
+Entries: 1/1
+Error! Failed to read first row:Access Error : Other Reason.
+Error! Failed to read last day:Access Error : Other Reason.
+-------- Reading GXDLMSProfileGeneric 0.0.21.0.2.255 Ch. 0 Alternate display readout
+Entries: 1/1
+Error! Failed to read first row:Access Error : Other Reason.
+Error! Failed to read last day:Access Error : Other Reason.
+-------- Reading GXDLMSProfileGeneric 0.0.21.0.3.255 Ch. 0 Service display readout
+Entries: 1/1
+Error! Failed to read first row:Access Error : Other Reason.

@@ -35,6 +35,8 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSModemConfiguration.h"
+#include "../GXDLMSConverter.h"
+#include <sstream> 
 
 void CGXDLMSModemConfiguration::Init()
 {
@@ -123,6 +125,47 @@ int CGXDLMSModemConfiguration::GetMethodCount()
     return 0;
 }    
 
+void CGXDLMSModemConfiguration::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(CGXDLMSConverter::ToString(m_CommunicationSpeed));
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDLMSModemInitialisation>::iterator it = m_InitialisationStrings.begin(); it != m_InitialisationStrings.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());		
+
+	//Clear str.
+	sb.str(std::string());		
+	sb << '[';
+	empty = true;
+	for(vector< basic_string<char> >::iterator it = m_ModemProfile.begin(); it != m_ModemProfile.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		sb.write(it->c_str(), it->size());
+	}
+	sb << ']';
+	values.push_back(sb.str());		
+
+}
+
 void CGXDLMSModemConfiguration::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -190,6 +233,7 @@ int CGXDLMSModemConfiguration::GetValue(int index, unsigned char* parameters, in
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         //Add count
+		int ret;
         int cnt = m_InitialisationStrings.size();
         CGXOBISTemplate::SetObjectCount(cnt, data);
         for (vector<CGXDLMSModemInitialisation>::iterator it = m_InitialisationStrings.begin(); 
@@ -197,9 +241,12 @@ int CGXDLMSModemConfiguration::GetValue(int index, unsigned char* parameters, in
         {
             data.push_back(DLMS_DATA_TYPE_STRUCTURE);
             data.push_back(3); //Count                        
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetRequest());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetResponse());
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, it->GetDelay());
+            if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetRequest())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->GetResponse())) != 0 ||
+				(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, it->GetDelay())) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
 		return ERROR_CODES_OK;
@@ -209,13 +256,17 @@ int CGXDLMSModemConfiguration::GetValue(int index, unsigned char* parameters, in
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         //Add count
+		int ret;
         int cnt = m_ModemProfile.size();
         CGXOBISTemplate::SetObjectCount(cnt, data);
         //for(String it : m_ModemProfile)
 		for (vector< basic_string<char> >::iterator it = m_ModemProfile.begin(); 
             it != m_ModemProfile.end(); ++it)
         {
-            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, *it);
+            if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, *it)) != 0)
+			{
+				return ret;
+			}
         }
         value = data;
 		return ERROR_CODES_OK;

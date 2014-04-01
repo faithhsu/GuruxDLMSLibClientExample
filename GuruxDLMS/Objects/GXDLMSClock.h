@@ -36,28 +36,15 @@
 
 #include "GXDLMSObject.h"
 
-enum GXDLMS_CLOCK_STATUS
-{
-	GXDLMS_CLOCK_STATUS_OK = 0x0,
-	GXDLMS_CLOCK_STATUS_INVALID_VALUE = 0x1,
-	GXDLMS_CLOCK_STATUS_DOUBTFUL_VALUE = 0x2,
-	GXDLMS_CLOCK_STATUS_DIFFERENT_CLOCK_BASE = 0x4,
-    GXDLMS_CLOCK_STATUS_RESERVED1 = 0x8,
-	GXDLMS_CLOCK_STATUS_RESERVED2 = 0x10,
-    GXDLMS_CLOCK_STATUS_RESERVED3 = 0x20,
-    GXDLMS_CLOCK_STATUS_RESERVED4 = 0x40,
-    GXDLMS_CLOCK_STATUS_DAYLIGHT_SAVE_ACTIVE = 0x80,
-};
-
 class CGXDLMSClock : public CGXDLMSObject
 {
-    char m_ClockBase;
+    CLOCKBASE m_ClockBase;
     char m_Deviation;
     bool m_Enabled;
     CGXDateTime m_End;
     GXDLMS_CLOCK_STATUS m_Status;
     CGXDateTime m_Begin;
-    unsigned short m_TimeZone;
+    short m_TimeZone;
     CGXDateTime m_Time;
 
 	void Init();
@@ -90,8 +77,8 @@ public:
     /** 
      TimeZone of COSEM Clock object.
     */
-    unsigned short GetTimeZone();
-    void SetTimeZone(unsigned short value);
+    short GetTimeZone();
+    void SetTimeZone(short value);
 
     /** 
      Status of COSEM Clock object.
@@ -114,8 +101,8 @@ public:
     /** 
      Clock base of COSEM Clock object.
     */
-    char GetClockBase();
-    void SetClockBase(char value);
+    CLOCKBASE GetClockBase();
+    void SetClockBase(CLOCKBASE value);
     
 	// Returns amount of attributes.
 	int GetAttributeCount();
@@ -123,8 +110,12 @@ public:
     // Returns amount of methods.
 	int GetMethodCount();
 
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);	
 
+	int GetUIDataType(int index, DLMS_DATA_TYPE& type);
 	int GetDataType(int index, DLMS_DATA_TYPE& type);
     
     /*

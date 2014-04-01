@@ -41,6 +41,7 @@ using namespace std;
 #include "GXHelpers.h"
 #include "GXApplicationContextName.h"
 #include "GXUserInformation.h"
+#include "GXOBISTemplate.h"
 
 const char AARQTag = 0x60;
 const char AARETag = 0x61;
@@ -96,7 +97,7 @@ class GXAPDU
 {
 	basic_string<char> m_Password;
 	GXDLMS_AUTHENTICATION m_Authentication;
-	CGXApplicationContextName m_ApplicationContextName;
+	CGXApplicationContextNamePdu m_ApplicationContextName;
 	unsigned long ResultValue, ResultDiagnosticValue;	
 public:
 	CGXUserInformation UserInformation;
@@ -234,13 +235,16 @@ public:
 			}
 			else if (tag == 0xA2) //Result 
 			{
+				//Get tag
 				tag = *pBuff++ & 0xFF;
 				--size;
+				//Get length.
 				len = *pBuff++ & 0xFF;
 				--size;
 				//Choice for result (INTEGER, universal)
 				tag = *pBuff++ & 0xFF;
 				--size;
+				//Get length.
 				len = *pBuff++ & 0xFF;
 				--size;
 				ResultValue = *pBuff++ & 0xFF;
@@ -261,6 +265,104 @@ public:
 				len = *pBuff++ & 0xFF;
 				ResultDiagnosticValue = *pBuff++ & 0xFF;
 			}
+			 else if (tag == 0x8A || tag == 0x88) //Authentication.
+            {
+                tag = *pBuff++ & 0xFF;
+				--size;
+                //Get sender ACSE-requirenents field component.
+                if (*pBuff++ != 2)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }                
+				--size;
+				short val = CGXOBISTemplate::GetInt16(pBuff);
+				size -= 2;
+                if (val != 0x0780 && val != 0x0680)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+            }               
+            else if (tag == 0xAA) //Server Challenge.                
+            {
+				tag = *pBuff++ & 0xFF;
+				--size;
+				len = *pBuff++ & 0xFF;
+				--size;
+                ++pBuff;
+				--size;
+                len = *pBuff++ & 0xFF;
+				--size;
+            }
+            else if (tag == 0x8B || tag == 0x89) //Authentication.
+            {
+                tag = *pBuff++ & 0xFF;
+				--size;
+                len = *pBuff++ & 0xFF;
+				--size;
+                bool IsAuthenticationTag = len > 7;
+                if (*pBuff++ != 0x60)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                if ((*pBuff++ & 0xFF) != 0x85)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                if (*pBuff++ != 0x74)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                if (*pBuff++ != 0x05)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                if (*pBuff++ != 0x08)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                if (*pBuff++ != 0x02)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+				--size;
+                int tmp = *pBuff++;
+				--size;
+                if (tmp < 0 || tmp > 5)
+                {
+                    return ERROR_CODES_INVALID_TAG;
+                }
+                if (IsAuthenticationTag)
+                {
+                    m_Authentication = (GXDLMS_AUTHENTICATION) tmp;
+                    int tag2 = (*pBuff++ & 0xFF);
+					--size;
+                    if (tag2 != 0xAC && tag2 != 0xAA)
+                    {
+                        return ERROR_CODES_INVALID_TAG;
+                    }
+                    len = *pBuff++;
+					--size;
+                    //Get authentication information.
+                    if ((*pBuff++ & 0xFF) != 0x80)
+                    {
+                        return ERROR_CODES_INVALID_TAG;
+                    }
+					--size;
+                    len = *pBuff++ & 0xFF;
+					--size;
+					m_Password.append(*pBuff, len);
+					size -= len;
+                }
+                else
+                {
+					m_Authentication = GXDLMS_AUTHENTICATION_NONE;                    
+                }
+            }
 			//Unknown tags.
 			else 
 			{

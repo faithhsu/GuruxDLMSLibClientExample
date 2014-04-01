@@ -67,6 +67,9 @@ public:
 	// Returns amount of methods.
 	int GetMethodCount();
 
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);	
 
 	int GetDataType(int index, DLMS_DATA_TYPE& type);

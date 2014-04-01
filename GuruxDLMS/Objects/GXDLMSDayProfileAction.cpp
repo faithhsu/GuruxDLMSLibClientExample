@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSDayProfileAction.h"
+#include <sstream> 
 
 /** 
  Constructor.
@@ -88,4 +89,15 @@ int CGXDLMSDayProfileAction::GetScriptSelector()
 void CGXDLMSDayProfileAction::SetScriptSelector(int value)
 {
     m_ScriptSelector = value;
+}
+
+
+string CGXDLMSDayProfileAction::ToString()
+{
+	std::stringstream sb;
+	sb << m_StartTime.ToString().c_str();
+	sb << " ";
+	sb << m_ScriptLogicalName.c_str();
+	return sb.str();
+
 }

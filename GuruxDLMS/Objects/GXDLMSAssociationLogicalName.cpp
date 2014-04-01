@@ -136,47 +136,45 @@ CGXDLMSObjectCollection& CGXDLMSAssociationLogicalName::GetObjectList()
     return m_ObjectList;
 }
 
-CGXDLMSVariant CGXDLMSAssociationLogicalName::GetAssociatedPartnersId()
+unsigned char CGXDLMSAssociationLogicalName::GetClientSAP()
 {
-    return m_AssociatedPartnersId;
+	return m_ClientSAP;
 }
-void CGXDLMSAssociationLogicalName::SetAssociatedPartnersId(CGXDLMSVariant value)
+void CGXDLMSAssociationLogicalName::SetClientSAP(unsigned char value)
 {
-    m_AssociatedPartnersId = value;
+	m_ClientSAP = value;
 }
 
-CGXDLMSVariant CGXDLMSAssociationLogicalName::GetApplicationContextName()
+unsigned short CGXDLMSAssociationLogicalName::GetServerSAP()
+{
+	return m_ServerSAP;
+}
+
+void CGXDLMSAssociationLogicalName::SetServerSAP(unsigned short value)
+{
+	m_ServerSAP = value;
+}
+
+CGXApplicationContextName CGXDLMSAssociationLogicalName::GetApplicationContextName()
 {
     return m_ApplicationContextName;
 }
-void CGXDLMSAssociationLogicalName::SetApplicationContextName(CGXDLMSVariant value)
-{
-    m_ApplicationContextName = value;
-}
 
-CGXDLMSVariant CGXDLMSAssociationLogicalName::GetXDLMSContextInfo()
+CGXxDLMSContextType CGXDLMSAssociationLogicalName::GetXDLMSContextInfo()
 {
     return m_XDLMSContextInfo;
 }
-void CGXDLMSAssociationLogicalName::SetXDLMSContextInfo(CGXDLMSVariant value)
-{
-    m_XDLMSContextInfo = value;
-}
 
-CGXDLMSVariant CGXDLMSAssociationLogicalName::GetAuthenticationMechanismMame()
+CGXAuthenticationMechanismName CGXDLMSAssociationLogicalName::GetAuthenticationMechanismMame()
 {
     return m_AuthenticationMechanismMame;
 }
-void CGXDLMSAssociationLogicalName::SetAuthenticationMechanismMame(CGXDLMSVariant value)
-{
-    m_AuthenticationMechanismMame = value;
-}
 
-CGXDLMSVariant CGXDLMSAssociationLogicalName::GetSecret()
+vector<unsigned char>& CGXDLMSAssociationLogicalName::GetSecret()
 {
     return m_Secret;
 }
-void CGXDLMSAssociationLogicalName::SetSecret(CGXDLMSVariant value)
+void CGXDLMSAssociationLogicalName::SetSecret(vector<unsigned char>& value)
 {
     m_Secret = value;
 }    
@@ -213,6 +211,36 @@ int CGXDLMSAssociationLogicalName::GetAttributeCount()
 int CGXDLMSAssociationLogicalName::GetMethodCount()
 {
 	return 4;
+}
+
+void CGXDLMSAssociationLogicalName::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_ObjectList.ToString());	
+	string str = CGXDLMSVariant(m_ClientSAP).ToString();
+	str += "/";
+	str += CGXDLMSVariant(m_ServerSAP).ToString();
+	values.push_back(str);
+	values.push_back(m_ApplicationContextName.ToString());
+	values.push_back(m_XDLMSContextInfo.ToString());
+	values.push_back(m_AuthenticationMechanismMame.ToString());
+	if (!m_Secret.empty())
+	{
+		values.push_back(GXHelpers::bytesToHex(&m_Secret[0], m_Secret.size()));
+	}
+	else
+	{
+		values.push_back(string());
+	}
+	values.push_back(CGXDLMSVariant(m_AssociationStatus).ToString());
+	//Security Setup Reference is from version 1.
+    if (GetVersion() > 0)
+    {
+		values.push_back(m_SecuritySetupReference);
+	}
 }
 
 void CGXDLMSAssociationLogicalName::GetAttributeIndexToRead(vector<int>& attributes)
@@ -331,22 +359,74 @@ int CGXDLMSAssociationLogicalName::GetValue(int index, unsigned char* parameters
     }
     if (index == 3)
     {         
-        value = GetAssociatedPartnersId();
+		vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_ARRAY);
+        //Add count            
+        data.push_back(2);
+		data.push_back(DLMS_DATA_TYPE_UINT8);
+        data.push_back(m_ClientSAP);
+        data.push_back(DLMS_DATA_TYPE_UINT16);
+		GXHelpers::SetUInt16(m_ServerSAP, data);
+        value = data;
 		return ERROR_CODES_OK;
     }
     if (index == 4)
     {         
-        value = GetApplicationContextName();
+		vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+        //Add count            
+        data.push_back(0x7);
+		int ret;
+		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetJointIsoCtt())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetCountry())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_ApplicationContextName.GetCountryName())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetIdentifiedOrganization())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetDlmsUA())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetApplicationContext())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_ApplicationContextName.GetContextId())) != 0)
+		{
+			return ret;
+		}
+        value = data;
 		return ERROR_CODES_OK;
     }
     if (index == 5)
     {            
-        value = GetXDLMSContextInfo();
+        vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+        data.push_back(6);
+		int ret;
+
+		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_BIT_STRING, m_XDLMSContextInfo.GetConformance())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_XDLMSContextInfo.GetMaxReceivePduSize())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_XDLMSContextInfo.GetMaxSendPpuSize())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_XDLMSContextInfo.GetDlmsVersionNumber())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_INT8, m_XDLMSContextInfo.GetQualityOfService())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, m_XDLMSContextInfo.GetCypheringInfo())) != 0)
+		{
+			return ret;
+		}
+		value = data;
 		return ERROR_CODES_OK;
     }
     if (index == 6)
     {         
-        value = GetAuthenticationMechanismMame();
+        vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+        //Add count            
+        data.push_back(0x7);
+		int ret;
+		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetJointIsoCtt())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetCountry())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_AuthenticationMechanismMame.GetCountryName())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetIdentifiedOrganization())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetDlmsUA())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetAuthenticationMechanismName())) != 0 ||
+			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, m_AuthenticationMechanismMame.GetMechanismId())) != 0)
+		{
+			return ret;
+		}
+		value = data;
 		return ERROR_CODES_OK;
     }
     if (index == 7)
@@ -397,23 +477,191 @@ int CGXDLMSAssociationLogicalName::SetValue(int index, CGXDLMSVariant& value)
     }
     else if (index == 3)
     {            
-         m_AssociatedPartnersId = value;            
+		m_ClientSAP = value.Arr[0].ToInteger();
+		m_ServerSAP = value.Arr[1].ToInteger();
     }
     else if (index == 4)
     {
-        m_ApplicationContextName = value;
+        //Value of the object identifier encoded in BER
+		if (!value.byteArr.empty())
+        {                    
+            int pos = -1;
+            if (value.byteArr[0] == 0x60)
+            {
+                m_ApplicationContextName.SetJointIsoCtt(0);
+                ++pos;                        
+                m_ApplicationContextName.SetCountry(0);
+                ++pos;
+                m_ApplicationContextName.SetCountryName(0);
+                ++pos;
+                m_ApplicationContextName.SetIdentifiedOrganization(value.byteArr[++pos]);
+                m_ApplicationContextName.SetDlmsUA(value.byteArr[++pos]);
+                m_ApplicationContextName.SetApplicationContext(value.byteArr[++pos]);
+                m_ApplicationContextName.SetContextId(value.byteArr[++pos]);
+            }
+            else
+            {
+                //Get Tag and Len.
+                if (value.byteArr[++pos] != 2 && value.byteArr[++pos] != 7)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                //Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetJointIsoCtt(value.byteArr[++pos]);
+                //Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetCountry(value.byteArr[++pos]);
+                //Get tag
+                if (value.byteArr[++pos] != 0x12)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetCountryName(CGXOBISTemplate::GetUInt16(&value.byteArr[pos]));
+				pos += 2;
+				//Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetIdentifiedOrganization(value.byteArr[++pos]);
+                //Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetDlmsUA(value.byteArr[++pos]);
+                //Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetApplicationContext(value.byteArr[++pos]);
+                //Get tag
+                if (value.byteArr[++pos] != 0x11)
+                {
+                    return ERROR_CODES_INVALID_PARAMETER;
+                }
+                m_ApplicationContextName.SetContextId(value.byteArr[++pos]);
+            }
+        }
+        else
+        {
+			m_ApplicationContextName.SetJointIsoCtt(value.Arr[0].ToInteger());
+            m_ApplicationContextName.SetCountry(value.Arr[1].ToInteger());
+            m_ApplicationContextName.SetCountryName(value.Arr[2].ToInteger());
+            m_ApplicationContextName.SetIdentifiedOrganization(value.Arr[3].ToInteger());
+            m_ApplicationContextName.SetDlmsUA(value.Arr[4].ToInteger());
+            m_ApplicationContextName.SetApplicationContext(value.Arr[5].ToInteger());
+            m_ApplicationContextName.SetContextId(value.Arr[6].ToInteger());
+        }
     }
     else if (index == 5)
     {
-        m_XDLMSContextInfo = value;
+		if (value.vt == DLMS_DATA_TYPE_STRUCTURE)
+        {
+			m_XDLMSContextInfo.SetConformance(value.Arr[0].ToString());
+			m_XDLMSContextInfo.SetMaxReceivePduSize(value.Arr[1].ToInteger());
+            m_XDLMSContextInfo.SetMaxSendPpuSize(value.Arr[2].ToInteger());
+            m_XDLMSContextInfo.SetDlmsVersionNumber(value.Arr[3].ToInteger());
+            m_XDLMSContextInfo.SetQualityOfService(value.Arr[4].ToInteger());
+			m_XDLMSContextInfo.SetCypheringInfo(value.Arr[5].byteArr);
+        }
     }
     else if (index == 6)
     {
-        m_AuthenticationMechanismMame = value;                                    
+        if (value.vt != DLMS_DATA_TYPE_NONE)
+        {
+            //Value of the object identifier encoded in BER
+			if (!value.byteArr.empty())
+            {
+                int pos = -1;
+                if (value.byteArr[0] == 0x60)
+                {
+                    m_AuthenticationMechanismMame.SetJointIsoCtt(0);
+                    ++pos;
+                    m_AuthenticationMechanismMame.SetCountry(0);
+                    ++pos;
+                    m_AuthenticationMechanismMame.SetCountryName(0);
+                    ++pos;
+                    m_AuthenticationMechanismMame.SetIdentifiedOrganization(value.byteArr[++pos]);
+                    m_AuthenticationMechanismMame.SetDlmsUA(value.byteArr[++pos]);
+                    m_AuthenticationMechanismMame.SetAuthenticationMechanismName(value.byteArr[++pos]);
+                    m_AuthenticationMechanismMame.SetMechanismId((GXDLMS_AUTHENTICATION) value.byteArr[++pos]);
+                }
+                else
+                {
+                    //Get Tag and Len.
+                    if (value.byteArr[++pos] != 2 && value.byteArr[++pos] != 7)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetJointIsoCtt(value.byteArr[++pos]);
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetCountry(value.byteArr[++pos]);
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x12)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetCountryName(CGXOBISTemplate::GetUInt16(&value.byteArr[pos]));
+					pos += 2;
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetIdentifiedOrganization(value.byteArr[++pos]);
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetDlmsUA(value.byteArr[++pos]);
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetAuthenticationMechanismName(value.byteArr[++pos]);
+                    //Get tag
+                    if (value.byteArr[++pos] != 0x11)
+                    {
+                        return ERROR_CODES_INVALID_PARAMETER;
+                    }
+                    m_AuthenticationMechanismMame.SetMechanismId((GXDLMS_AUTHENTICATION) value.byteArr[++pos]);
+                }
+            }
+            else
+            {                       
+                m_AuthenticationMechanismMame.SetJointIsoCtt(value.Arr[0].ToInteger());
+                m_AuthenticationMechanismMame.SetCountry(value.Arr[1].ToInteger());
+                m_AuthenticationMechanismMame.SetCountryName(value.Arr[2].ToInteger());
+                m_AuthenticationMechanismMame.SetIdentifiedOrganization(value.Arr[3].ToInteger());
+                m_AuthenticationMechanismMame.SetDlmsUA(value.Arr[4].ToInteger());
+                m_AuthenticationMechanismMame.SetAuthenticationMechanismName(value.Arr[5].ToInteger());
+                m_AuthenticationMechanismMame.SetMechanismId((GXDLMS_AUTHENTICATION) value.Arr[6].ToInteger());
+            }                                           
+        }                           
     }
     else if (index == 7)
     {
-        m_Secret = value;
+		m_Secret = value.byteArr;
     }
     else if (index == 8)
     {

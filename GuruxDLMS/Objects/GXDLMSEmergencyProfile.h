@@ -49,4 +49,6 @@ public:
 
 	int GetDuration();
     void SetDuration(int value);
+
+	string ToString();
 };

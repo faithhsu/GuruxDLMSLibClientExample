@@ -33,7 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSScriptAction.h"
-
+#include <sstream> 
 
 /** 
  Defines which action to be applied to the referenced object.
@@ -91,16 +91,22 @@ CGXDLMSVariant CGXDLMSScriptAction::GetParameter()
 {
     return m_Parameter;
 }
-void CGXDLMSScriptAction::SetParameter(CGXDLMSVariant value, DLMS_DATA_TYPE type)
+void CGXDLMSScriptAction::SetParameter(CGXDLMSVariant value)
 {
     m_Parameter = value;
-    m_ParameterType = type;
 }   
 
-/** 
- Return parameter type..
-*/
-DLMS_DATA_TYPE CGXDLMSScriptAction::GetParameterType()
+string CGXDLMSScriptAction::ToString()
 {
-    return m_ParameterType;
+	std::stringstream sb;	
+    sb << m_Type;
+	sb << " ";
+	sb << m_ObjectType;
+	sb << " ";
+	sb << m_LogicalName.c_str();
+	sb << " ";
+	sb << m_Index;
+	sb << " ";
+	sb << m_Parameter.ToString().c_str();
+	return sb.str();
 }

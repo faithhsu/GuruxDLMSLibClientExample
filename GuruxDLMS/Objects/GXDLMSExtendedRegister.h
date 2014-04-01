@@ -74,6 +74,9 @@ public:
     // Returns amount of methods.
 	int GetMethodCount();
 
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
+
 	void GetAttributeIndexToRead(vector<int>& attributes);
 	
 	int GetDataType(int index, DLMS_DATA_TYPE& type);
@@ -81,4 +84,6 @@ public:
 	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
 
 	int SetValue(int index, CGXDLMSVariant& value);
+
+	int GetUIDataType(int index, DLMS_DATA_TYPE& type);
 };

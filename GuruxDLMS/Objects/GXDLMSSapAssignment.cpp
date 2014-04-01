@@ -35,6 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSSapAssignment.h"
+#include <sstream> 
 
 /**  
  Constructor.
@@ -80,6 +81,31 @@ int CGXDLMSSapAssignment::GetAttributeCount()
 int CGXDLMSSapAssignment::GetMethodCount()
 {
 	return 1;
+}
+
+void CGXDLMSSapAssignment::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(std::map<int, basic_string<char> >::iterator it = m_SapAssignmentList.begin(); it != m_SapAssignmentList.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = CGXDLMSVariant((it->first)).ToString();
+		sb.write(str.c_str(), str.size());
+		sb << ", ";		
+		sb.write(it->second.c_str(), it->second.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());
 }
 
 void CGXDLMSSapAssignment::GetAttributeIndexToRead(vector<int>& attributes)
@@ -128,6 +154,7 @@ int CGXDLMSSapAssignment::GetValue(int index, unsigned char* parameters, int len
         data.push_back(DLMS_DATA_TYPE_ARRAY);
         //Add count            
         CGXOBISTemplate::SetObjectCount(cnt, data);
+		int ret;
         if (cnt != 0)
         {
 			for (std::map<int, basic_string<char> >::iterator it = m_SapAssignmentList.begin();
@@ -135,8 +162,11 @@ int CGXDLMSSapAssignment::GetValue(int index, unsigned char* parameters, int len
             {
                 data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(2); //Count
-				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).first);
-				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).second);
+				if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, (*it).first)) != 0 ||
+					(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, (*it).second)) != 0)
+				{
+					return ret;
+				}
             }
         }
         value = data;
@@ -176,8 +206,7 @@ int CGXDLMSSapAssignment::SetValue(int index, CGXDLMSVariant& value)
             {
                 str = (*item).Arr[1].ToString();
             }            
-			m_SapAssignmentList[(*item).Arr[0].lVal] = str;
-            //m_SapAssignmentList.put(((Number) Array.get(item, 0)).intValue(), str);
+			m_SapAssignmentList[(*item).Arr[0].ToInteger()] = str;
         }                    
 		return ERROR_CODES_OK;
     }

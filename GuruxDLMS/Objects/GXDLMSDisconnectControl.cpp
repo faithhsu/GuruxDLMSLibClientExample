@@ -35,7 +35,7 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSDisconnectControl.h"
-
+#include "../GXDLMSConverter.h"
 
 //Constructor.
 CGXDLMSDisconnectControl::CGXDLMSDisconnectControl() : CGXDLMSObject(OBJECT_TYPE_DISCONNECT_CONTROL)
@@ -100,6 +100,17 @@ int CGXDLMSDisconnectControl::GetAttributeCount()
 int CGXDLMSDisconnectControl::GetMethodCount()
 {
 	return 2;
+}
+
+void CGXDLMSDisconnectControl::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(CGXDLMSVariant(m_OutputState).ToString());
+	values.push_back(CGXDLMSConverter::ToString(m_ControlState));
+	values.push_back(CGXDLMSConverter::ToString(m_ControlMode));
 }
 
 void CGXDLMSDisconnectControl::GetAttributeIndexToRead(vector<int>& attributes)

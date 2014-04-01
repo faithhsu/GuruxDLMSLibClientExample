@@ -54,4 +54,6 @@ public:
 	void push_back(CGXDLMSObject* item);
     
 	void clear();
+
+	string ToString();
 };

@@ -34,6 +34,9 @@
 #pragma once
 
 #include "GXDLMSObject.h"
+#include "GXApplicationContextName.h"
+#include "GXxDLMSContextType.h"
+#include "GXAuthenticationMechanismName.h"
 
 enum GX_ASSOCIATION_STATUS
 {
@@ -48,11 +51,12 @@ private:
 
 	GX_ASSOCIATION_STATUS m_AssociationStatus;
     CGXDLMSObjectCollection m_ObjectList;
-    CGXDLMSVariant m_AssociatedPartnersId;
-    CGXDLMSVariant m_ApplicationContextName;
-    CGXDLMSVariant m_XDLMSContextInfo;
-    CGXDLMSVariant m_AuthenticationMechanismMame;
-    CGXDLMSVariant m_Secret;
+	unsigned char m_ClientSAP;
+	unsigned short m_ServerSAP;
+    CGXApplicationContextName m_ApplicationContextName;
+    CGXxDLMSContextType m_XDLMSContextInfo;
+    CGXAuthenticationMechanismName m_AuthenticationMechanismMame;
+    vector<unsigned char> m_Secret;
     string m_SecuritySetupReference;   
 
 	void Init();
@@ -78,25 +82,26 @@ public:
 
 	CGXDLMSObjectCollection& GetObjectList();
 
-    CGXDLMSVariant GetAssociatedPartnersId();
+
+    /// Contains the identifiers of the COSEM client APs within the physical devices hosting these APs, 
+    /// which belong to the AA modelled by the “Association LN” object.
+	unsigned char GetClientSAP();
+	void SetClientSAP(unsigned char value);
+
+    /// Contains the identifiers of the COSEM server (logical device) APs within the physical 
+    /// devices hosting these APs, which belong to the AA modelled by the “Association LN” object.
+	unsigned short GetServerSAP();
+	void SetServerSAP(unsigned short value);
+
+    CGXApplicationContextName GetApplicationContextName();
+
+    CGXxDLMSContextType GetXDLMSContextInfo();
     
-	void SetAssociatedPartnersId(CGXDLMSVariant value);
-
-    CGXDLMSVariant GetApplicationContextName();
-
-	void SetApplicationContextName(CGXDLMSVariant value);
-
-    CGXDLMSVariant GetXDLMSContextInfo();
-
-	void SetXDLMSContextInfo(CGXDLMSVariant value);
+    CGXAuthenticationMechanismName GetAuthenticationMechanismMame();
+   
+    vector<unsigned char>& GetSecret();
     
-    CGXDLMSVariant GetAuthenticationMechanismMame();
-
-	void SetAuthenticationMechanismMame(CGXDLMSVariant value);
-    
-    CGXDLMSVariant GetSecret();
-    
-	void SetSecret(CGXDLMSVariant value);
+	void SetSecret(vector<unsigned char>& value);
 
 	GX_ASSOCIATION_STATUS GetAssociationStatus();
 
@@ -110,6 +115,9 @@ public:
 
     // Returns amount of methods.
 	int GetMethodCount();
+
+	//Get attribute values of object.
+	void GetValues(vector<string>& values);
 
 	void GetAttributeIndexToRead(vector<int>& attributes);
 

@@ -60,4 +60,5 @@ public:
     
     vector<CGXDLMSDayProfileAction>& GetDaySchedules();
     void SetDaySchedules(vector<CGXDLMSDayProfileAction>& value);
+	string ToString();
 };

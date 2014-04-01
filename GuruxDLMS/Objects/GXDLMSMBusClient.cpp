@@ -34,6 +34,7 @@
 
 #include "GXDLMSMBusClient.h"
 #include "../GXDLMSClient.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSMBusClient::CGXDLMSMBusClient() : CGXDLMSObject(OBJECT_TYPE_MBUS_CLIENT)
@@ -167,6 +168,41 @@ int CGXDLMSMBusClient::GetAttributeCount()
 int CGXDLMSMBusClient::GetMethodCount()
 {
 	return 8;
+}
+
+void CGXDLMSMBusClient::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_MBusPortReference);	
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<pair<string, string> >::iterator it = m_CaptureDefinition.begin(); it != m_CaptureDefinition.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		sb.write(it->first.c_str(), it->first.size());
+		sb << " ";
+		sb.write(it->second.c_str(), it->second.size());	
+	}
+	sb << ']';
+	values.push_back(sb.str());		
+
+	values.push_back(CGXDLMSVariant(m_CapturePeriod).ToString());
+	values.push_back(CGXDLMSVariant(m_PrimaryAddress).ToString());
+	values.push_back(CGXDLMSVariant(m_IdentificationNumber).ToString());
+	values.push_back(CGXDLMSVariant(m_ManufacturerID).ToString());
+	values.push_back(CGXDLMSVariant(m_DataHeaderVersion).ToString());
+	values.push_back(CGXDLMSVariant(m_DeviceType).ToString());
+	values.push_back(CGXDLMSVariant(m_AccessNumber).ToString());
+	values.push_back(CGXDLMSVariant(m_Status).ToString());
+	values.push_back(CGXDLMSVariant(m_Alarm).ToString());
 }
 
 void CGXDLMSMBusClient::GetAttributeIndexToRead(vector<int>& attributes)

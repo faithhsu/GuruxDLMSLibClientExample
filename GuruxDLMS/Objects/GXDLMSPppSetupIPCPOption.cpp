@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSPppSetupIPCPOption.h"
+#include <sstream> 
 
 PPP_SETUP_IPCP_OPTION_TYPE CGXDLMSPppSetupIPCPOption::GetType()
 {
@@ -59,4 +60,13 @@ CGXDLMSVariant CGXDLMSPppSetupIPCPOption::GetData()
 void CGXDLMSPppSetupIPCPOption::SetData(CGXDLMSVariant value)
 {
     m_Data = value;
+}
+
+string CGXDLMSPppSetupIPCPOption::ToString()
+{
+	std::stringstream sb;
+	sb << m_Type;
+	sb << " ";
+	sb << m_Length;
+	return sb.str();
 }

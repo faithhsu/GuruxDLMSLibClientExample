@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSSeasonProfile.h"
+#include <sstream> 
 
 /** 
  Constructor.
@@ -86,4 +87,13 @@ basic_string<char> CGXDLMSSeasonProfile::GetWeekName()
 void CGXDLMSSeasonProfile::SetWeekName(basic_string<char> value)
 {
     m_WeekName = value;
+}
+
+string CGXDLMSSeasonProfile::ToString()
+{
+	std::stringstream sb;
+	sb << m_Name.c_str();
+	sb << " ";
+	sb << m_Start.ToString().c_str();
+	return sb.str();
 }

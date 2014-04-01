@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSModemInitialisation.h"
+#include <sstream> 
 
 CGXDLMSModemInitialisation::CGXDLMSModemInitialisation()
 {
@@ -66,3 +67,14 @@ void CGXDLMSModemInitialisation::SetDelay(int value)
 {
     m_Delay = value;
 }	
+
+string CGXDLMSModemInitialisation::ToString()
+{
+	std::stringstream sb;
+	sb << m_Request.c_str();
+	sb << " ";
+	sb << m_Response.c_str();
+	sb << " ";
+	sb << m_Delay;
+	return sb.str();
+}

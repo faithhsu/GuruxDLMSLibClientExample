@@ -38,6 +38,7 @@
 
 class GXClient
 {
+	int m_WaitTime;
 public:
 	CGXDLMSClient* m_Parser;
 	int m_socket;
@@ -51,14 +52,17 @@ public:
 	int m_SendSize, m_ReceiveSize;
 	bool m_Trace;
 
-	GXClient(CGXDLMSClient* pCosem, bool trace);
+	GXClient(CGXDLMSClient* pCosem, int wt, bool trace);
 	~GXClient(void);
 	
 	void InitializeBuffers(int sendSize, int receiveSize);
 	int Close();
 	int Connect(const char* pAddress, unsigned short port = 4059);
+	int Read(unsigned char* pData, int len, unsigned char eop, bool removeEcho, int& index);
 #if defined(_WIN32) || defined(_WIN64)//Windows includes
-	int Open(const char* pPortName, bool IEC);
+	int GXGetCommState(HANDLE hWnd, LPDCB DCB);
+	int GXSetCommState(HANDLE hWnd, LPDCB DCB);
+	int Open(const char* pPortName, bool IEC, int maxBaudrate = 19200);
 #endif
 
 	static inline void Now(string& str)
@@ -95,6 +99,6 @@ public:
 	//Call action of selected object.
 	int Method(CGXDLMSObject* pObject, int ActionIndex, CGXDLMSVariant& value);
 
-	int ReadRowsByRange(CGXDLMSVariant& Name, CGXDLMSObject* pSortObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows);
-	int ReadRowsByEntry(CGXDLMSVariant& Name, unsigned int Index, unsigned int Count, CGXDLMSVariant& rows);
+	int ReadRowsByRange(CGXDLMSObject* pObject, struct tm* start, struct tm* end, CGXDLMSVariant& rows);
+	int ReadRowsByEntry(CGXDLMSObject* pObject, unsigned int Index, unsigned int Count, CGXDLMSVariant& rows);
 };

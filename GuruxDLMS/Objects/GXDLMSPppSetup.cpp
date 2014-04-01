@@ -34,6 +34,7 @@
 
 #include "GXDLMSPppSetup.h"
 #include "../GXDLMSClient.h"
+#include <sstream> 
 
 //Constructor.
 CGXDLMSPppSetup::CGXDLMSPppSetup() : CGXDLMSObject(OBJECT_TYPE_PPP_SETUP)
@@ -120,6 +121,59 @@ int CGXDLMSPppSetup::GetMethodCount()
 	return 0;
 }
 
+void CGXDLMSPppSetup::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);
+	values.push_back(m_PHYReference);	
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<CGXDLMSPppSetupLcpOption>::iterator it = m_LCPOptions.begin(); it != m_LCPOptions.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;		
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());	
+	
+	//Clear str.
+	sb.str(std::string());		
+	sb << '[';
+	empty = true;
+	for(vector<CGXDLMSPppSetupIPCPOption>::iterator it = m_IPCPOptions.begin(); it != m_IPCPOptions.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->ToString();
+		sb.write(str.c_str(), str.size());
+	}
+	sb << ']';
+	values.push_back(sb.str());	
+
+	string str;		
+	if (m_UserName.size() != 0)
+	{
+		str.append((char*) &m_UserName[0], m_UserName.size());
+	}
+	if (m_Password.size() != 0)
+	{
+		str.append(" ");
+		str.append((char*) &m_Password[0], m_Password.size());
+	}
+	values.push_back(str);
+}
+
 void CGXDLMSPppSetup::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -187,7 +241,53 @@ int CGXDLMSPppSetup::GetValue(int index, unsigned char* parameters, int length, 
 		value.vt = DLMS_DATA_TYPE_OCTET_STRING;
 		return ERROR_CODES_OK;
 	}		
-	//TODO:
+	if (index == 2)
+    {
+        value = m_PHYReference;
+		return ERROR_CODES_OK;
+    }
+    if (index == 3)
+    {
+        vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_ARRAY);
+        data.push_back(m_IPCPOptions.size());
+		for(vector<CGXDLMSPppSetupLcpOption>::iterator it = m_LCPOptions.begin(); it != m_LCPOptions.end(); ++it)
+        {
+            data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+            data.push_back(3);
+            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetType());                    
+            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetLength());
+            CGXOBISTemplate::SetData(data, it->GetData().vt, it->GetData());
+        }                       
+        value = data;
+		return ERROR_CODES_OK;
+    }
+    if (index == 4)
+    {
+        vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_ARRAY);
+        data.push_back(m_IPCPOptions.size());
+		for(vector<CGXDLMSPppSetupIPCPOption>::iterator it = m_IPCPOptions.begin(); it != m_IPCPOptions.end(); ++it)
+        {
+            data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+            data.push_back(3);
+            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetType());
+            CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, it->GetLength());
+            CGXOBISTemplate::SetData(data, it->GetData().vt, it->GetData());
+        }		
+        value = data;
+		return ERROR_CODES_OK;
+    }
+    else if (index == 5)
+    {
+        vector<unsigned char> data;
+        data.push_back(DLMS_DATA_TYPE_STRUCTURE);
+        data.push_back(2);
+        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, m_UserName);
+        CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, m_Password);
+        value = data;
+		return ERROR_CODES_OK;
+    }
 	return ERROR_CODES_INVALID_PARAMETER;
 }
 
@@ -248,7 +348,7 @@ int CGXDLMSPppSetup::SetValue(int index, CGXDLMSVariant& value)
     else if (index == 5)
     {
 		m_UserName = value.Arr[0].byteArr;
-        m_Password = value.Arr[1].byteArr;
+        m_Password = value.Arr[1].byteArr;		
     }
 	else
 	{

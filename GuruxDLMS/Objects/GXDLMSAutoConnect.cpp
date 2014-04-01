@@ -35,10 +35,11 @@
 #include "../GXDLMSVariant.h"
 #include "../GXDLMSClient.h"
 #include "GXDLMSAutoConnect.h"
+#include <sstream> 
 
 void CGXDLMSAutoConnect::Init()
 {
-	Mode = AUTOCONNECTMODE_NO_AUTO_DIALLING;
+	m_Mode = AUTOCONNECTMODE_NO_AUTO_DIALLING;
 	m_RepetitionDelay = m_Repetitions = 0;
 }
 
@@ -61,11 +62,11 @@ CGXDLMSAutoConnect::CGXDLMSAutoConnect(basic_string<char> ln) : CGXDLMSObject(OB
 
 AUTOCONNECTMODE CGXDLMSAutoConnect::GetMode()
 {
-    return Mode;
+    return m_Mode;
 }
 void CGXDLMSAutoConnect::SetMode(AUTOCONNECTMODE value)
 {
-    Mode = value;
+    m_Mode = value;
 }
 
 int CGXDLMSAutoConnect::GetRepetitions()
@@ -116,6 +117,52 @@ int CGXDLMSAutoConnect::GetMethodCount()
 {
 	return 0;
 }
+
+void CGXDLMSAutoConnect::GetValues(vector<string>& values)
+{
+	values.clear();
+	string ln;
+	GetLogicalName(ln);
+	values.push_back(ln);	
+	values.push_back(CGXDLMSVariant(m_Mode).ToString());
+	values.push_back(CGXDLMSVariant(m_Repetitions).ToString());
+	values.push_back(CGXDLMSVariant(m_RepetitionDelay).ToString());
+	std::stringstream sb;
+	sb << '[';
+	bool empty = true;
+	for(vector<pair< CGXDateTime, CGXDateTime> >::iterator it = m_CallingWindow.begin(); it != m_CallingWindow.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		string str = it->first.ToString();
+		sb.write(str.c_str(), str.size());
+		sb << " ";
+		str = it->second.ToString();
+		sb.write(str.c_str(), str.size());
+	}	
+	sb << ']';
+	values.push_back(sb.str());	
+
+	//Clear str.
+	sb.str(std::string());		
+	sb << '[';
+	empty = true;
+	for(vector< basic_string<char> >::iterator it = m_Destinations.begin(); it != m_Destinations.end(); ++it)
+	{
+		if (!empty)
+		{
+			sb << ", ";
+		}
+		empty = false;
+		sb.write(it->c_str(), it->size());
+	}	
+	sb << ']';
+	values.push_back(sb.str());	
+}
+
 void CGXDLMSAutoConnect::GetAttributeIndexToRead(vector<int>& attributes)
 {
 	//LN is static and read only once.
@@ -214,6 +261,7 @@ int CGXDLMSAutoConnect::GetValue(int index, unsigned char* parameters, int lengt
         int cnt = m_CallingWindow.size();
 		vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
+		int ret;
         //Add count            
         CGXOBISTemplate::SetObjectCount(cnt, data);
         if (cnt != 0)
@@ -222,8 +270,11 @@ int CGXDLMSAutoConnect::GetValue(int index, unsigned char* parameters, int lengt
             {
                 data.push_back(DLMS_DATA_TYPE_STRUCTURE);
                 data.push_back(2); //Count
-				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->first); //start_time
-				CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->second); //end_time                                        
+				if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->first)) != 0 || //start_time
+					(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, it->second)) != 0) //end_time
+				{
+					return ret;
+				}
             }
         }
         value = data;
@@ -233,6 +284,7 @@ int CGXDLMSAutoConnect::GetValue(int index, unsigned char* parameters, int lengt
     {
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
+		int ret;
         int cnt = m_Destinations.size();
         //Add count            
         CGXOBISTemplate::SetObjectCount(cnt, data);				                			
@@ -240,7 +292,10 @@ int CGXDLMSAutoConnect::GetValue(int index, unsigned char* parameters, int lengt
         {			
 			CGXDLMSVariant value;				
 			value.Add(&(*it)[0], it->size());
-			CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, value); //destination
+			if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, value)) != 0) //destination
+			{
+				return ret;
+			}
         }
         value = data;
 		return ERROR_CODES_OK;

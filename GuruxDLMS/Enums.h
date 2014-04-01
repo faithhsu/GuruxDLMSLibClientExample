@@ -90,6 +90,164 @@ enum BAUDRATE
     BAUDRATE_115200
 };
 
+/*
+ * Configures the behaviour of the disconnect control object for all
+triggers, i.e. the possible state transitions.
+ */
+enum CONTROLMODE 
+{
+    /*
+     * The disconnect control object is always in 'connected' state,
+     */
+    CONTROLMODE_NONE,
+    /*
+     * Disconnection: Remote (b, c), manual (f), local (g) 
+     * Reconnection: Remote (d), manual (e).
+     */
+    CONTROLMODE_MODE_1,
+    /*
+     * Disconnection: Remote (b, c), manual (f), local (g) 
+     * Reconnection: Remote (a), manual (e).
+     */
+    CONTROLMODE_MODE_2,
+    /*
+     * Disconnection: Remote (b, c), manual (-), local (g) 
+     * Reconnection: Remote (d), manual (e).
+     */
+    CONTROLMODE_MODE_3,
+    /*
+     * Disconnection: Remote (b, c), manual (-), local (g) 
+     * Reconnection: Remote (a), manual (e)
+     */
+    CONTROLMODE_MODE_4,
+    /*
+     * Disconnection: Remote (b, c), manual (f), local (g) 
+     * Reconnection: Remote (d), manual (e), local (h),
+     */
+    CONTROLMODE_MODE_5,
+    /*
+     * Disconnection: Remote (b, c), manual (-), local (g) 
+     * Reconnection: Remote (d), manual (e), local (h)
+     */
+    CONTROLMODE_MODE_6,
+};
+
+enum CLOCKBASE
+{
+    /// <summary>
+    /// Not defined
+    /// </summary>
+    CLOCKBASE_NONE,
+    /// <summary>
+    /// Internal Crystal
+    /// </summary>
+    CLOCKBASE_CRYSTAL,
+    /// <summary>
+    /// Mains frequency 50 Hz,
+    /// </summary>
+    CLOCKBASE_FREQUENCY_50,
+    /// <summary>
+    /// Mains frequency 60 Hz,
+    /// </summary>
+    CLOCKBASE_FREQUENCY_60,
+    /// <summary>
+    /// Global Positioning System.
+    /// </summary>
+    CLOCKBASE_GPS,
+    /// <summary>
+    /// Radio controlled.
+    /// </summary>
+    CLOCKBASE_RADIO
+};
+
+enum CONTROLSTATE 
+{
+    /*
+     * The output_state is set to false and the consumer is disconnected.
+     */
+    CONTROLSTATE_DISCONNECTED,
+    /*
+     * The output_state is set to true and the consumer is connected.
+     */
+    CONTROLSTATE_CONNECTED,
+    /*
+     * The output_state is set to false and the consumer is disconnected.
+     */
+    CONTROLSTATE_READY_FOR_RECONNECTION
+};
+
+
+// Defines whether or not the device has been assigned an address 
+// since last power up of the device.
+enum ADDRESS_STATE 
+{
+    // Not assigned an address yet.
+	ADDRESS_STATE_NONE,
+    // Assigned an address either by manual setting, or by automated method.
+    ADDRESS_STATE_ASSIGNED
+};
+
+// Security policy Enforces authentication and/or encryption algorithm provided with security_suite.
+enum SECURITY_POLICY
+{
+	//No security is used.
+    SECURITY_POLICY_NOTHING,
+    /** 
+     All messages to be authenticated.
+    */
+    SECURITY_POLICY_AUTHENTICATED,
+    /** 
+     All messages to be encrypted.
+    */
+    SECURITY_POLICY_ENCRYPTED,
+    /** 
+     All messages to be authenticated and encrypted.
+    */
+    SECURITY_POLICY_AUTHENTICATED_ENCRYPTED
+};
+
+
+//Security suite Specifies authentication, encryption and key wrapping algorithm.
+enum SECURITY_SUITE
+{
+    /** 
+     AES-GCM-128 for authenticated encryption and AES-128 for key wrapping.
+    */
+    SECURITY_SUITE_AES_GCM_128    
+};
+
+
+enum GXDLMS_SERVICE_TYPE
+{
+	GXDLMS_SERVICE_TYPE_TCP = 0,
+    GXDLMS_SERVICE_TYPE_UDP = 1,
+    GXDLMS_SERVICE_TYPE_FTP = 2,
+    GXDLMS_SERVICE_TYPE_SMTP = 3,
+    GXDLMS_SERVICE_TYPE_SMS = 4
+};
+
+enum GXDLMS_MESSAGE_TYPE
+ {
+    GXDLMS_MESSAGE_TYPE_COSEM_APDU = 0,
+    GXDLMS_MESSAGE_TYPE_COSEM_APDU_XML = 1,
+    GXDLMS_MESSAGE_TYPE_MANUFACTURER_SPESIFIC = 128
+};
+
+enum GXDLMS_CLOCK_STATUS
+{
+	GXDLMS_CLOCK_STATUS_OK = 0x0,
+	GXDLMS_CLOCK_STATUS_INVALID_VALUE = 0x1,
+	GXDLMS_CLOCK_STATUS_DOUBTFUL_VALUE = 0x2,
+	GXDLMS_CLOCK_STATUS_DIFFERENT_CLOCK_BASE = 0x4,
+    GXDLMS_CLOCK_STATUS_RESERVED1 = 0x8,
+	GXDLMS_CLOCK_STATUS_RESERVED2 = 0x10,
+    GXDLMS_CLOCK_STATUS_RESERVED3 = 0x20,
+    GXDLMS_CLOCK_STATUS_RESERVED4 = 0x40,
+    GXDLMS_CLOCK_STATUS_DAYLIGHT_SAVE_ACTIVE = 0x80,
+	//Skip clock status on write.
+	GXDLMS_CLOCK_STATUS_SKIP = 0xFF
+};
+
 enum GXDLMS_AUTHENTICATION
 {
 	GXDLMS_AUTHENTICATION_NONE = 0,
@@ -154,6 +312,11 @@ enum OBJECT_TYPE
 	OBJECT_TYPE_DISCONNECT_CONTROL = 70,
 	OBJECT_TYPE_LIMITER = 71,
 	OBJECT_TYPE_MBUS_CLIENT = 72,
+	OBJECT_TYPE_PUSH_SETUP = 40,   
+    OBJECT_TYPE_MESSAGE_HANDLER = 60,       
+    OBJECT_TYPE_PARAMETER_MONITOR = 65,
+    OBJECT_TYPE_WIRELESS_MODE_Q_CHANNEL = 73,
+    OBJECT_TYPE_MBUS_MASTER_PORT_SETUP = 74,
 	OBJECT_TYPE_EVENT = 100,
 	OBJECT_TYPE_REMOTE_DIGITAL_CONTROL = 101,
 	OBJECT_TYPE_REMOTE_ANALOGUE_CONTROL = 102,
