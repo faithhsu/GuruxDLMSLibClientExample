@@ -33,6 +33,7 @@
 //---------------------------------------------------------------------------
 
 #include "GXDLMSMonitoredValue.h"
+#include "../GXDLMSObjectFactory.h"
 #include <sstream> 
 
 CGXDLMSMonitoredValue::CGXDLMSMonitoredValue()
@@ -78,7 +79,7 @@ void CGXDLMSMonitoredValue::SetAttributeIndex(int value)
 string CGXDLMSMonitoredValue::ToString()
 {
 	std::stringstream sb;
-	sb << m_ObjectType;
+	sb << CGXDLMSObjectFactory::ObjectTypeToString(m_ObjectType).c_str();
 	sb << " ";
 	sb << m_LogicalName.c_str();
 	sb << " ";

@@ -276,7 +276,7 @@ void CGXDLMSDemandRegister::GetAttributeIndexToRead(vector<int>& attributes)
 // Returns amount of attributes.
 int CGXDLMSDemandRegister::GetAttributeCount()
 {
-	return 5;
+	return 9;
 }
 
 // Returns amount of methods.
@@ -345,7 +345,7 @@ int CGXDLMSDemandRegister::GetDataType(int index, DLMS_DATA_TYPE& type)
     return ERROR_CODES_INVALID_PARAMETER;
 }
 
-int CGXDLMSDemandRegister::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSDemandRegister::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {    
     if (index == 1)
     {

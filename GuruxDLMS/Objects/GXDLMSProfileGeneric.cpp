@@ -139,92 +139,14 @@ int CGXDLMSProfileGeneric::AddCaptureObject(CGXDLMSObject* pObj, int attributeIn
 	return ERROR_CODES_OK;        
 }
 
-int CGXDLMSProfileGeneric::GetAccessSelector(unsigned char* data, int Length, int& Selector, CGXDLMSVariant& start, CGXDLMSVariant& to)
-{
-    Selector = data[0];
-    //Start index
-	int ret;
-    if (Selector == 1) //Read by range
-    {
-        if (data[1] != DLMS_DATA_TYPE_STRUCTURE || data[2] != 4 || 
-			data[3] != DLMS_DATA_TYPE_STRUCTURE || data[4] != 4)
-        {
-            return ERROR_CODES_INVALID_PARAMETER;
-        }			
-        CGXDLMSVariant classId, ln, attributeIndex, version, tmp;
-		data += 5;
-		Length -= 5;
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, classId)) != 0)
-		{
-			return ret;
-		}
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, ln)) != 0)
-		{
-			return ret;
-		}
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, attributeIndex)) != 0)
-		{
-			return ret;
-		}
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, version)) != 0)
-		{
-			return ret;
-		}
-		//TODO:
-		/*
-
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, tmp)) != 0 ||
-			(ret = GXDLMSClient::ChangeType(tmp, DLMS_DATA_TYPE_DATETIME, start)) != 0)
-		{
-			return ret;
-		}          
-
-		tmp.Clear();
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, tmp)) != 0 ||
-			(ret = GXDLMSClient::ChangeType(tmp, DLMS_DATA_TYPE_DATETIME, to)) != 0)
-		{
-			return ret;
-		} 
-		*/
-    }
-    else if (Selector == 2) //Read by entry.
-    {
-        if (data[1] != DLMS_DATA_TYPE_STRUCTURE || data[2] != 4)
-        {
-			return ERROR_CODES_INVALID_PARAMETER;
-        }
-        data += 3;
-		Length -= 3;
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, start)) != 0)
-		{
-			return ret;
-		}
-		if ((ret = CGXOBISTemplate::GetData(data, Length, DLMS_DATA_TYPE_NONE, to)) != 0)
-		{
-			return ret;
-		}
-        if (start.ToInteger() > to.ToInteger())
-        {
-            return ERROR_CODES_INVALID_PARAMETER;
-        }
-    }
-    else
-    {
-        return ERROR_CODES_INVALID_PARAMETER;
-    }
-	return ERROR_CODES_OK;
-}
-
-int CGXDLMSProfileGeneric::GetProfileGenericData(unsigned char* parameters, int length, vector<unsigned char>& reply)
+int CGXDLMSProfileGeneric::GetProfileGenericData(int selector, CGXDLMSVariant& parameters, vector<unsigned char>& reply)
 {        
-    int selector = 0;
 	CGXDLMSVariant from, to;
     //If all data is readed.
-    if (length == 0)
+    if (selector == 0 || parameters.vt == DLMS_DATA_TYPE_NONE)
     {
         return GetData(GetBuffer(), reply);            
-    }
-    GetAccessSelector(parameters, length, selector, from, to);
+    }    
     vector< vector<CGXDLMSVariant> >& table = GetBuffer();
     vector< vector<CGXDLMSVariant> > items;
     //TODO: Lock synchronized (this)
@@ -568,7 +490,7 @@ int CGXDLMSProfileGeneric::GetDataType(int index, DLMS_DATA_TYPE& type)
  /*
  * Returns value of given attribute.
  */    
-int CGXDLMSProfileGeneric::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)   
+int CGXDLMSProfileGeneric::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)   
 {
     if (index == 1)
     {
@@ -578,7 +500,7 @@ int CGXDLMSProfileGeneric::GetValue(int index, unsigned char* parameters, int le
     }
     if (index == 2)
     {			
-        return GetProfileGenericData(parameters, length, value.byteArr);          
+		return GetProfileGenericData(selector, parameters, value.byteArr);          
     }        
     if (index == 3)
     {

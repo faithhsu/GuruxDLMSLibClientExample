@@ -163,7 +163,7 @@ public:
 	}
 
 	// Returns value of given attribute.
-	virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+	virtual int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
     {		
 		return ERROR_CODES_INVALID_PARAMETER;
     }

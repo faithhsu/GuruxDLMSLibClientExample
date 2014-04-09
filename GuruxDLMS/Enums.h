@@ -90,6 +90,42 @@ enum BAUDRATE
     BAUDRATE_115200
 };
 
+
+/** 
+ Defines the protocol used by the meter on the port.
+*/
+enum OPTICAL_PROTOCOL_MODE
+{
+    /**         
+     Protocol according to IEC 62056-21 (modes A…E),
+    */
+    OPTICAL_PROTOCOL_MODE_DEFAULT = 0,
+    /** 
+     Protocol according to IEC 62056-46. 
+     Using this enumeration value all other attributes of this IC are not applicable.
+    */
+    OPTICAL_PROTOCOL_MODE_NET = 1,
+    /** 
+     Protocol not specified. Using this enumeration value, 
+     ProposedBaudrate is used for setting the communication speed on the port. 
+     All other attributes are not applicable.
+    */
+    OPTICAL_PROTOCOL_MODE_UNKNOWN = 2
+};
+
+enum LOCAL_PORT_RESPONSE_TIME
+{
+    /** 
+     Minimium time is 20 ms.
+    */
+    LOCAL_PORT_RESPONSE_TIME_20_MS = 0,
+    /** 
+     Minimium time is 200 ms.
+    */
+    LOCAL_PORT_RESPONSE_TIME_200_MS = 1
+};
+
+
 /*
  * Configures the behaviour of the disconnect control object for all
 triggers, i.e. the possible state transitions.
@@ -130,6 +166,14 @@ enum CONTROLMODE
      * Reconnection: Remote (d), manual (e), local (h)
      */
     CONTROLMODE_MODE_6,
+};
+
+//Is logican name assosiated.
+enum GX_ASSOCIATION_STATUS
+{
+	GX_ASSOCIATION_STATUS_NON_ASSOCIATED, 
+    GX_ASSOCIATION_STATUS_ASSOCIATION_PENDING, 
+    GX_ASSOCIATION_STATUS_ASSOCIATED
 };
 
 enum CLOCKBASE
@@ -407,7 +451,7 @@ enum ACCESSMODE
     ACCESSMODE_READWRITE = 3,    
     ACCESSMODE_AUTHENTICATED_READ = 4,    
 	ACCESSMODE_AUTHENTICATED_WRITE = 5,    
-    ACCESSMODE_AUTHENTICATED_READW_RITE = 6
+    ACCESSMODE_AUTHENTICATED_READ_WRITE = 6
 };
 
 enum METHOD_ACCESSMODE

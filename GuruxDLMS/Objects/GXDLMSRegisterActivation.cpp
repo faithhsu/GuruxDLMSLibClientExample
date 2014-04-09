@@ -179,7 +179,7 @@ int CGXDLMSRegisterActivation::GetDataType(int index, DLMS_DATA_TYPE& type)
 }
 
 // Returns value of given attribute.
-int CGXDLMSRegisterActivation::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSRegisterActivation::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{

@@ -40,12 +40,7 @@ class GXDLMSLimits
 	CGXDLMSVariant m_MaxInfoTX, m_MaxInfoRX, m_WindowSizeRX, m_WindowSizeTX;
 public:
 	//Constructor.
-	GXDLMSLimits()
-    {
-        m_MaxInfoTX = (unsigned char)128;
-        m_MaxInfoRX = (unsigned char)62;
-		m_WindowSizeRX = m_WindowSizeTX = (unsigned long) 1;            
-    }
+	GXDLMSLimits();
 
     // The maximum information field length in transmit.    
     // DefaultValue is 128.

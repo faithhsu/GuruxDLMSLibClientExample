@@ -117,7 +117,7 @@ int CGXDLMSMBusMasterPortSetup::GetDataType(int index, DLMS_DATA_TYPE& type)
 }
 
 // Returns value of given attribute.
-int CGXDLMSMBusMasterPortSetup::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSMBusMasterPortSetup::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{

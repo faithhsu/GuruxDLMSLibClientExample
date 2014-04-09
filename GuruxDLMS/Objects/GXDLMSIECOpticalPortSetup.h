@@ -36,40 +36,6 @@
 
 #include "GXDLMSObject.h"
 
-/** 
- Defines the protocol used by the meter on the port.
-*/
-enum OPTICAL_PROTOCOL_MODE
-{
-    /**         
-     Protocol according to IEC 62056-21 (modes A…E),
-    */
-    OPTICAL_PROTOCOL_MODE_DEFAULT = 0,
-    /** 
-     Protocol according to IEC 62056-46. 
-     Using this enumeration value all other attributes of this IC are not applicable.
-    */
-    OPTICAL_PROTOCOL_MODE_NET = 1,
-    /** 
-     Protocol not specified. Using this enumeration value, 
-     ProposedBaudrate is used for setting the communication speed on the port. 
-     All other attributes are not applicable.
-    */
-    OPTICAL_PROTOCOL_MODE_UNKNOWN = 2
-};
-
-enum LOCAL_PORT_RESPONSE_TIME
-{
-    /** 
-     Minimium time is 20 ms.
-    */
-    LOCAL_PORT_RESPONSE_TIME_20_MS = 0,
-    /** 
-     Minimium time is 200 ms.
-    */
-    LOCAL_PORT_RESPONSE_TIME_200_MS = 1
-};
-
 class CGXDLMSIECOpticalPortSetup : public CGXDLMSObject
 {
 	basic_string<char> m_Password2;
@@ -129,7 +95,7 @@ public:
 	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+	int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
 	int SetValue(int index, CGXDLMSVariant& value);

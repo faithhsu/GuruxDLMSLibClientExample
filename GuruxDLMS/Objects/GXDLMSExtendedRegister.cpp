@@ -150,7 +150,7 @@ int CGXDLMSExtendedRegister::GetDataType(int index, DLMS_DATA_TYPE& type)
 	return ERROR_CODES_INVALID_PARAMETER;
 }
 
-int CGXDLMSExtendedRegister::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSExtendedRegister::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{

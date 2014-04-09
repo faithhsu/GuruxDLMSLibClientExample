@@ -185,7 +185,7 @@ int CGXDLMSAssociationShortName::GetDataType(int index, DLMS_DATA_TYPE& type)
     }  
     else if (index == 4)
     {
-        
+        type = DLMS_DATA_TYPE_OCTET_STRING;
     }  
 	else
 	{
@@ -209,7 +209,7 @@ int CGXDLMSAssociationShortName::GetObjects(vector<unsigned char>& data)
 		unsigned short version = (*it)->GetVersion();
 		unsigned short sn = (*it)->GetShortName();
 		CGXDLMSVariant ln((*it)->m_LN, 6, DLMS_DATA_TYPE_OCTET_STRING);
-		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, sn)) != 0 || //base address.
+		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_INT16, sn)) != 0 || //base address.
 			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, type)) != 0 || //ClassID
 			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT8, version)) != 0 || //Version			
 			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, ln)) != 0) //LN
@@ -220,22 +220,21 @@ int CGXDLMSAssociationShortName::GetObjects(vector<unsigned char>& data)
 	return ERROR_CODES_OK;
 }
 
-int CGXDLMSAssociationShortName::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSAssociationShortName::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{
 		GXHelpers::AddRange(value.byteArr, m_LN, 6);
-		value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-		return ERROR_CODES_OK;
+		value.vt = DLMS_DATA_TYPE_OCTET_STRING;		
 	}
-	if (index == 2)
+	else if (index == 2)
 	{
 		vector<unsigned char> Packets;
 		int ret = GetObjects(Packets);
 		value = Packets;
 		return ret;
 	}
-	if (index == 3)
+	else if (index == 3)
 	{
 		int ret;
 		bool lnExists = m_ObjectList.FindBySN(GetShortName()) != NULL;
@@ -264,7 +263,17 @@ int CGXDLMSAssociationShortName::GetValue(int index, unsigned char* parameters, 
         }
         value = data;
 	}
-	return ERROR_CODES_INVALID_PARAMETER;
+	else if (index == 4)
+	{
+		vector<unsigned char> data;
+		CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_OCTET_STRING, m_SecuritySetupReference);
+        value = data;
+	}
+	else
+	{
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+	return ERROR_CODES_OK;
 }
 
 int CGXDLMSAssociationShortName::SetValue(int index, CGXDLMSVariant& value)
@@ -319,5 +328,22 @@ int CGXDLMSAssociationShortName::SetValue(int index, CGXDLMSVariant& value)
             UpdateAccessRights(value);
         }
     }
+	else if (index == 4)
+    {  
+		if (value.vt == DLMS_DATA_TYPE_STRING)
+        {
+            m_SecuritySetupReference = value.ToString();
+        }
+        else
+        {
+			int ret;
+			CGXDLMSVariant tmp;
+			if ((ret = CGXDLMSClient::ChangeType(value.byteArr, DLMS_DATA_TYPE_OCTET_STRING, tmp)) != 0)
+			{
+				return ret;
+			}
+			m_SecuritySetupReference = tmp.ToString();
+        }
+    }  
 	return ERROR_CODES_INVALID_PARAMETER;
 }

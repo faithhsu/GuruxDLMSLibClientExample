@@ -106,19 +106,20 @@ public:
 	int HandleRequest(unsigned char* pData, int size, unsigned char*& pReply, int& ReplySize);
 
 	virtual int OnRead(CGXDLMSObject* pItem, int index, CGXDLMSVariant& value, DLMS_DATA_TYPE& type) = 0;
-	virtual int OnWrite(CGXDLMSObject* pItem, int index, CGXDLMSVariant& value) = 0;
+	virtual int OnWrite(CGXDLMSObject* pItem, int index, int selector, CGXDLMSVariant& value) = 0;
 	virtual int OnAction(CGXDLMSObject* pItem, int index, CGXDLMSVariant& data) = 0;
 	virtual int OnInvalidConnection() = 0;
 
 private:
 	int Acknowledge(DLMS_COMMAND cmd, unsigned char status, vector< vector<unsigned char> >& Packets);
+	int Acknowledge(DLMS_COMMAND cmd, unsigned char status, CGXDLMSVariant& data, vector< vector<unsigned char> >& Packets);
 	int SendData(vector< vector<unsigned char> >& buff, int index, unsigned char*& pReply, int& ReplySize);
 	int GetAddress(unsigned char* pData, int size, CGXDLMSVariant& clientId, CGXDLMSVariant& serverId);
 	int HandleSNRMRequest(vector< vector<unsigned char> >& Packets);
 	int HandleAARQRequest(unsigned char* pData, int DataSize, vector< vector<unsigned char> >& Packets);
 	int GenerateDisconnectRequest(vector< vector<unsigned char> >& Packets);
-	int ServerReportError(unsigned char serviceErrorCode, unsigned char type, unsigned char code, vector< vector<unsigned char> >& Packets);
-	int GetCommand(unsigned char* pData, int DataSize, OBJECT_TYPE& type, CGXDLMSVariant& name, int& attributeIndex, unsigned char*& pParameters, int& ParameterSize);	
-	int GetValue(CGXDLMSObject* pItem, int index, unsigned char* pParameters, int count, vector< vector<unsigned char> >& Packets);
+	int ServerReportError(DLMS_COMMAND cmd, unsigned char error, vector< vector<unsigned char> >& Packets);
+	int GetCommand(int cmd,unsigned char* pData, int DataSize, OBJECT_TYPE& type, CGXDLMSVariant& name, int& attributeIndex, int& Selector, CGXDLMSVariant& Parameters);
+	int GetValue(CGXDLMSObject* pItem, int index, int selector, CGXDLMSVariant& Parameters, vector< vector<unsigned char> >& Packets);
 	int ReadReply(CGXDLMSVariant name, OBJECT_TYPE objectType, int attributeOrdinal, CGXDLMSVariant& value, DLMS_DATA_TYPE type, vector< vector<unsigned char> >& Packets);
 };

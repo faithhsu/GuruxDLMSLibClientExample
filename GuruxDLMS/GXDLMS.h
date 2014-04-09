@@ -146,7 +146,7 @@ public:
 	int CheckLLCBytes(unsigned char* pBuff, int& pos, int length);
 	int ParseSNObjects(unsigned char* pBuff, int len, CGXDLMSObjectCollection& objects);
 	int ParseLNObjects(unsigned char* pBuff, int len, CGXDLMSObjectCollection& objects);	
-	int SplitToFrames(vector<unsigned char>& Data, unsigned int blockIndex, unsigned int& index, unsigned int count, DLMS_COMMAND Cmd, vector< vector<unsigned char> >& Packets);
+	int SplitToFrames(vector<unsigned char>& Data, unsigned int blockIndex, unsigned int& index, unsigned int count, DLMS_COMMAND Cmd, int resultChoice, vector< vector<unsigned char> >& Packets);
 	int SplitToBlocks(vector<unsigned char>& Data, DLMS_COMMAND Cmd, vector< vector<unsigned char> >& Packets);
 
 public:
@@ -192,6 +192,6 @@ public:
 	int GetData(unsigned char* pBuff, int& pos1, int dataSize, bool bReply, DLMS_COMMAND& cmd, GXDLMS_DATA_REQUEST_TYPES& MoreData, int* pError);
 	int GetLNData(unsigned char* pBuff, int dataSize, int& index, int* pError, GXDLMS_DATA_REQUEST_TYPES& MoreData, DLMS_COMMAND& cmd);
 	int GetSNData(unsigned char* pBuff, int dataSize, int& index, int* pError, DLMS_COMMAND& cmd);
-	int GenerateMessage(CGXDLMSVariant& name, int ParameterCount, vector<unsigned char>& data, OBJECT_TYPE interfaceClass, int AttributeOrdinal, DLMS_COMMAND cmd, vector< vector<unsigned char> >& Packets);
+	int GenerateMessage(CGXDLMSVariant& name, vector<unsigned char>& data, OBJECT_TYPE interfaceClass, int AttributeOrdinal, DLMS_COMMAND cmd, vector< vector<unsigned char> >& Packets);
 	static int GetActionInfo(OBJECT_TYPE objectType, int& value, int& count);
 };

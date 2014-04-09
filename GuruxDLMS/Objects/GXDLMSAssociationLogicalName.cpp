@@ -39,7 +39,7 @@
 
 void CGXDLMSAssociationLogicalName::Init()
 {
-	m_AssociationStatus = GX_ASSOCIATION_STATUS_NO_NASSOCIATED;
+	m_AssociationStatus = GX_ASSOCIATION_STATUS_NON_ASSOCIATED;
 }
 
 void CGXDLMSAssociationLogicalName::UpdateAccessRights(CGXDLMSObject* pObj, CGXDLMSVariant data)
@@ -342,7 +342,7 @@ int CGXDLMSAssociationLogicalName::GetDataType(int index, DLMS_DATA_TYPE& type)
 	return ERROR_CODES_INVALID_PARAMETER;
 }
 
-int CGXDLMSAssociationLogicalName::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSAssociationLogicalName::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{
@@ -396,7 +396,6 @@ int CGXDLMSAssociationLogicalName::GetValue(int index, unsigned char* parameters
         data.push_back(DLMS_DATA_TYPE_STRUCTURE);
         data.push_back(6);
 		int ret;
-
 		if ((ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_BIT_STRING, m_XDLMSContextInfo.GetConformance())) != 0 ||
 			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_XDLMSContextInfo.GetMaxReceivePduSize())) != 0 ||
 			(ret = CGXOBISTemplate::SetData(data, DLMS_DATA_TYPE_UINT16, m_XDLMSContextInfo.GetMaxSendPpuSize())) != 0 ||
@@ -439,6 +438,11 @@ int CGXDLMSAssociationLogicalName::GetValue(int index, unsigned char* parameters
 		value = (unsigned char)m_AssociationStatus;
 		return ERROR_CODES_OK;
 	}
+	if (index == 9)
+    {
+        value = m_SecuritySetupReference;
+		return ERROR_CODES_OK;
+    }
 	return ERROR_CODES_INVALID_PARAMETER;
 }
 

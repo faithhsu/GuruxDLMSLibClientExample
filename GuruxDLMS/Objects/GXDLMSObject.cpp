@@ -38,19 +38,19 @@
 //SN Constructor.
 CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type, unsigned short sn)
 {
-	Initialize(sn, type, 1, NULL);
+	Initialize(sn, type, 0, NULL);
 }
 
 //LN Constructor.
 CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type, basic_string<char> ln)
 {
-	Initialize(0, type, 1, NULL);
+	Initialize(0, type, 0, NULL);
 	SetLogicalName(ln);
 }
 
 CGXDLMSObject::CGXDLMSObject()
 {
-	Initialize(0, OBJECT_TYPE_NONE, 1, NULL);
+	Initialize(0, OBJECT_TYPE_NONE, 0, NULL);
 }
 
 CGXDLMSObject::CGXDLMSObject(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>& ln)
@@ -60,7 +60,7 @@ CGXDLMSObject::CGXDLMSObject(short sn, unsigned short class_id, unsigned char ve
 
 CGXDLMSObject::CGXDLMSObject(OBJECT_TYPE type)
 {
-	Initialize(0, type, 1, NULL);	
+	Initialize(0, type, 0, NULL);	
 }
 
 void CGXDLMSObject::Initialize(short sn, unsigned short class_id, unsigned char version, vector<unsigned char>* pLogicalName)
@@ -173,6 +173,11 @@ ACCESSMODE CGXDLMSObject::GetAccess(int index)
 			return (*it).GetAccess();
 		}
 	}
+    //LN is read only.
+    if (index == 1)
+    {
+		return ACCESSMODE_READ;
+    }
 	return ACCESSMODE_READWRITE;
 }
 

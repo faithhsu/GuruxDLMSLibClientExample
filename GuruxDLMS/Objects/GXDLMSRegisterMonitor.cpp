@@ -196,7 +196,7 @@ int CGXDLMSRegisterMonitor::GetDataType(int index, DLMS_DATA_TYPE& type)
 /*
  * Returns value of given attribute.
  */    
-int CGXDLMSRegisterMonitor::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSRegisterMonitor::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {    
     if (index == 1)
     {

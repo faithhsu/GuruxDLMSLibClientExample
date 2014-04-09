@@ -66,5 +66,14 @@ public:
 
 	//Get Security Setup security suite as a string.
 	static const char* ToString(SECURITY_SUITE value);	
+
+	//Get Logical Name association status as a string.
+	static const char* ToString(GX_ASSOCIATION_STATUS value);	
+	
+	//Get optical port protocol mode as a string.
+	static const char* ToString(OPTICAL_PROTOCOL_MODE value);	
+	
+	//Get optical port response time as a string.
+	static const char* ToString(LOCAL_PORT_RESPONSE_TIME value);	
 	
 };

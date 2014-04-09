@@ -789,6 +789,7 @@ int GXClient::UpdateAccess(CGXDLMSObject* pObject, CGXDLMSObjectCollection& Obje
 //Read selected object.
 int GXClient::Read(CGXDLMSObject* pObject, int attributeIndex, CGXDLMSVariant& value)
 {	
+	value.Clear();
 	int ret;
 	vector< vector<unsigned char> > data;
 	vector<unsigned char> reply;

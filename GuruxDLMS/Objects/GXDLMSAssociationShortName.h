@@ -86,7 +86,7 @@ public:
 	// Returns SN Association View.
 	int GetObjects(vector<unsigned char>& data);
 
-    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+    int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value);
 
 	int SetValue(int index, CGXDLMSVariant& value);
 };

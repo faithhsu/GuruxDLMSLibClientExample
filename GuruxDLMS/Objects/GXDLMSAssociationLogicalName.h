@@ -38,13 +38,6 @@
 #include "GXxDLMSContextType.h"
 #include "GXAuthenticationMechanismName.h"
 
-enum GX_ASSOCIATION_STATUS
-{
-	GX_ASSOCIATION_STATUS_NO_NASSOCIATED, 
-    GX_ASSOCIATION_STATUS_ASSOCIATION_PENDING, 
-    GX_ASSOCIATION_STATUS_ASSOCIATED
-};
-
 class CGXDLMSAssociationLogicalName : public CGXDLMSObject
 {
 private:
@@ -123,6 +116,6 @@ public:
 
 	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
-    int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+    int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value);
 	int SetValue(int index, CGXDLMSVariant& value);
 };

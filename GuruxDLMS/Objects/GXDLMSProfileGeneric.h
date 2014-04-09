@@ -93,9 +93,7 @@ private:
      */
     int AddCaptureObject(CGXDLMSObject* pObj, int attributeIndex, int dataIndex);
     
-	int GetAccessSelector(unsigned char* data, int Length, int& Selector, CGXDLMSVariant& start, CGXDLMSVariant& to);
-
-	int GetProfileGenericData(unsigned char* parameters, int length, vector<unsigned char>& reply);    
+	int GetProfileGenericData(int selector, CGXDLMSVariant& parameters, vector<unsigned char>& reply);    
 
 public:	
 	/**  
@@ -194,7 +192,7 @@ public:
      /*
      * Returns value of given attribute.
      */    
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+	int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value);
 
     /*
      * Set value of given attribute.

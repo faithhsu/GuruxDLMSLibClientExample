@@ -249,7 +249,7 @@ int CGXDLMSAutoAnswer::GetDataType(int index, DLMS_DATA_TYPE& type)
 }
 
 // Returns value of given attribute.
-int CGXDLMSAutoAnswer::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSAutoAnswer::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {    
     if (index == 1)
     {

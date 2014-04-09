@@ -78,7 +78,7 @@ public:
 	int GetDataType(int index, DLMS_DATA_TYPE& type);
 
 	// Returns value of given attribute.
-	int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value);
+	int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value);
 
 	// Set value of given attribute.
 	int SetValue(int index, CGXDLMSVariant& value);

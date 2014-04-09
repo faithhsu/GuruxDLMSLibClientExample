@@ -298,23 +298,23 @@ int CGXDLMSIp4Setup::GetDataType(int index, DLMS_DATA_TYPE& type)
 }
 
 // Returns value of given attribute.
-int CGXDLMSIp4Setup::GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value)
+int CGXDLMSIp4Setup::GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value)
 {
 	if (index == 1)
 	{
 		GXHelpers::AddRange(value.byteArr, m_LN, 6);
-		value.vt = DLMS_DATA_TYPE_OCTET_STRING;
-		return ERROR_CODES_OK;
+		value.vt = DLMS_DATA_TYPE_OCTET_STRING;		
 	}
-    if (index == 2)
+    else if (index == 2)
     {
-        value = m_DataLinkLayerReference;
+        value = m_DataLinkLayerReference;		
     }
-    if (index == 3)
+    else if (index == 3)
     {
         value = m_IPAddress;
+		return ERROR_CODES_OK;
     }
-    if (index == 4)
+    else if (index == 4)
     {
 		vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
@@ -328,9 +328,8 @@ int CGXDLMSIp4Setup::GetValue(int index, unsigned char* parameters, int length, 
 			}
         }
         value = data;
-		return ERROR_CODES_OK;
     }
-    if (index == 5)
+    else if (index == 5)
     {
         vector<unsigned char> data;
         data.push_back(DLMS_DATA_TYPE_ARRAY);
@@ -347,30 +346,33 @@ int CGXDLMSIp4Setup::GetValue(int index, unsigned char* parameters, int length, 
 				return ret;
 			}
         }
-        value = data;
-		return ERROR_CODES_OK;
+        value = data;		
     }
-    if (index == 6)
+    else if (index == 6)
     {
         value = m_SubnetMask;
     }
-    if (index == 7)
+    else if (index == 7)
     {
         value = m_GatewayIPAddress;
     }
-    if (index == 8)
+    else if (index == 8)
     {
         value = m_UseDHCP;
     }
-    if (index == 9)
+    else if (index == 9)
     {
         value = m_PrimaryDNSAddress;
     }
-    if (index == 10)
+    else if (index == 10)
     {
         value = m_SecondaryDNSAddress;
     }
-	return ERROR_CODES_INVALID_PARAMETER;
+	else
+	{
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+	return ERROR_CODES_OK;
 }
 
 // Set value of given attribute.

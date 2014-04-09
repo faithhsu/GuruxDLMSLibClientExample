@@ -296,6 +296,14 @@
 				Name="Objects"
 				>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXApplicationContextName.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXAuthenticationMechanismName.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSActionItem.h"
 					>
 				</File>
@@ -352,7 +360,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSDisconnectControl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSEmergencyProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSExtendedRegister.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSGPRSSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSHdlcSetup.h"
 					>
 				</File>
 				<File
@@ -360,7 +384,43 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSImageActivateInfo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSImageTransfer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSIp4Setup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSIp4SetupIpOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSLimiter.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSMacAddressSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMBusClient.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMBusMasterPortSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMBusSlavePortSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSMessageHandler.h"
 					>
 				</File>
 				<File
@@ -384,7 +444,31 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSObjectDefinition.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSPppSetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSPppSetupIPCPOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSPppSetupLcpOption.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSProfileGeneric.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSPushObject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSPushSetup.h"
 					>
 				</File>
 				<File
@@ -396,6 +480,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSRegisterActivation.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSRegisterMonitor.h"
 					>
 				</File>
@@ -404,7 +492,31 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSchedule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSScriptAction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSScriptTable.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSSeasonProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSecuritySetup.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSpecialDay.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXDLMSSpecialDaysTable.h"
 					>
 				</File>
 				<File
@@ -413,6 +525,14 @@
 				</File>
 				<File
 					RelativePath=".\GuruxDLMS\Objects\GXDLMSWeekProfile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXSendDestinationAndMethod.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GuruxDLMS\Objects\GXxDLMSContextType.h"
 					>
 				</File>
 				<File

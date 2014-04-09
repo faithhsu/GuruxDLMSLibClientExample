@@ -45,7 +45,7 @@ public:
     virtual int GetMethodCount() = 0;
 
     // Returns value of given attribute.
-    virtual int GetValue(int index, unsigned char* parameters, int length, CGXDLMSVariant& value) = 0;
+    virtual int GetValue(int index, int selector, CGXDLMSVariant& parameters, CGXDLMSVariant& value) = 0;
     
     // Set value of given attribute.
     virtual int SetValue(int index, CGXDLMSVariant& value) = 0;
