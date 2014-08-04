@@ -62,7 +62,6 @@ void CGXDLMSAssociationLogicalName::UpdateAccessRights(CGXDLMSObject* pObj, CGXD
 int CGXDLMSAssociationLogicalName::GetAccessRights(CGXDLMSObject* pItem, vector<unsigned char>& data)
 {
 	CGXAttributeCollection& attributes = pItem->GetAttributes();
-	attributes.clear();
 	data.push_back(DLMS_DATA_TYPE_STRUCTURE);
 	data.push_back(2);
 	data.push_back(DLMS_DATA_TYPE_ARRAY);
@@ -467,7 +466,11 @@ int CGXDLMSAssociationLogicalName::SetValue(int index, CGXDLMSVariant& value)
                 int version = (*it).Arr[1].ToInteger();
                 string ln;
 				CGXOBISTemplate::GetLogicalName(&(*it).Arr[2].byteArr[0], ln);
-				CGXDLMSObject* pObj = GetParent()->FindByLN(type, ln);
+				CGXDLMSObject* pObj = NULL;
+				if (GetParent() != NULL)
+				{
+					pObj = GetParent()->FindByLN(type, ln);
+				}
 				if (pObj == NULL)
 				{
 					pObj = CGXDLMSObjectFactory::CreateObject(type);

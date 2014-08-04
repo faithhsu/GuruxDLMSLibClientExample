@@ -614,7 +614,11 @@ int CGXDLMSProfileGeneric::SetValue(int index, CGXDLMSVariant& value)
                 OBJECT_TYPE type = (OBJECT_TYPE) (*it).Arr[0].ToInteger();
 				string ln;
 				CGXOBISTemplate::GetLogicalName(&(*it).Arr[1].byteArr[0], ln);
-                CGXDLMSObject* pObj = GetParent()->FindByLN(type, ln);
+                CGXDLMSObject* pObj = NULL;
+				if (GetParent() != NULL)
+				{
+					pObj = GetParent()->FindByLN(type, ln);
+				}
                 if(pObj == NULL)
                 {                        
                     pObj = CGXDLMSObjectFactory::CreateObject(type);
@@ -650,7 +654,11 @@ int CGXDLMSProfileGeneric::SetValue(int index, CGXDLMSVariant& value)
 			CGXOBISTemplate::GetLogicalName(&value.Arr[1].byteArr[0], ln);                
             int attributeIndex = value.Arr[2].ToInteger();
             int dataIndex = value.Arr[3].ToInteger();
-            m_SortObject = GetParent()->FindByLN(type, ln);                   
+            m_SortObject = NULL;
+			if (GetParent() != NULL)
+			{
+				m_SortObject = GetParent()->FindByLN(type, ln);                   
+			}
             if(m_SortObject == NULL)
             {                        					
                 m_SortObject = CGXDLMSObjectFactory::CreateObject(type);

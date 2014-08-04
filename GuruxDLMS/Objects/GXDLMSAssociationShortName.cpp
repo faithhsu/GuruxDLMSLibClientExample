@@ -295,7 +295,11 @@ int CGXDLMSAssociationShortName::SetValue(int index, CGXDLMSVariant& value)
 			for(vector<CGXDLMSVariant>::iterator item = value.Arr.begin(); item != value.Arr.end(); ++item)
             {
 				int sn = item->Arr[0].ToInteger();
-				CGXDLMSObject* pObj = GetParent()->FindBySN(sn);
+				CGXDLMSObject* pObj = NULL;
+				if (GetParent() != NULL)
+				{
+					pObj = GetParent()->FindBySN(sn);
+				}
 				if (pObj == NULL)
 				{
                     OBJECT_TYPE type = (OBJECT_TYPE) item->Arr[1].ToInteger();
