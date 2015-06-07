@@ -141,6 +141,7 @@ int GXClient::Connect(const char* pAddress, unsigned short Port)
 	return ERROR_CODES_OK;
 }
 
+#if defined(_WIN32) || defined(_WIN64)//Windows includes
 int GXClient::GXGetCommState(HANDLE hWnd, LPDCB DCB)
 {
 	ZeroMemory(DCB, sizeof(LPDCB));
@@ -505,6 +506,7 @@ int GXClient::Open(const char* pPortName, bool IEC, int maxBaudrate)
 	}
 	return ERROR_CODES_OK;
 }
+#endif
 
 //Initialize connection to the meter.
 int GXClient::InitializeConnection()

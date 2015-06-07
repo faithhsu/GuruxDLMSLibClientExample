@@ -58,8 +58,8 @@ public:
 	void InitializeBuffers(int sendSize, int receiveSize);
 	int Close();
 	int Connect(const char* pAddress, unsigned short port = 4059);
-	int Read(unsigned char* pData, int len, unsigned char eop, bool removeEcho, int& index);
 #if defined(_WIN32) || defined(_WIN64)//Windows includes
+	int Read(unsigned char* pData, int len, unsigned char eop, bool removeEcho, int& index);
 	int GXGetCommState(HANDLE hWnd, LPDCB DCB);
 	int GXSetCommState(HANDLE hWnd, LPDCB DCB);
 	int Open(const char* pPortName, bool IEC, int maxBaudrate = 19200);
