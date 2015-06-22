@@ -66,7 +66,7 @@ int main( int argc, char* argv[] )
 #endif	
 	int ret;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//TODO: Client and Server ID's are manufacturer debency. They should be standard values but they are not.
+	//TODO: Client and Server ID's are manufacturer dependence. They should be standard values but they are not.
 	//Below are some example values. Ask correct values from your meter manufacturer or http://www.gurux.org.
 /*
 	//Iskra Serial port settings.
@@ -135,7 +135,7 @@ int main( int argc, char* argv[] )
 		for(std::vector<std::pair<CGXDLMSObject*, CGXDLMSCaptureObject*> >::iterator it2 = pg->GetCaptureObjects().begin(); it2 != pg->GetCaptureObjects().end(); ++it2)
         {			
 			OBJECT_TYPE ot = (*it2).first->GetObjectType();
-			if (ot == OBJECT_TYPE_REGISTER || ot == OBJECT_TYPE_EXTENDED_REGISTER)
+			if (ot == OBJECT_TYPE_REGISTER)
             {
 				(*it2).first->GetLogicalName(ln);
 				TRACE("%s\r\n", ln.c_str());
@@ -186,7 +186,7 @@ int main( int argc, char* argv[] )
 		if (dynamic_cast<CGXDLMSCustomObject*>((*it)) != NULL)
 		{
           //If interface is not implemented.
-          //Example manufacturer spesific interface.
+          //Example manufacturer specific interface.
           printf("Unknown Interface: %d\r\n", (*it)->GetObjectType());
           continue;
 		}		

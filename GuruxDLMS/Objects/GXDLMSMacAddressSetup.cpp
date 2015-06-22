@@ -45,7 +45,7 @@ CGXDLMSMacAddressSetup::CGXDLMSMacAddressSetup() : CGXDLMSObject(OBJECT_TYPE_MAC
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSMacAddressSetup::CGXDLMSMacAddressSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, ln)
 {
@@ -54,7 +54,7 @@ CGXDLMSMacAddressSetup::CGXDLMSMacAddressSetup(basic_string<char> ln) : CGXDLMSO
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSMacAddressSetup::CGXDLMSMacAddressSetup(int sn) : CGXDLMSObject(OBJECT_TYPE_MAC_ADDRESS_SETUP, sn)

@@ -256,7 +256,7 @@ int GXClient::Read(unsigned char* pData, int len, unsigned char eop, bool remove
 			string tmp = GXHelpers::bytesToHex(m_Receivebuff + index, bytesRead);
 			TRACE("%s\r\n", tmp.c_str());
 		}
-		if (index > 5)
+		if (index > 5 || bytesRead > 5)
 		{
 			//Some optical strobes can return extra bytes.
 			for(int pos = bytesRead - 1; pos != -1; --pos)
@@ -267,7 +267,7 @@ int GXClient::Read(unsigned char* pData, int len, unsigned char eop, bool remove
 					break;
 				}
 			}
-			}
+		}
 		index += bytesRead;
 	}
 	while(!bFound && index < m_ReceiveSize);
@@ -728,7 +728,7 @@ int GXClient::GetObjects(CGXDLMSObjectCollection& objects)
 	vector<unsigned char> reply;	
 	if ((ret = m_Parser->GetObjectsRequest(data)) != 0 ||
 		(ret = ReadDataBlock(data, reply)) != 0 ||
-		(ret = m_Parser->ParseObjects(reply, objects, true)) != 0)
+		(ret = m_Parser->ParseObjects(reply, objects, false)) != 0)
 	{
 		TRACE("GetObjects failed %d.\r\n", ret);
 		return ret;

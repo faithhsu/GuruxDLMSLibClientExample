@@ -68,7 +68,6 @@ int CGXDLMSAssociationShortName::GetAccessRights(CGXDLMSObject* pObj, vector<uns
 void CGXDLMSAssociationShortName::UpdateAccessRights(CGXDLMSVariant& buff)
 {     
 	for(vector<CGXDLMSVariant>::iterator access = buff.Arr.begin(); access != buff.Arr.end(); ++access)
-    //for (Object access : buff)
     {            
 		int sn = access->Arr[0].ToInteger();
         CGXDLMSObject* pObj = m_ObjectList.FindBySN(sn);    
@@ -349,5 +348,9 @@ int CGXDLMSAssociationShortName::SetValue(int index, CGXDLMSVariant& value)
 			m_SecuritySetupReference = tmp.ToString();
         }
     }  
-	return ERROR_CODES_INVALID_PARAMETER;
+	else
+	{
+		return ERROR_CODES_INVALID_PARAMETER;
+	}
+	return ERROR_CODES_OK;
 }

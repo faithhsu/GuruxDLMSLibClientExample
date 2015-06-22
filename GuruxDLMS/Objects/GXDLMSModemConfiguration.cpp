@@ -68,7 +68,7 @@ CGXDLMSModemConfiguration::CGXDLMSModemConfiguration() : CGXDLMSObject(OBJECT_TY
 
 /**  
  Constructor.
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSModemConfiguration::CGXDLMSModemConfiguration(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_MODEM_CONFIGURATION, ln)
 {   
@@ -77,7 +77,7 @@ CGXDLMSModemConfiguration::CGXDLMSModemConfiguration(basic_string<char> ln) : CG
 
 /**  
  Constructor.
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSModemConfiguration::CGXDLMSModemConfiguration(int sn) : CGXDLMSObject(OBJECT_TYPE_MODEM_CONFIGURATION, sn)

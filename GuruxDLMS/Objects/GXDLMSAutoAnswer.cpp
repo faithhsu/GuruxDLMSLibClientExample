@@ -57,7 +57,7 @@ CGXDLMSAutoAnswer::CGXDLMSAutoAnswer() : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, 
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSAutoAnswer::CGXDLMSAutoAnswer(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, ln)
 {
@@ -67,7 +67,7 @@ CGXDLMSAutoAnswer::CGXDLMSAutoAnswer(basic_string<char> ln) : CGXDLMSObject(OBJE
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSAutoAnswer::CGXDLMSAutoAnswer(int sn) : CGXDLMSObject(OBJECT_TYPE_AUTO_ANSWER, sn)

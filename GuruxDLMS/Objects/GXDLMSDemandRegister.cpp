@@ -57,7 +57,7 @@ CGXDLMSDemandRegister::CGXDLMSDemandRegister() : CGXDLMSObject(OBJECT_TYPE_DEMAN
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSDemandRegister::CGXDLMSDemandRegister(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_DEMAND_REGISTER, ln)
 {
@@ -67,7 +67,7 @@ CGXDLMSDemandRegister::CGXDLMSDemandRegister(basic_string<char> ln) : CGXDLMSObj
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSDemandRegister::CGXDLMSDemandRegister(int sn) : CGXDLMSObject(OBJECT_TYPE_DEMAND_REGISTER, sn)
