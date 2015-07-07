@@ -69,7 +69,7 @@ public:
     
     /**  
      Constructor.
-     @param ln Logican Name of the object.
+     @param ln Logical Name of the object.
     */
     CGXDLMSAssociationLogicalName(basic_string<char> ln);
 

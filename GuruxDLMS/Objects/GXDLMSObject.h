@@ -89,7 +89,7 @@ public:
 	
 	~CGXDLMSObject(void);	
 
-	//Get Object's Logican or Short Name as a string.
+	//Get Object's Logical or Short Name as a string.
 	CGXDLMSVariant GetName();
 
 	int SetName(CGXDLMSVariant value);

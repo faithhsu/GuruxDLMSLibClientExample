@@ -55,7 +55,7 @@ CGXDLMSClock::CGXDLMSClock() : CGXDLMSObject(OBJECT_TYPE_CLOCK, "0.0.1.0.0.255")
 
 /**  
 Constructor.
-@param ln Logican Name of the object.
+@param ln Logical Name of the object.
 */
 CGXDLMSClock::CGXDLMSClock(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_CLOCK, ln)
 {
@@ -64,7 +64,7 @@ CGXDLMSClock::CGXDLMSClock(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_CL
 
 /**  
  Constructor.
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSClock::CGXDLMSClock(basic_string<char> ln, int sn) : CGXDLMSObject(OBJECT_TYPE_CLOCK, ln)

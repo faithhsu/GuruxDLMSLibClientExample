@@ -54,7 +54,7 @@ CGXDLMSActionSchedule::CGXDLMSActionSchedule() : CGXDLMSObject(OBJECT_TYPE_ACTIO
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSActionSchedule::CGXDLMSActionSchedule(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_ACTION_SCHEDULE, ln)
 {
@@ -64,7 +64,7 @@ CGXDLMSActionSchedule::CGXDLMSActionSchedule(basic_string<char> ln) : CGXDLMSObj
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSActionSchedule::CGXDLMSActionSchedule(int sn) : CGXDLMSObject(OBJECT_TYPE_ACTION_SCHEDULE, sn)

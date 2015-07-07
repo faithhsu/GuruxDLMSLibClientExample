@@ -82,14 +82,14 @@ public:
     /**  
      Constructor.
 
-     @param ln Logican Name of the object.
+     @param ln Logical Name of the object.
     */
     CGXDLMSActionSchedule(basic_string<char> ln);
 
     /**  
      Constructor.
 
-     @param ln Logican Name of the object.
+     @param ln Logical Name of the object.
      @param sn Short Name of the object.
     */
     CGXDLMSActionSchedule(int sn);

@@ -272,7 +272,7 @@ int CGXDLMSRegister::SetValue(int index, CGXDLMSVariant& value)
 			SetValue(value);
 		}
 	}
-    else if (index == 3 && value.vt == DLMS_DATA_TYPE_STRUCTURE)
+    else if (index == 3 && value.vt == DLMS_DATA_TYPE_ARRAY)
 	{
 		m_Scaler = value.Arr[0].ToInteger();
 		m_Unit = value.Arr[1].ToInteger();			

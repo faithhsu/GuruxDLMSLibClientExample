@@ -57,7 +57,7 @@ CGXDLMSTcpUdpSetup::CGXDLMSTcpUdpSetup() :  CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SE
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSTcpUdpSetup::CGXDLMSTcpUdpSetup(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, ln)
 {
@@ -67,7 +67,7 @@ CGXDLMSTcpUdpSetup::CGXDLMSTcpUdpSetup(basic_string<char> ln) : CGXDLMSObject(OB
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSTcpUdpSetup::CGXDLMSTcpUdpSetup(basic_string<char> ln, short sn) : CGXDLMSObject(OBJECT_TYPE_TCP_UDP_SETUP, sn)
@@ -276,16 +276,7 @@ int CGXDLMSTcpUdpSetup::SetValue(int index, CGXDLMSVariant& value)
         {
             if (value.vt == DLMS_DATA_TYPE_OCTET_STRING)
             {
-				SetIPReference(value.ToString());
-				/*
-                String str = "";
-                for(int ch : (byte[]) value)
-                {
-                    str += String.valueOf(ch) + ".";
-                }
-                str = str.substring(0, str.length() - 1);
-                setIPReference(str);
-				*/
+				SetIPReference(value.ToString());				
             }
             else
             {

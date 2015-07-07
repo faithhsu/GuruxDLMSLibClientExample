@@ -47,7 +47,7 @@ CGXDLMSRegisterMonitor::CGXDLMSRegisterMonitor() : CGXDLMSObject(OBJECT_TYPE_REG
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
 */
 CGXDLMSRegisterMonitor::CGXDLMSRegisterMonitor(basic_string<char> ln) : CGXDLMSObject(OBJECT_TYPE_REGISTER_MONITOR, ln)
 {        
@@ -56,7 +56,7 @@ CGXDLMSRegisterMonitor::CGXDLMSRegisterMonitor(basic_string<char> ln) : CGXDLMSO
 /**  
  Constructor.
 
- @param ln Logican Name of the object.
+ @param ln Logical Name of the object.
  @param sn Short Name of the object.
 */
 CGXDLMSRegisterMonitor::CGXDLMSRegisterMonitor(int sn) : CGXDLMSObject(OBJECT_TYPE_REGISTER_MONITOR, sn)
